@@ -28,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-    @Bean
+   /* @Bean                                             //testing user
     @Override
     public UserDetailsService userDetailsService() {
         UserDetails user =
@@ -39,5 +39,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .build();
 
         return new InMemoryUserDetailsManager(user);
-    }
+    }*/
 }
