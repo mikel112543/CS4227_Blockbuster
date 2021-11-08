@@ -1,20 +1,21 @@
 package com.example.movierental.models;
 
-public abstract class user {
+public abstract class User {
 
-    private int userID, loyaltyPoints;
+    private int userID, loyaltyPoints, tier;
     private String username, password;
     private boolean banned;
 //  private List<movie> UserMovies = new ArrayList<movie>();
 
-    public user() {
+    public User() {
     }
 
-    public user(int userID, String username, String password, Boolean banned, int loyaltyPoints) {
+    public User(int userID, String username, String password, Boolean banned, int loyaltyPoints, int tier) {
         this.userID = userID;
         this.username = username;
         this.password = password;
         this.banned = banned;
+        this.tier = tier;
     }
 
     public int getUserID() {
@@ -37,6 +38,10 @@ public abstract class user {
         return banned;
     }
 
+    public int getTier() {
+        return tier;
+    }
+
     public void setUserID(int userID) {
         this.userID = userID;
     }
@@ -57,6 +62,10 @@ public abstract class user {
         this.banned = banned;
     }
 
+    public void setTier(int tier) {
+        this.tier = tier;
+    }
+
     @Override
     public String toString() {
         return "user{" +
@@ -64,7 +73,8 @@ public abstract class user {
                 ", loyaltyPoints=" + loyaltyPoints +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", banned=" + banned +
+                ", banned=" + banned + '\'' +
+                ", tier=" + tier +
                 '}';
     }
 }
