@@ -1,16 +1,18 @@
-package com.example.movierental.models;
+package com.example.movierental.model;
 
-public abstract class user {
+public abstract class User {
 
-    private int userID, loyaltyPoints;
+    private int userID;
     private String username, password;
     private boolean banned;
-//  private List<movie> UserMovies = new ArrayList<movie>();
+//  private List<Movie> UserMovies = new ArrayList<movie>();
 
-    public user() {
+    public User() {
+
     }
 
-    public user(int userID, String username, String password, Boolean banned, int loyaltyPoints) {
+    //loyalty points taken out
+    public User(int userID, String username, String password, boolean banned) {
         this.userID = userID;
         this.username = username;
         this.password = password;
@@ -21,9 +23,9 @@ public abstract class user {
         return userID;
     }
 
-    public int getLoyaltyPoints() {
-        return loyaltyPoints;
-    }
+//   public int getLoyaltyPoints() {
+//       return loyaltyPoints;
+//   }
 
     public String getUsername() {
         return username;
@@ -41,9 +43,9 @@ public abstract class user {
         this.userID = userID;
     }
 
-    public void setLoyaltyPoints(int loyaltyPoints) {
-        this.loyaltyPoints = loyaltyPoints;
-    }
+//    public void setLoyaltyPoints(int loyaltyPoints) {
+//        this.loyaltyPoints = loyaltyPoints;
+//    }
 
     public void setUsername(String username) {
         this.username = username;
@@ -61,7 +63,7 @@ public abstract class user {
     public String toString() {
         return "user{" +
                 "userID=" + userID +
-                ", loyaltyPoints=" + loyaltyPoints +
+                //", loyaltyPoints=" + loyaltyPoints +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", banned=" + banned +
