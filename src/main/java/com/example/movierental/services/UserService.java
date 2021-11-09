@@ -1,6 +1,6 @@
 package com.example.movierental.services;
 
-import com.example.movierental.models.User;
+import com.example.movierental.model.User;
 
 public interface UserService {
     //public abstract void registerUser(User user);

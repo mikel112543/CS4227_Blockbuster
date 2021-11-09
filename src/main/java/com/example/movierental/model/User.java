@@ -1,4 +1,4 @@
-package com.example.movierental.models;
+package com.example.movierental.model;
 
 public abstract class User {
 

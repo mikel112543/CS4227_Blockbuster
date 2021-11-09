@@ -12,15 +12,13 @@ public class Customer extends User{
     }
 
     //constructor for new Customer
-    public Customer(int userID, String username, String password, Boolean banned) {
-        super(userID, username, password, banned);
+    public Customer(int userID, String username, String password, Boolean banned, int loyaltyPoints, int tier) {
+        super(userID, username, password, banned, loyaltyPoints, tier);
     }
 
     //Constructor for existing Customer
     public Customer(int userID, String username, String password, Boolean banned, int loyaltyPoints, int tier, ArrayList<Movie> userMovies) {
-        super(userID, username, password, banned);
-        this.loyaltyPoints = loyaltyPoints;
-        this.tier = tier;
+        super(userID, username, password, banned, loyaltyPoints,tier);
         this.userMovies = userMovies;
     }
 

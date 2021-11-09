@@ -6,7 +6,7 @@ public class Admin extends User{
         //empty constructor
     }
 
-    public Admin(int userID, String username, String password, boolean banned) {
-        super(userID, username, password, banned);
+    public Admin(int userID, String username, String password, boolean banned, int loyaltyPoints, int tier) {
+        super(userID, username, password, banned, loyaltyPoints, tier);
     }
 }
