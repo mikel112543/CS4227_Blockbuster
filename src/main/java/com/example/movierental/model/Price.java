@@ -3,7 +3,7 @@ package com.example.movierental.model;
 public abstract class Price {
 
 
-    private int price; //price of the movie
+    private int price; //price of the movie per day
     private int loyaltyPoints; //loyalty points per rental of the movie
 
     public int getPrice() {
@@ -20,6 +20,14 @@ public abstract class Price {
 
     public void setLoyaltyPoints(int loyaltyPoints) {
         this.loyaltyPoints = loyaltyPoints;
+    }
+
+    public int getCharge(int numberOfDays){
+        return getPrice()*numberOfDays;
+    }
+
+    public int getLoyaltyPointsEarned(int numberOfDays){
+        return getLoyaltyPoints()*numberOfDays;
     }
 
     @Override

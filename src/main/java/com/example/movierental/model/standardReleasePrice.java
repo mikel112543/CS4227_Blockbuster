@@ -2,6 +2,8 @@ package com.example.movierental.model;
 
 public class standardReleasePrice extends Price{
 
+    //movie cost 8 per day
+    //customer earns 2 loyalty points per rental per day of a movie
     public standardReleasePrice() {
         setPrice(8);
         setLoyaltyPoints(2);
