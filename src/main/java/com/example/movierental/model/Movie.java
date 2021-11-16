@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import java.time.Duration;
-import java.time.LocalTime;
 
 //Movie Class
 //
@@ -42,21 +41,15 @@ public class Movie {
     //PRICE CODES: 0 = newReleasePrice, 1 = standardReleasePrice, 2 = childrensReleasePrice
     //parameterised constructor
     public Movie(String title, String genre, String description, Duration length, int priceCode, int movieId, int movieRating) {
+
+        PriceFactory p = new PriceFactory();
         this.title = title;
         this.genre = genre;
         this.description = description;
         this.length = length;
         this.movieId = movieId;
         this.movieRating = movieRating;
-        if(priceCode == 0){
-            this.price = new newReleasePrice();
-        } else if(priceCode == 1){
-            this.price = new standardReleasePrice();
-        }else if(priceCode == 2){
-            this.price = new childrensReleasePrice();
-        }else{
-            System.out.println("Enter error checking here");
-        }
+        this.price = p.getPrice(priceCode);
     }
 
     //calls prices get charge method
@@ -105,22 +98,11 @@ public class Movie {
         return price;
     }
 
-    //public int getPrice() {
-    //    return price.getPrice();
-    //}
-
     //not sure if it is necessary to be able to manually update values for each movie
     //PRICE CODES: 0 = newReleasePrice, 1 = standardReleasePrice, 2 = childrensReleasePrice
     public void setPrice(int priceCode) {
-        if(priceCode == 0){
-            this.price = new newReleasePrice();
-        } else if(priceCode == 1){
-            this.price = new standardReleasePrice();
-        }else if(priceCode == 2){
-            this.price = new childrensReleasePrice();
-        }else{
-            System.out.println("Enter error checking here");
-        }
+        PriceFactory p = new PriceFactory();
+        this.price = p.getPrice(priceCode);
     }
 
     public int getMovieId() {

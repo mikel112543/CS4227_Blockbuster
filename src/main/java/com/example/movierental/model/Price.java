@@ -4,7 +4,7 @@ public abstract class Price {
 
 
     private int price; //price of the movie per day
-    private int loyaltyPoints; //loyalty points per rental of the movie
+    private int loyaltyPoints; //loyalty points per day of rental of the movie
 
     public int getPrice() {
         return price;
