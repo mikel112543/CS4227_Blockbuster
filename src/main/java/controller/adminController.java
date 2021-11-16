@@ -14,6 +14,7 @@ public class adminController {
      */
     @PostMapping(value = "admin/customerId/{CUSTOMER_ID}")
     public String banCustomer(@PathVariable("USER_ID") final int customerId) {
+        //Service Call
         adminService.deleteUser(customerId);
         return "adminMenu";
     }
@@ -24,6 +25,7 @@ public class adminController {
      */
     @DeleteMapping(value = "admin/MovieIdDelete/{MOVIE_ID}")
     public String deleteMovie(@PathVariable("MOVIE_ID") final int movieId) {
+        //Service Call
         adminService.deleteMovie(movieId);
         return "adminMenu";
     }
@@ -33,6 +35,7 @@ public class adminController {
      */
     @GetMapping(value = "/adminMenu")
     public String showAdminMenuView(Model userModel, Model movieModel) {
+        //Service Call
         ArrayList<User> Users = adminService.listAllUsers();
         ArrayList<Movie> Movies = movieService.listAllMovies();
         userModel.addAttribute("users", users);

@@ -12,6 +12,7 @@ public class movieController {
      */
     @GetMapping(value = "/movies")
     public String listMoviesView(Model model) {
+        //Service Call
         ArrayList<Movie> movies = movieService.listAll();
         model.addAttribute("movies", movies);
         return "movies";
@@ -22,6 +23,7 @@ public class movieController {
      */
     @GetMapping(value = "movies/MovieId/{MOVIE_ID}")
     public String getMovie(@PathVariable("MOVIE_ID") final int movieId) {
+        //Service Call
         return movieService.findById(movieId); // Send request to movie service handler
     }
 
@@ -32,6 +34,7 @@ public class movieController {
     @GetMapping(value = "/movies/movieName/{MOVIE_NAME}")
     public String searchMovie(@PathVariable("MOVIE_NAME") String movieName,
                               Model model) {
+        //Service Call
         ArrayList<Movie> movies = movieService.findByName(movieName);
         model.addAttribute("movies", movies);
         return "MovieSearch";
