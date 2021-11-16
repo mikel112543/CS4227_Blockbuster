@@ -1,16 +1,22 @@
 package controller;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController //CRUD
+import java.util.ArrayList;
+
+@Controller //CRUD
 public class movieController {
 
     /**
      * @return List of Movies
      */
     @GetMapping(value = "/movies")
-    public Movie listAll() {
-        return movieService.listAll();
+    public String listMoviesView(Model model) {
+        ArrayList<Movie> movies = movieService.listAll();
+        model.addAttribute("movies", movies);
+        return "movies"
     }
 
     /**
@@ -18,8 +24,8 @@ public class movieController {
      * @return JSON Movie
      */
     @GetMapping(value = "movies/MovieId/{MOVIE_ID}")
-    public Movie getMovie(@PathVariable("MOVIE_ID") final int movieId) {
-        return movieService.getMovie(movieId); // Send request to movie service handler
+    public String getMovie(@PathVariable("MOVIE_ID") final int movieId) {
+        return movieService.findById(movieId); // Send request to movie service handler
     }
 
     /**
@@ -28,7 +34,7 @@ public class movieController {
      * @return JSON Movie
      */
     @GetMapping(value = "/movies/movieName/{MOVIE_NAME}")
-    public Movie searchMovie(@PathVariable("MOVIE_NAME") String movieName) {
+    public String searchMovie(@PathVariable("MOVIE_NAME") String movieName) {
         return movieService.searchMovie(movieName);
     }
 }
