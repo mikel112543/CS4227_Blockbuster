@@ -35,9 +35,6 @@ public class Movie {
     @JsonProperty("Price")
     private Price price;
 
-    @JsonProperty("Loyalty Points")
-    private int loyaltyPoints;
-
     public Movie() {
         //empty constructor
     }
@@ -60,7 +57,16 @@ public class Movie {
         }else{
             System.out.println("Enter error checking here");
         }
-        this.loyaltyPoints = price.getLoyaltyPoints();
+    }
+
+    //calls prices get charge method
+    public int getCharge(int numberOfDays){
+        return price.getCharge(numberOfDays);
+    }
+
+    //calls prices get loyalt points earned method
+    public int getLoyaltyPointsEarned(int numberOfDays){
+        return price.getLoyaltyPointsEarned(numberOfDays);
     }
 
     public String getTitle() {
@@ -133,15 +139,6 @@ public class Movie {
         this.movieRating = movieRating;
     }
 
-    public int getLoyaltyPoints() {
-        return loyaltyPoints;
-    }
-
-    //not sure if it is necessary to be able to manually update values for each movie
-    public void setLoyaltyPoints(int loyaltyPoints) {
-        price.setLoyaltyPoints(loyaltyPoints);
-        this.loyaltyPoints = price.getLoyaltyPoints();
-    }
 
     @Override
     public String toString() {
