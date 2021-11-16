@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 public class Customer extends User{
 
-    private int loyaltyPoints, tier;
-    private ArrayList<Movie> userMovies = new ArrayList<>();
+    private int loyaltyPoints;
+    private int tier;
+    private ArrayList<Rental> userMovies = new ArrayList<>();
 
     public Customer(){
         //empty constructor
@@ -17,12 +18,14 @@ public class Customer extends User{
     }
 
     //Constructor for existing Customer
-    public Customer(int userID, String username, String password, Boolean banned, int loyaltyPoints, int tier, ArrayList<Movie> userMovies) {
+    public Customer(int userID, String username, String password, Boolean banned, int loyaltyPoints, int tier, ArrayList<Rental> userMovies) {
         super(userID, username, password, banned);
         this.loyaltyPoints = loyaltyPoints;
         this.tier = tier;
         this.userMovies = userMovies;
     }
+
+
 
     public int getLoyaltyPoints() {
         return loyaltyPoints;
@@ -40,11 +43,11 @@ public class Customer extends User{
         this.tier = tier;
     }
 
-    public ArrayList<Movie> getUserMovies() {
+    public ArrayList<Rental> getUserMovies() {
         return userMovies;
     }
 
-    public void setUserMovies(ArrayList<Movie> userMovies) {
+    public void setUserMovies(ArrayList<Rental> userMovies) {
         this.userMovies = userMovies;
     }
 

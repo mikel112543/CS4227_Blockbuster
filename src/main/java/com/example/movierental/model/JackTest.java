@@ -5,7 +5,7 @@ import java.time.Duration;
 public class JackTest {
 
     public static void main(String[] args){
-
+/*
         Price t1 = new newReleasePrice();
         standardReleasePrice t2 = new standardReleasePrice();
         Price t3 = new childrensReleasePrice();
@@ -25,7 +25,7 @@ public class JackTest {
 
         System.out.println(m1.toString());
         System.out.println(m2.toString());
-        System.out.println(m3.toString());
+        System.out.println(m3.toString());*/
 
     }
 
