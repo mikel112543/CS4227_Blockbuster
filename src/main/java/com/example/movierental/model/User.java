@@ -16,6 +16,7 @@ public abstract class User {
         this.password = password;
         this.banned = banned;
         this.tier = tier;
+
     }
 
     public int getUserID() {
