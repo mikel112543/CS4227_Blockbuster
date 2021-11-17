@@ -1,4 +1,6 @@
-package com.example.movierental.model;
+package com.example.movierental;
+
+import com.example.movierental.model.Movie;
 
 import java.time.Duration;
 
