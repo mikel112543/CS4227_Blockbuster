@@ -2,6 +2,10 @@ package com.example.movierental.model;
 
 import java.util.ArrayList;
 
+//Customer Class
+//
+//@author Jack Murphy - 18254268
+
 public class Customer extends User{
 
     private int loyaltyPoints, tier;

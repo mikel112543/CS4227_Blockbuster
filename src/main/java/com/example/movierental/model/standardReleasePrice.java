@@ -1,5 +1,9 @@
 package com.example.movierental.model;
 
+//StandardReleasePrice Class
+//
+//@author Jack Murphy - 18254268
+
 public class standardReleasePrice extends Price{
 
     //movie cost 8 per day

@@ -1,7 +1,10 @@
 package com.example.movierental.model;
 
-public abstract class Price {
+//Price Class
+//
+//@author Jack Murphy - 18254268
 
+public abstract class Price {
 
     private int price; //price of the movie per day
     private int loyaltyPoints; //loyalty points per day of rental of the movie

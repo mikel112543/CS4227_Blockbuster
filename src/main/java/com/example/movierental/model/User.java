@@ -5,7 +5,6 @@ public abstract class User {
     private int userID;
     private String username, password;
     private boolean banned;
-//  private List<Movie> UserMovies = new ArrayList<movie>();
 
     public User() {
 
@@ -23,10 +22,6 @@ public abstract class User {
         return userID;
     }
 
-//   public int getLoyaltyPoints() {
-//       return loyaltyPoints;
-//   }
-
     public String getUsername() {
         return username;
     }
@@ -42,10 +37,6 @@ public abstract class User {
     public void setUserID(int userID) {
         this.userID = userID;
     }
-
-//    public void setLoyaltyPoints(int loyaltyPoints) {
-//        this.loyaltyPoints = loyaltyPoints;
-//    }
 
     public void setUsername(String username) {
         this.username = username;

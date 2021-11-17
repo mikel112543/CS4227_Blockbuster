@@ -1,5 +1,9 @@
 package com.example.movierental.model;
 
+//PriceFactory Class
+//Implements the factory method
+//@author Jack Murphy - 18254268
+
 public class PriceFactory {
 
     //getPrice returns the required Price object based on the priceCode
