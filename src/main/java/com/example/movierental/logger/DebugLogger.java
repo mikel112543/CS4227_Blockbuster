@@ -15,6 +15,9 @@ public class DebugLogger extends AbstractLogger {
         this.levels = levels;
     }
 
+    /**
+     * @param msg Message to be displayed by the logger
+     */
     @Override
     protected void showLogMsg(String msg) {
         LOGGER.debug(msg);

@@ -5,9 +5,9 @@ package com.example.movierental.logger;
  */
 //CHAIN OF RESPONSIBILITY DESIGN PATTERN
 public abstract class AbstractLogger {
-    public static int OUTPUT_INFO=1;
-    public static int ERROR_INFO=2;
-    public static int DEBUG_INFO=3;
+    public static final int OUTPUT_INFO = 1;
+    public static final int ERROR_INFO = 2;
+    public static final int DEBUG_INFO = 3;
 
     protected int levels;
 
@@ -18,12 +18,14 @@ public abstract class AbstractLogger {
     }
 
     public void logMessage(int levels, String msg) {
-        if(this.levels <= levels) {
+        if (this.levels <= levels) {
             showLogMsg(msg);
         }
-        if(nextAbstractLogger != null) {
+        if (nextAbstractLogger != null) {
             nextAbstractLogger.logMessage(levels, msg);
         }
     }
+
+    //Abstract method to be Overridden
     protected abstract void showLogMsg(String msg);
 }

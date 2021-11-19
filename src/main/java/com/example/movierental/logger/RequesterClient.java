@@ -3,10 +3,10 @@ package com.example.movierental.logger;
 /**
  * Author - Michael Danaher
  */
-//Client to initiate Logger linking
+//Client to initiate Logger chaining
 public class RequesterClient {
 
-    public static AbstractLogger getChaining(){
+    public static AbstractLogger getChaining() {
 
         AbstractLogger errorLogger = new ErrorLogger(AbstractLogger.ERROR_INFO);
         AbstractLogger debugLogger = new DebugLogger(AbstractLogger.DEBUG_INFO);

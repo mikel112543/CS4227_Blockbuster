@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
  * Author - Michael Danaher
  */
 //Logger Type 3 - Error Logger
-public class ErrorLogger extends AbstractLogger{
+public class ErrorLogger extends AbstractLogger {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorLogger.class);
 
