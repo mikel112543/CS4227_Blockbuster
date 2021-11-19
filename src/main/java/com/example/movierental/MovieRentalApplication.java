@@ -1,6 +1,5 @@
 package com.example.movierental;
 
-import com.example.movierental.constants.Error;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
