@@ -1,9 +1,13 @@
 package controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController //CRUD
 public class movieController {
+
+    @Autowired
+    MovieService movieService;
 
     /**
      * @return List of Movies
@@ -17,7 +21,7 @@ public class movieController {
      * @param movieId - Unique identifier attached to each of the movies.
      * @return JSON Movie
      */
-    @GetMapping(value = "movies/MovieId/{MOVIE_ID}")
+    @GetMapping(value = "movies/{MOVIE_ID}")
     public Movie getMovie(@PathVariable("MOVIE_ID") final int movieId) {
         return movieService.getMovie(movieId); // Send request to movie service handler
     }
@@ -27,7 +31,7 @@ public class movieController {
      * @param movieName - name of movie to be searched
      * @return JSON Movie
      */
-    @GetMapping(value = "/movies/movieName/{MOVIE_NAME}")
+    @GetMapping(value = "/movies/search/{MOVIE_NAME}")
     public Movie searchMovie(@PathVariable("MOVIE_NAME") String movieName) {
         return movieService.searchMovie(movieName);
     }
