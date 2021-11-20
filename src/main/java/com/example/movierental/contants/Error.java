@@ -8,7 +8,7 @@ public enum Error {
 
     GENERAL_ERROR("2000", "General Error occurred"),
     PAYMENT_DECLINED("2001", "Payment was unfortunately declined"),
-    INVALID_USER_ID("2002", "Invalid user ID"),
+    INVALID_USER_ID("2002", "Invalid customer ID"),
     INVALID_MOVIE_ID("2003", "Invalid movie ID"),
     INVALID_LOGIN("2004", "Invalid Login please try again");
 
