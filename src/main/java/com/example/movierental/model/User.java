@@ -1,7 +1,8 @@
 package com.example.movierental.model;
 
-public abstract class User {
+public class User {
 
+    public Object setLoyaltyPoints;
     private int userID;
     private String username, password;
     private boolean banned;
@@ -9,6 +10,11 @@ public abstract class User {
 
     public User() {
 
+    }
+
+    public User(int userID){
+        this.userID = userID;
+        //empty constructor
     }
 
     //loyalty points taken out
@@ -43,9 +49,7 @@ public abstract class User {
         this.userID = userID;
     }
 
-//    public void setLoyaltyPoints(int loyaltyPoints) {
-//        this.loyaltyPoints = loyaltyPoints;
-//    }
+    //public void setLoyaltyPoints(int loyaltyPoints);
 
     public void setUsername(String username) {
         this.username = username;

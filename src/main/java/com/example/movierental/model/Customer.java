@@ -1,14 +1,21 @@
 package com.example.movierental.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Customer extends User{
 
     private int loyaltyPoints;
     private int tier;
-    private ArrayList<Rental> userMovies = new ArrayList<>();
+    private List<Rental> customerMovies;
 
     public Customer(){
+        //empty constructor
+    }
+
+    public Customer(int userID, int loyaltyPoints){
+        super(userID);
+        this.loyaltyPoints = loyaltyPoints;
         //empty constructor
     }
 
@@ -18,14 +25,12 @@ public class Customer extends User{
     }
 
     //Constructor for existing Customer
-    public Customer(int userID, String username, String password, Boolean banned, int loyaltyPoints, int tier, ArrayList<Rental> userMovies) {
+    public Customer(int userID, String username, String password, Boolean banned, int loyaltyPoints, int tier, List<Rental> customerMovies) {
         super(userID, username, password, banned);
         this.loyaltyPoints = loyaltyPoints;
         this.tier = tier;
-        this.userMovies = userMovies;
+        this.customerMovies = customerMovies;
     }
-
-
 
     public int getLoyaltyPoints() {
         return loyaltyPoints;
@@ -43,20 +48,21 @@ public class Customer extends User{
         this.tier = tier;
     }
 
-    public ArrayList<Rental> getUserMovies() {
-        return userMovies;
+    public List<Rental> getCustomerMovies() {
+        return getCustomerMovies();
     }
 
-    public void setUserMovies(ArrayList<Rental> userMovies) {
-        this.userMovies = userMovies;
+    public void setUserMovies(List<Rental> customerMovies) {
+        this.customerMovies = customerMovies;
     }
 
     @Override
     public String toString() {
         return super.toString() + "Customer{" +
-                "loyaltyPoints=" + loyaltyPoints +
-                ", tier=" + tier +
-                ", userMovies=" + userMovies +
+                "Name: " + getUsername() +
+                "Loyalty Points attained=" + loyaltyPoints +
+                ", Current Tier=" + tier +
+                ", Rented Movies=" + customerMovies +
                 '}';
     }
 }

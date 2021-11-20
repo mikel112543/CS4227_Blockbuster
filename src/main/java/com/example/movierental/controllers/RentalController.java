@@ -1,13 +1,9 @@
 package com.example.movierental.controllers;
 
-import com.example.movierental.model.Customer;
-import com.example.movierental.model.Movie;
 import com.example.movierental.model.Rental;
-import com.example.movierental.model.User;
 import com.example.movierental.service.RentalService;
+import com.example.movierental.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,17 +13,11 @@ import java.util.List;
 @Controller
 public class RentalController {
 
-/*    @Autowired
+    @Autowired
     RentalService rentalService;
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    PriceService priceService;
-
-    @Autowired
-    Authentication auth;*/
 
 
 /*
@@ -47,33 +37,29 @@ public class RentalController {
     /**
      * @return User.html
      */
-    @GetMapping(value = "/user")
-    public String showRentalsView(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Customer customer = (Customer) auth.getPrincipal();
+    @GetMapping(value = "/customerId/{CUSTOMER_ID}/rentals")
+    public List<Rental> showRentals(@PathVariable("CUSTOMER_ID") final int customerID) {
+        return rentalService.showRentals(customerID);
+       /* Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Customer customer = (Customer) auth.getPrincipal();*/
         //int customerId = customer.getUserID();
         //List<Rental> userRentals = userService.getUserRentals(customerId);
         //model.addAttribute("userRentals", userRentals); //Attach List of rentals to model to be used in Thymeleaf
-        return "user";
     }
 
-    @GetMapping(value = "/")
-
-/*    *//**
-     * @param customerId the ID of the customer who owns the rental
-     * @param movieId    Unique identifier for the movie
-     * @return User.html
-     *//*
+    /**
+     *
+     * @param customerId - Customer ID who owns the rental
+     * @param movieId - Movie ID of currently rented movie
+     * @return JSON Object
+     */
     @GetMapping(value = "/customerId/{CUSTOMER_ID}/rentals/{MOVIE_ID}")
-    public String showRentalView(@PathVariable("CUSTOMER_ID") final int customerId,
-                                 @PathVariable("MOVIE_ID") final int movieId,
-                                 Model model) {
+    public Rental getRental(@PathVariable("CUSTOMER_ID") final int customerId,
+                                 @PathVariable("MOVIE_ID") final int movieId) {
 
-        Rental rental = userService.getRental(customerId, movieId);
-        model.addAttribute("rental", rental); //Attach rental to model to be used in Thymeleaf
-
-        return "rental";
-    }*/
+        return userService.getRental(customerId, movieId);
+        //Attach rental to model to be used in Thymeleaf
+    }
 
    /* *//**
      * @param customerId - the ID of the customer who owns the rental
@@ -84,8 +70,7 @@ public class RentalController {
     public String removeRentalView(@PathVariable("RENTAL_ID") final int rentalId,
                                    @PathVariable("CUSTOMER_ID") final int customerId) {
 
-        rentalService.removeRental(customerId, rentalId);
-        return "user";
+        return rentalService.removeRental(customerId, rentalId);
 
     }
 }
