@@ -5,6 +5,7 @@ public abstract class User {
     private int userID;
     private String username, password;
     private boolean banned;
+//  private List<Movie> UserMovies = new ArrayList<movie>();
 
     public User() {
 
