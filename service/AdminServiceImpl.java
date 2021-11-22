@@ -29,32 +29,36 @@ public class AdminServiceImpl implements AdminService {
         if (line == null){
             pw.println(movie.getTitle() + "," + movie.getGenre() + "," + movie.getDescription() + "," + movie.getMovieLength() + "," + movie.getRentLength() + "," + movie.getPrice() + "," + movie.getMovieID() + "," + movie.getMovieRating() + "," + movie.getMovieRelease());
             pw.close();
+            br.close();
         }
+
     }
 
     public void deleteMovie(int movieID) throws IOException {
-        //TODO: search the CSV file for the movieID (column 7) and remove the entire row.
         Path pathToFile = Paths.get("movies.csv");
-        BufferedReader br = Files.newBufferedReader(pathToFile);
-        String line = br.readLine();
-        int count = 1;
-        while(line!= null){
+        try {
+            BufferedReader br = Files.newBufferedReader(pathToFile);
+            String line = br.readLine();
+            int count = 1;
+            while (line != null) {
 
-            String [] attributes = line.split(",");
-            int movieIDfromCSV = Integer.parseInt(attributes[6]);
-            if (movieIDfromCSV != movieID){
-                line = br.readLine();
-                count = count + 1;
+                String[] attributes = line.split(",");
+                int movieIDfromCSV = Integer.parseInt(attributes[6]);
+                if (movieIDfromCSV != movieID) {
+                    line = br.readLine();
+                    count = count + 1;
+                } else {
+                    //remove count row
+
+                }
             }
-            else{
-                //remove count row
-            }
+        } finally {
+
         }
     }
 
     public ArrayList<User> listAllUsers() throws IOException {
-        Path pathToFile = Paths.get("Movies.csv");
-
+        Path pathToFile = Paths.get("users.csv");
         BufferedReader br = Files.newBufferedReader(pathToFile);
         String line = br.readLine();
 
@@ -75,12 +79,15 @@ public class AdminServiceImpl implements AdminService {
 
         return new User(ID, username, password, isBanned);
     }
-
-    public void banUser(int userID){
-        //TODO: find what column the user is by ID, put userID, username and password into
-        // temp variables, delete the column,create object with variables and banned is true then put
-        // back into the CSV.
+    public void banUser(int userID) throws IOException {
+        listOfUsers = this.listAllUsers();
+        User user = new User();
+        //findByUserID in userservice..
+        for (int i = 0; i < listOfUsers.size(); i++){
+            if (user.getUserID() == userID){
+                user.setBanned(true);
+            }
+        }
+        //delete the users/customers csv file and put new arraylist in.
     }
-
-
 }

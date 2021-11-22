@@ -43,18 +43,28 @@ public class MovieServiceImpl implements MovieService {
         return new Movie (title, genre, description, movieLength, rentLength, price, movieID, movieRating, movieRelease);
     }
 
-    public Movie findByID(int movieID) throws IOException {
-        Path pathToFile = Paths.get("users.csv");
+
+
+    public Movie findByMovieID(int movieID) throws IOException {
+        Path pathToFile = Paths.get("movies.csv");
         BufferedReader br = Files.newBufferedReader(pathToFile);
         String line = br.readLine();
-        Movie movie = null;
+        Movie movie = new Movie();
         while (line != null) {
             String[] attributes = line.split(",");
             int movieIDfromCSV = Integer.parseInt(attributes[6]);
             if (movieID != movieIDfromCSV) {
                 line = br.readLine();
             } else {
-                movie = createMovie(attributes);
+                movie.setTitle(attributes[0]);
+                movie.setGenre(attributes[1]);
+                movie.setDescription(attributes[2]);
+                movie.setMovieLength(LocalTime.parse(attributes[3]));
+                movie.setRentLength(LocalTime.parse(attributes[4]));
+                movie.setPrice(Double.parseDouble(attributes[5]));
+                movie.setMovieID(Integer.parseInt(attributes[6]));
+                movie.setMovieRating(Integer.parseInt(attributes[7]));
+                movie.setMovieRelease(attributes[8]);
             }
         }
         return movie;
