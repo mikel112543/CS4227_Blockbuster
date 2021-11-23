@@ -1,7 +1,6 @@
 package com.example.movierental;
 
 import com.example.movierental.model.Movie;
-
 import java.time.Duration;
 
 public class JackTest {

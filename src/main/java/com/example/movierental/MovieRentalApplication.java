@@ -1,6 +1,5 @@
 package com.example.movierental;
 
-import com.example.movierental.model.Customer;
 import com.example.movierental.model.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

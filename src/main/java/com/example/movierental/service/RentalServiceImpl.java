@@ -1,6 +1,5 @@
 package com.example.movierental.service;
 
-import com.example.movierental.model.Customer;
 import com.example.movierental.model.Movie;
 import com.example.movierental.model.Rental;
 import org.springframework.stereotype.Service;
