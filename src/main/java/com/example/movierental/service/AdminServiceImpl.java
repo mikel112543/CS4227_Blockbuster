@@ -1,39 +1,41 @@
-package service;
+package com.example.movierental.service;
 
-import model.Movie;
-import model.User;
 
-import java.io.*;
+import com.example.movierental.model.Customer;
+import com.example.movierental.model.Movie;
+import com.example.movierental.model.User;
+import org.springframework.stereotype.Service;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalTime;
+import java.time.Duration;
 import java.util.ArrayList;
 
-import org.springframework.stereotype.Service;
-
 @Service
-public class AdminServiceImpl implements AdminService {
-
+public abstract class AdminServiceImpl implements AdminService {
 
     ArrayList<User> listOfUsers = new ArrayList<User>();
     ArrayList<Movie> listOfMovies = new ArrayList<Movie>();
-
-    public void addMovie(String title, String genre, String description, LocalTime movieLength, LocalTime rentLength, double price, int movieID, int movieRating, String movieRelease) throws IOException {
-        Movie movie = new Movie(title, genre, description, movieLength, rentLength, price, movieID, movieRating, movieRelease);
+    @Override
+    public void addMovie(String title, String genre, String description, Duration length, int price, int movieID, int movieRating) throws IOException {
+        Movie movie = new Movie(title, genre, description, length, price, movieID, movieRating);
 
         Path pathToFile = Paths.get("movies.csv");
         BufferedReader br = Files.newBufferedReader(pathToFile);
         PrintWriter pw = new PrintWriter("movies.csv");
         String line = br.readLine();
         if (line == null){
-            pw.println(movie.getTitle() + "," + movie.getGenre() + "," + movie.getDescription() + "," + movie.getMovieLength() + "," + movie.getRentLength() + "," + movie.getPrice() + "," + movie.getMovieID() + "," + movie.getMovieRating() + "," + movie.getMovieRelease());
+            pw.println(movie.getTitle() + "," + movie.getGenre() + "," + movie.getDescription() + "," + movie.getLength() + "," + movie.getPrice() + "," + movie.getMovieId() + "," + movie.getMovieRating());
             pw.close();
             br.close();
         }
 
     }
-
+    @Override
     public void deleteMovie(int movieID) throws IOException {
         Path pathToFile = Paths.get("movies.csv");
         try {
@@ -49,14 +51,13 @@ public class AdminServiceImpl implements AdminService {
                     count = count + 1;
                 } else {
                     //remove count row
-
                 }
             }
-        } finally {
-
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-
+    @Override
     public ArrayList<User> listAllUsers() throws IOException {
         Path pathToFile = Paths.get("users.csv");
         BufferedReader br = Files.newBufferedReader(pathToFile);
@@ -64,28 +65,30 @@ public class AdminServiceImpl implements AdminService {
 
         while(line != null){
             String[] attributes = line.split(",");
-            User user = createUser(attributes);
+            User user = createCustomer(attributes);
             listOfUsers.add(user);
             line = br.readLine();
         }
         return listOfUsers;
     }
     //method used to create the user object when given an array of its attributes.
-    public User createUser(String [] metadata){
+    @Override
+    public User createCustomer(String [] metadata){
         int ID = Integer.parseInt(metadata[0]);
         String username = metadata[1];
         String password = metadata[2];
         boolean isBanned = Boolean.parseBoolean(metadata[3]);
 
-        return new User(ID, username, password, isBanned);
+        return new Customer(ID, username, password, isBanned);
     }
-    public void banUser(int userID) throws IOException {
+    @Override
+    public void banCustomer(int userID) throws IOException {
         listOfUsers = this.listAllUsers();
-        User user = new User();
-        //findByUserID in userservice..
+        Customer cust = new Customer();
+        //findByUserID in userservice... put details into user.
         for (int i = 0; i < listOfUsers.size(); i++){
-            if (user.getUserID() == userID){
-                user.setBanned(true);
+            if (cust.getUserID() == userID){
+                cust.setBanned(true);
             }
         }
         //delete the users/customers csv file and put new arraylist in.

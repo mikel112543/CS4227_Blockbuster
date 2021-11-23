@@ -3,7 +3,9 @@ package com.example.movierental.service;
 import com.example.movierental.model.Customer;
 import com.example.movierental.model.Movie;
 import com.example.movierental.model.Rental;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +17,11 @@ import java.util.List;
 @Service
 public class RentalServiceImpl implements RentalService {
 
-    //@Autowired
-    //UserServiceimpl userService;
+    @Autowired
+    UserServiceImpl userService;
 
-    //@Autowired
-    //MovieServiceimpl movieService;
+    @Autowired
+    MovieServiceImpl movieService;
 
 /**
      *
@@ -31,7 +33,7 @@ public class RentalServiceImpl implements RentalService {
     public Rental rentMovie(int customerId, int movieId) {
         //Find by ID to locate movie and customer
         Customer customer = userService.findbyId(customerId);
-        Movie movie = movieService.findbyId(movieId);
+        Movie movie = movieService.findByMovieID(movieId);
         int customerTier = customer.getTier();
 
         if(movie == null) {
@@ -89,7 +91,7 @@ public class RentalServiceImpl implements RentalService {
         if(userService.findById(customerId) == null) {
             //Throw Exception
             //Write some arbitrary logger stuff
-        }else if(movieService.findById(movieId) == null) {
+        }else if(MovieService.findByMovieID(movieId) == null) {
             //Throw Exception
             //Write some arbitrary logger stuff
         }else{
