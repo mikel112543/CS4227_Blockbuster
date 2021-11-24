@@ -1,10 +1,17 @@
 package com.example.movierental.logger;
 
+import org.springframework.stereotype.Service;
+
 /**
  * Author - Michael Danaher
  */
 //Client to initiate Logger chaining
+@Service
 public class RequesterClient {
+
+
+    public RequesterClient() {
+    }
 
     public static AbstractLogger getChaining() {
 
