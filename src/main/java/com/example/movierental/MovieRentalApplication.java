@@ -13,6 +13,7 @@ import java.util.List;
 public class MovieRentalApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(MovieRentalApplication.class, args);
 
         User mike = new Customer(121345654, 5);
