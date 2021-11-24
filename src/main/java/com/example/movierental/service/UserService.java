@@ -8,9 +8,14 @@ import java.util.List;
 public interface UserService {
     //public abstract void registerUser(User user);
     List<User> getCustomers();
+
     User findByID(int i);
-    User addUser(User user);
+
+    void addUser(User user);
+
     User findByUserName(String user);
+
     List<Rental> addMovie(int userId, Rental rental);
+
     List<Rental> getRentals(int userId);
 }

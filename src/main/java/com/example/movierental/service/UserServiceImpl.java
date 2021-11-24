@@ -22,12 +22,12 @@ public class UserServiceImpl implements UserService {
 
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
 
-    List<User> users = new ArrayList<>();
+    List<User> users = new ArrayList<User>();
+
 
     @Override
-    public User addUser(User user) {
+    public void addUser(User user) {
         users.add(user);
-        return user;
     }
 
     @Override
