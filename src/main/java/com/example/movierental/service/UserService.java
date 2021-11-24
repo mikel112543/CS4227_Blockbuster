@@ -1,12 +1,16 @@
-package com.example.movierental.services;
+package com.example.movierental.service;
 
-import com.example.movierental.model.Customer;
+import com.example.movierental.model.Rental;
+import com.example.movierental.model.User;
 
 import java.util.List;
 
 public interface UserService {
     //public abstract void registerUser(User user);
-    public abstract List<Customer> getCustomers();
-    public abstract Customer findByID(int i);
-    public abstract Customer findByUserName(String user);
+    List<User> getCustomers();
+    User findByID(int i);
+    User addUser(User user);
+    User findByUserName(String user);
+    List<Rental> addMovie(int userId, Rental rental);
+    List<Rental> getRentals(int userId);
 }

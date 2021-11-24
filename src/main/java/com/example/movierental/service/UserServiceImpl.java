@@ -1,7 +1,13 @@
-package com.example.movierental.services;
+package com.example.movierental.service;
 
-import com.example.movierental.model.Admin;
-import com.example.movierental.model.Customer;
+import com.example.movierental.contants.Error;
+import com.example.movierental.exception.ServiceException;
+import com.example.movierental.logger.AbstractLogger;
+import com.example.movierental.logger.ErrorLogger;
+import com.example.movierental.logger.RequesterClient;
+import com.example.movierental.model.Rental;
+import com.example.movierental.model.ServiceError;
+import com.example.movierental.model.User;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -12,63 +18,93 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements com.example.movierental.services.UserService {
-    List<Customer> customers = new ArrayList<>();
-    List<Admin> admins = new ArrayList<>();
+public class UserServiceImpl implements UserService {
+
+    private static AbstractLogger chainLogger = RequesterClient.getChaining();
+
+    List<User> users = new ArrayList<>();
 
     @Override
-    public List<Customer> getCustomers() {
+    public User addUser(User user) {
+        users.add(user);
+        return user;
+    }
+
+    @Override
+    public List<Rental> getRentals(int userId) {
+        User user = findByID(userId);
+        List<Rental> userRentals;
+        try {
+             userRentals = user.getRentedMovies();
+        } catch (Exception e) {
+            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find User Rentals");
+            throw new ServiceException(new ServiceError(Error.INVALID_USER_RENTALS));
+        }
+        return userRentals;
+    }
+
+    @Override
+    public List<User> getCustomers() {
         String path = "users.csv";
         String line;
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
 
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
-                Customer cust = new Customer();
+                User cust = new User();
                 cust.setUserID(Integer.valueOf(values[0]));
                 cust.setUsername(values[1]);
                 cust.setPassword(values[2]);
                 cust.setBanned(Boolean.valueOf(values[3]));
                 cust.setLoyaltyPoints(Integer.valueOf(values[4]));
                 cust.setTier(Integer.valueOf(values[5]));
-                customers.add(cust);
+                users.add(cust);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return customers;
+        return users;
     }
 
 
     @Override
-    public Customer findByID(int i) {
-        this.getCustomers();
-        Customer cust = new Customer();
-        for(int j = 0; j < customers.size(); j++) {
-            if (i == j + 1) {
-                cust = customers.get(j);
-            }
+    public User findByID(int i) {
+        User user;
+        try {
+            user = users.get(i);
+        } catch (IndexOutOfBoundsException e) {
+            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find User ID");
+            throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
+
         }
-        return cust;
+        return user;
     }
 
     @Override
-    public Customer findByUserName(String user) {
-        customers = this.getCustomers();
-        Customer cust = new Customer();
-        for(int i = 0; i < customers.size(); i++) {
-            if (customers.get(i).getUsername().equals(user)) {
-                cust = customers.get(i);
-                return cust;
-            } else {
-                return null;
+    public User findByUserName(String userName) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getUsername().equals(userName)) {
+                return users.get(i);
             }
+            i++;
         }
-        return cust;
+        return null;
+    }
+
+    @Override
+    public List<Rental> addMovie(int userId, Rental rental) {
+        User user = findByID(userId);
+        try {
+            user.getRentedMovies().add(rental);
+        } catch (Exception e) {
+            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Movie could not be rented");
+            throw new ServiceException(new ServiceError(Error.GENERAL_ERROR));
+        }
+        return user.getRentedMovies();
     }
 }
 

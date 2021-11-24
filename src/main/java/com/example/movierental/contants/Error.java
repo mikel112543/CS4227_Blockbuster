@@ -10,7 +10,9 @@ public enum Error {
     PAYMENT_DECLINED("2001", "Payment was unfortunately declined"),
     INVALID_USER_ID("2002", "Invalid customer ID"),
     INVALID_MOVIE_ID("2003", "Invalid movie ID"),
-    INVALID_LOGIN("2004", "Invalid Login please try again");
+    INVALID_LOGIN("2004", "Invalid Login please try again"),
+    INVALID_USER_RENTALS("2005", "Could not find User Rentals"),
+    NO_RENTALS("2006", "User has no rentals");
 
     private String errorCode;
     private String errorMessage;

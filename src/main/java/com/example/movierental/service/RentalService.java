@@ -9,6 +9,5 @@ import java.util.List;
 @Service
 public interface RentalService {
     Rental rentMovie(int customerId, int movieId);
-    String removeRental(int customerId, int movieId);
-    List<Rental> showRentals(int customerId);
+    List<Rental> removeRental(int customerId, int movieId);
 }

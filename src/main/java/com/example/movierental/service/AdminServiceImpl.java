@@ -1,9 +1,10 @@
 package com.example.movierental.service;
 
-
-import com.example.movierental.model.Customer;
+import com.example.movierental.service.UserServiceImpl;
 import com.example.movierental.model.Movie;
+import com.example.movierental.model.Rental;
 import com.example.movierental.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -14,9 +15,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
-public abstract class AdminServiceImpl implements AdminService {
+public class AdminServiceImpl implements AdminService {
+
+    @Autowired
+    UserServiceImpl userService;
 
     ArrayList<User> listOfUsers = new ArrayList<User>();
     ArrayList<Movie> listOfMovies = new ArrayList<Movie>();
@@ -74,17 +79,20 @@ public abstract class AdminServiceImpl implements AdminService {
     //method used to create the user object when given an array of its attributes.
     @Override
     public User createCustomer(String [] metadata){
-        int ID = Integer.parseInt(metadata[0]);
+        int id = Integer.parseInt(metadata[0]);
         String username = metadata[1];
         String password = metadata[2];
         boolean isBanned = Boolean.parseBoolean(metadata[3]);
+        int tier = 1;
+        List<Rental> userRentals = new ArrayList<Rental>();
+        int loyaltyPoints = 0;
 
-        return new Customer(ID, username, password, isBanned);
+        return new User(id, username, password, isBanned, loyaltyPoints, tier, userRentals, false);
     }
     @Override
     public void banCustomer(int userID) throws IOException {
         listOfUsers = this.listAllUsers();
-        Customer cust = new Customer();
+        User cust = new User();
         //findByUserID in userservice... put details into user.
         for (int i = 0; i < listOfUsers.size(); i++){
             if (cust.getUserID() == userID){
