@@ -21,9 +21,21 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
+    private final List<User> users = new ArrayList<>();
 
-    List<User> users = new ArrayList<User>();
 
+    @Override
+    public void initializeList() {
+        User test1 = new User(1, "Mike");
+        User test2 = new User(2, "Tom");
+        User test3 = new User(3, "Dick");
+        User test4 = new User(4, "Harry");
+
+        addUser(test1);
+        addUser(test2);
+        addUser(test3);
+        addUser(test4);
+    }
 
     @Override
     public void addUser(User user) {
@@ -35,7 +47,7 @@ public class UserServiceImpl implements UserService {
         User user = findByID(userId);
         List<Rental> userRentals;
         try {
-             userRentals = user.getRentedMovies();
+            userRentals = user.getRentedMovies();
         } catch (Exception e) {
             chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find User Rentals");
             throw new ServiceException(new ServiceError(Error.INVALID_USER_RENTALS));
@@ -72,16 +84,26 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User findByID(int i) {
-        User user;
-        try {
-            user = users.get(i);
-        } catch (IndexOutOfBoundsException e) {
-            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find User ID");
-            throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
+    public User findByID(int userId) {
 
-        }
-        return user;
+        User test1 = new User(1, "Mike");
+        User test2 = new User(2, "Tom");
+        User test3 = new User(3, "Dick");
+        User test4 = new User(4, "Harry");
+
+        addUser(test1);
+        addUser(test2);
+        addUser(test3);
+        addUser(test4);
+
+        User user;
+        for (User value : users)
+            if (value.getUserID() == userId) {
+                user = value;
+                return user;
+            }
+        chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
+        throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
     }
 
     @Override

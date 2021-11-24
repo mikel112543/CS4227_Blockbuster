@@ -13,6 +13,8 @@ public interface UserService {
 
     void addUser(User user);
 
+    void initializeList();
+
     User findByUserName(String user);
 
     List<Rental> addMovie(int userId, Rental rental);

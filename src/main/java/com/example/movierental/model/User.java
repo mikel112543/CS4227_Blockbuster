@@ -100,12 +100,6 @@ public class User {
         return "User{" +
                 "userID=" + userID +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", banned=" + banned +
-                ", loyaltyPoints=" + loyaltyPoints +
-                ", tier=" + tier +
-                ", rentedMovies=" + rentedMovies +
-                ", isAdmin=" + isAdmin +
                 '}';
     }
 }
