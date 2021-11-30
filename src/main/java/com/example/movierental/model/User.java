@@ -1,6 +1,6 @@
 package com.example.movierental.model;
 
-public abstract class User {
+public class User {
 
     private int userID;
     private String username, password;
@@ -8,7 +8,6 @@ public abstract class User {
 //  private List<Movie> UserMovies = new ArrayList<movie>();
 
     public User() {
-
     }
 
     //loyalty points taken out

@@ -1,8 +1,8 @@
 package com.example.movierental.service;
 
-import com.example.movierental.model.Customer;
 import com.example.movierental.model.Movie;
 import com.example.movierental.model.Rental;
+import com.example.movierental.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,7 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public Rental rentMovie(int customerId, int movieId) {
         //Find by ID to locate movie and customer
-        Customer customer = userService.findbyId(customerId);
+        User user = userService.findbyId(customerId);
         Movie movie = movieService.findByMovieID(movieId);
         int customerTier = customer.getTier();
 
@@ -95,7 +95,7 @@ public class RentalServiceImpl implements RentalService {
             //Throw Exception
             //Write some arbitrary logger stuff
         }else{
-            return userService.removeMovie(customerId, movieId);
+            return userService.removeMovie(movieId);
         }
         //Customer customer = userService.findbyId(customerId);
         //ArrayList<Rental> customerMovies =  customer.getUserMovies();

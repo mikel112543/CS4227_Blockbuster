@@ -38,10 +38,7 @@ public class Movie {
         //empty constructor
     }
 
-    //PRICE CODES: 0 = newReleasePrice, 1 = standardReleasePrice, 2 = childrensReleasePrice
-    //parameterised constructor
     public Movie(String title, String genre, String description, Duration length, int priceCode, int movieId, int movieRating) {
-
         PriceFactory p = new PriceFactory();
         this.title = title;
         this.genre = genre;
@@ -52,12 +49,10 @@ public class Movie {
         this.price = p.getPrice(priceCode);
     }
 
-    //calls prices get charge method
     public int getCharge(int numberOfDays){
         return price.getCharge(numberOfDays);
     }
 
-    //calls prices get loyalt points earned method
     public int getLoyaltyPointsEarned(int numberOfDays){
         return price.getLoyaltyPointsEarned(numberOfDays);
     }
@@ -66,40 +61,22 @@ public class Movie {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getGenre() {
         return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Duration getLength() {
         return length;
-    }
-
-    public void setLength(Duration length) {
-        this.length = length;
     }
 
     public Price getPrice(){
         return price;
     }
 
-    //not sure if it is necessary to be able to manually update values for each movie
-    //PRICE CODES: 0 = newReleasePrice, 1 = standardReleasePrice, 2 = childrensReleasePrice
     public void setPrice(int priceCode) {
         PriceFactory p = new PriceFactory();
         this.price = p.getPrice(priceCode);
@@ -108,19 +85,6 @@ public class Movie {
     public int getMovieId() {
         return movieId;
     }
-
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
-    }
-
-    public int getMovieRating() {
-        return movieRating;
-    }
-
-    public void setMovieRating(int movieRating) {
-        this.movieRating = movieRating;
-    }
-
 
     @Override
     public String toString() {
