@@ -8,7 +8,7 @@ import com.example.movierental.model.ServiceError;
 //Custom Exception Handler
 public class ServiceException extends RuntimeException {
 
-    private final ServiceError serviceError;
+    private final transient ServiceError serviceError;
 
     public ServiceException(ServiceError serviceError) {
         this.serviceError = serviceError;

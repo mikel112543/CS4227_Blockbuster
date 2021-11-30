@@ -3,13 +3,13 @@ package com.example.movierental.service;
 import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
 import com.example.movierental.logger.AbstractLogger;
-import com.example.movierental.logger.ErrorLogger;
 import com.example.movierental.logger.RequesterClient;
 import com.example.movierental.model.Rental;
 import com.example.movierental.model.ServiceError;
 import com.example.movierental.model.User;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @PostConstruct
     public void initializeList() {
         User test1 = new User(1, "Mike");
         User test2 = new User(2, "Tom");
@@ -85,17 +86,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByID(int userId) {
-
-        User test1 = new User(1, "Mike");
-        User test2 = new User(2, "Tom");
-        User test3 = new User(3, "Dick");
-        User test4 = new User(4, "Harry");
-
-        addUser(test1);
-        addUser(test2);
-        addUser(test3);
-        addUser(test4);
-
         User user;
         for (User value : users)
             if (value.getUserID() == userId) {
@@ -108,11 +98,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUserName(String userName) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getUsername().equals(userName)) {
-                return users.get(i);
+        for (User user : users) {
+            if (user.getUsername().equals(userName)) {
+                return user;
             }
-            i++;
         }
         return null;
     }

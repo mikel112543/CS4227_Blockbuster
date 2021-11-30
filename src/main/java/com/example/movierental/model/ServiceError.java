@@ -13,7 +13,7 @@ public class ServiceError {
 
     //Enum as argument
     public ServiceError(Error error) {
-        this.errorCode = error.getErrorMessage();
+        this.errorCode = error.getErrorCode();
         this.errorMessage = error.getErrorMessage();
     }
 
