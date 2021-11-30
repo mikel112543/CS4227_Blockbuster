@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Home</title>
+    <title>Index</title>
 </head>
-<body style="text-align: center;">
-<h1>Welcome to our Movie Rental Service</h1>
+<body>
+<div>
+    <h3>Welcome <span th:text="${#auth.userName}"/></h3>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Logout"/>
+    </form>
+</div>
 </body>
 </html>
