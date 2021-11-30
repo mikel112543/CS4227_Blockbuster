@@ -32,7 +32,6 @@ public class RentalServiceImpl implements RentalService {
      * @param userId  - User renting the movie
      * @param movieId - Movie to be rented
      */
-
     @Override
     public Rental rentMovie(int userId, int movieId) {
         //Find by ID to locate movie and customer
@@ -66,7 +65,7 @@ public class RentalServiceImpl implements RentalService {
 
     /**
      * @param userId - Customer who owns the rental
-     * @param movieId    - Movie ID
+     * @param movieId - Movie ID
      */
     public List<Rental> removeRental(int userId, int movieId) {
         User user = userService.findByID(userId);
