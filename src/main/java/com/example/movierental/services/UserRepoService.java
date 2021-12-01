@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepoService {
-    List<User> getUsers();
+    void getUsers();
     User findByID(int i);
-    Optional<User> findByUserName(String userName);
+    User findByUserName(String userName);
 }

@@ -18,7 +18,7 @@ public class User implements UserDetails {
 
     public User() {}
 
-    public User(int userID, int loyaltyPoints, int tier, String username, String password, String authority, boolean isAccountNonLocked) {
+    public User(int userID, String username, String password, String authority, int loyaltyPoints, int tier, boolean isAccountNonLocked) {
         this.userID = userID;
         this.username = username;
         this.password = password;

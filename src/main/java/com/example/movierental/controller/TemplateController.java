@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class TemplateController {
 
-    @GetMapping("/login")
+    @GetMapping("login")
     public String getLoginView() {
         return "login";
     }
 
-    @GetMapping("/home")
+    @GetMapping("home")
     public String getHomeView() {
         return "home";
     }

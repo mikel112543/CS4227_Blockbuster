@@ -5,16 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.*;
 
 
 @Repository("users")
 public class UserRepoServiceImpl implements UserRepoService {
-
-    List<User> users = new ArrayList<>();
-
+    ArrayList<User> users = new ArrayList<>();
     final PasswordEncoder passwordEncoder;
+    private User user;
 
     @Autowired
     public UserRepoServiceImpl(PasswordEncoder passwordEncoder) {
@@ -22,40 +22,41 @@ public class UserRepoServiceImpl implements UserRepoService {
     }
 
     @Override
-    public List<User> getUsers() {
+    @PostConstruct
+    public void getUsers() {
         String path = "users.csv";
         String line;
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
-                User user = new User();
-                user.setUserID(Integer.valueOf(values[0]));
-                user.setUsername(values[1]);
-                user.setPassword(passwordEncoder.encode(values[2]));
-                user.setAuthority(values[3]);
-                user.setLoyaltyPoints(Integer.valueOf(values[4]));
-                user.setTier(Integer.valueOf(values[5]));
-                user.setAccountNonLocked(Boolean.valueOf(values[6]));
-                users.add(user);
+                users.add(new User(Integer.valueOf(values[0]),
+                                    values[1], passwordEncoder.encode(values[2]),
+                                    values[3], Integer.valueOf(values[4]),
+                                    Integer.valueOf(values[5]),
+                                    Boolean.valueOf(values[6])));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return users;
     }
 
     @Override
     public User findByID(int i) {
-        this.getUsers();
         return users.get(i);
     }
 
     @Override
-    public Optional<User> findByUserName(String username) {
-        this.getUsers();
-        return users.stream().filter(user -> username.equals(user.getUsername())).findFirst();
+    public User findByUserName(String username) {
+        User user = null;
+        for(int i = 0; i < users.size(); i++) {
+            if (users.get(i).getUsername().equals(username)) {
+                user = findByID(i);
+                break;
+            }
+        }
+        return user;
     }
 }
