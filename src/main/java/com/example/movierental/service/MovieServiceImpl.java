@@ -41,6 +41,8 @@ public class MovieServiceImpl implements MovieService {
         while(line != null){
             String[] attributes = line.split(",");
 
+    public ArrayList<Movie> listAllMovies() {
+        return ListOfMovies;
             Movie movie = createMovie(attributes);
             listOfMovies.add(movie);
             line = br.readLine();
@@ -62,50 +64,21 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie findByMovieID(int movieID) {
-        Path pathToFile = Paths.get("movies.csv");
         Movie movie = new Movie();
-        try {
-            BufferedReader br = Files.newBufferedReader(pathToFile);
-            String line = br.readLine();
-            while (line != null) {
-                String[] attributes = line.split(",");
-                int movieIDfromCSV = Integer.parseInt(attributes[6]);
-                if (movieID != movieIDfromCSV) {
-                    line = br.readLine();
-                } else {
-                    movie.setTitle(attributes[0]);
-                    movie.setGenre(attributes[1]);
-                    movie.setDescription(attributes[2]);
-                    movie.setLength(attributes[3]);
-                    movie.setPrice(Integer.parseInt(attributes[4]));
-                    movie.setMovieId(Integer.parseInt(attributes[5]));
-                }
+        for (int i = 0 ; i < ListOfMovies.size() ; i++ ) {
+            if (ListOfMovies.get(i).getMovieId() == movieID) {
+                movie = ListOfMovies.get(i);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return movie;
     }
-
-    public ArrayList<Movie> findByName(String searchbar) throws IOException{
+    @Override
+    public ArrayList<Movie> findByName(String searchbar){
         ArrayList<Movie> results = new ArrayList<Movie>();
-        Path pathToFile = Paths.get("movies.csv");
-        BufferedReader br = Files.newBufferedReader(pathToFile);
-        String line = br.readLine();
-        while (line != null){
-            String [] attributes = line.split(",");
-            String nameFromCSV = attributes[0];
-            Movie movie = new Movie();
-            if (nameFromCSV.contains(searchbar)){
-                movie.setTitle(attributes[0]);
-                movie.setGenre(attributes[1]);
-                movie.setDescription(attributes[2]);
-                movie.setLength(attributes[3]);
-                movie.setPrice(Integer.parseInt(attributes[4]));
-                movie.setMovieId(Integer.parseInt(attributes[5]));
-                results.add(movie);
+        for (int i = 0 ; i < ListOfMovies.size() ; i++){
+            if (searchbar.contains(ListOfMovies.get(i).getTitle())){
+                results.add(ListOfMovies.get(i));
             }
-            line = br.readLine();
         }
         return results;
     }

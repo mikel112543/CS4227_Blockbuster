@@ -7,6 +7,8 @@ import com.example.movierental.logger.RequesterClient;
 import com.example.movierental.model.Rental;
 import com.example.movierental.model.ServiceError;
 import com.example.movierental.model.User;
+import com.example.movierental.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -23,6 +25,8 @@ public class UserServiceImpl implements UserService {
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
     private final List<User> users = new ArrayList<>();
 
+    @Autowired
+    AdminServiceImpl adminService;
 
     @Override
     @PostConstruct
@@ -40,8 +44,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(User user) {
-        users.add(user);
+    public List<User> getUsers() {
+        return ListOfUsers;
     }
 
     @Override
@@ -76,10 +80,6 @@ public class UserServiceImpl implements UserService {
                 cust.setTier(Integer.valueOf(values[5]));
                 users.add(cust);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return users;
     }
@@ -119,48 +119,3 @@ public class UserServiceImpl implements UserService {
         return user.getRentedMovies();
     }
 }
-
-/*@Override
-    public List<Customer> getCustomers() {
-        try {
-            CSVReader reader = new CSVReaderBuilder(new FileReader("users.csv")).withSkipLines(1).build();
-            customers = reader.readAll().stream().map(data -> {
-                Customer cust = new Customer();
-                cust.setUserID(Integer.valueOf(data[0]));
-                cust.setUsername(data[1]);
-                cust.setPassword(data[2]);
-                cust.setBanned(Boolean.valueOf(data[3]));
-                cust.setTier(Integer.valueOf(data[4]));
-                return cust;
-            }).collect(Collectors.toList());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CsvException e) {
-            e.printStackTrace();
-        }
-        return customers;
-    }
-    @Override
-    public List<Admin> getAdmins() {
-        try {
-            CSVReader reader = new CSVReaderBuilder(new FileReader("admins.csv")).withSkipLines(1).build();
-            admins = reader.readAll().stream().map(data -> {
-                Admin admin = new Admin();
-                admin.setUserID(Integer.valueOf(data[0]));
-                admin.setUsername(data[1]);
-                admin.setPassword(data[2]);
-                admin.setBanned(Boolean.valueOf(data[3]));
-                admin.setTier(Integer.valueOf(data[4]));
-                return admin;
-            }).collect(Collectors.toList());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CsvException e) {
-            e.printStackTrace();
-        }
-        return admins;
-    }*/
