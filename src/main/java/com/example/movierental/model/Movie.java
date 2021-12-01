@@ -23,7 +23,7 @@ public class Movie {
 
     //changed to duration
     @JsonProperty("Length")
-    private Duration length;
+    private String length;
 
     @JsonProperty("Movie ID")
     private int movieId;
@@ -40,16 +40,16 @@ public class Movie {
 
     //PRICE CODES: 0 = newReleasePrice, 1 = standardReleasePrice, 2 = childrensReleasePrice
     //parameterised constructor
-    public Movie(String title, String genre, String description, Duration length, int priceCode, int movieId, int movieRating) {
+    public Movie(int movieId, String title, String genre, String description, String length, int priceCode, int movieRating) {
 
         PriceFactory p = new PriceFactory();
+        this.movieId = movieId;
         this.title = title;
         this.genre = genre;
         this.description = description;
         this.length = length;
-        this.movieId = movieId;
-        this.movieRating = movieRating;
         this.price = p.getPrice(priceCode);
+        this.movieRating = movieRating;
     }
 
     //calls prices get charge method
@@ -86,11 +86,11 @@ public class Movie {
         this.description = description;
     }
 
-    public Duration getLength() {
+    public String getLength() {
         return length;
     }
 
-    public void setLength(Duration length) {
+    public void setLength(String length) {
         this.length = length;
     }
 

@@ -27,10 +27,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @PostConstruct
     public void initializeList() {
-        User test1 = new User(1, "Mike");
-        User test2 = new User(2, "Tom");
-        User test3 = new User(3, "Dick");
-        User test4 = new User(4, "Harry");
+        List<Rental> emptyRentals = new ArrayList<>();
+        User test1 = new User(1, "Mike", "admin", false, 500, 2, emptyRentals, true);
+        User test2 = new User(2, "Tom", "password", false, 250, 1, emptyRentals, false);
+        User test3 = new User(3, "Dick", "hello", false, 800, 2, emptyRentals, false);
+        User test4 = new User(4, "Harry", "movies", false, 680, 3, emptyRentals, false);
 
         addUser(test1);
         addUser(test2);
@@ -107,7 +108,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Rental> addMovie(int userId, Rental rental) {
+    public List<Rental> rentMovie(int userId, Rental rental) {
         User user = findByID(userId);
         try {
             user.getRentedMovies().add(rental);

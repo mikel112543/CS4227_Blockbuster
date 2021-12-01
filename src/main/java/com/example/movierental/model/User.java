@@ -1,5 +1,7 @@
 package com.example.movierental.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class User {
@@ -7,9 +9,14 @@ public class User {
     private int userID;
     private String username, password;
     private boolean banned;
+
     private int loyaltyPoints;
+
     private int tier;
+
+    @JsonProperty(value = "rental", required = true)
     private List<Rental> rentedMovies;
+
     private boolean isAdmin;
 
     public User() {

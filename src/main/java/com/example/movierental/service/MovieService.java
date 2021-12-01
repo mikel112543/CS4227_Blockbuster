@@ -13,5 +13,7 @@ public interface MovieService {
 
     Movie findByMovieID(int movieID);
 
+    void InitializeList();
+
     ArrayList<Movie> findByName(String searchbar) throws IOException;
 }

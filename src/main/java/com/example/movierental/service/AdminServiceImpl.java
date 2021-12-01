@@ -25,8 +25,8 @@ public class AdminServiceImpl implements AdminService {
     ArrayList<User> listOfUsers = new ArrayList<User>();
     ArrayList<Movie> listOfMovies = new ArrayList<Movie>();
     @Override
-    public void addMovie(String title, String genre, String description, Duration length, int price, int movieID, int movieRating) throws IOException {
-        Movie movie = new Movie(title, genre, description, length, price, movieID, movieRating);
+    public void addMovie(int movieID, String title, String genre, String description, String length, int price, int movieRating) throws IOException {
+        Movie movie = new Movie(movieID, title, genre, description, length, price, movieRating);
 
         Path pathToFile = Paths.get("movies.csv");
         BufferedReader br = Files.newBufferedReader(pathToFile);

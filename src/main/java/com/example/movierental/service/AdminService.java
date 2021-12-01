@@ -8,7 +8,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 
 public interface AdminService {
-    void addMovie(String title, String genre, String description, Duration length, int price, int movieID, int movieRating) throws IOException;
+    void addMovie(int movieID, String title, String genre, String description, String length, int price, int movieRating) throws IOException;
 
     void deleteMovie(int movieID) throws IOException;
 

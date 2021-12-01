@@ -3,6 +3,7 @@ package com.example.movierental.service;
 import com.example.movierental.model.Movie;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,7 +14,23 @@ import java.util.ArrayList;
 
 @Service
 public class MovieServiceImpl implements MovieService {
-    ArrayList<Movie> listOfMovies = new ArrayList<Movie>();
+    ArrayList<Movie> listOfMovies = new ArrayList<>();
+
+    @PostConstruct
+    @Override
+    public void InitializeList() {
+        Movie transformers = new Movie(1,"Transformers", "Action", "The movie", "1hr 54mins", 1, 3);
+        Movie piratesOfTheCaribbean = new Movie(2,"Pirates of the Caribbean", "Action", "pirates", "1hr 38mins", 1, 4);
+        Movie titanic = new Movie(3,"The Titanic", "Romance", "It has boats", "2hr 23mins", 2, 4);
+        Movie peterPan = new Movie(4,"Peter Pan", "Animation", "It's fun", "1hr 20mins", 2, 3);
+        Movie luca = new Movie(5,"Luca", "Animation", "Another kids movie", "1hr 28mins", 3, 3);
+
+        listOfMovies.add(transformers);
+        listOfMovies.add(piratesOfTheCaribbean);
+        listOfMovies.add(titanic);
+        listOfMovies.add(peterPan);
+        listOfMovies.add(luca);
+    }
 
     public ArrayList<Movie> listAllMovies() throws IOException {
 
@@ -35,12 +52,12 @@ public class MovieServiceImpl implements MovieService {
         String title = metadata[0];
         String genre = metadata[1];
         String description = metadata[2];
-        Duration length = Duration.parse(metadata[3]);
+        String length = metadata[3];
         int price = Integer.parseInt(metadata[4]);
         int movieId = Integer.parseInt(metadata[5]);
         int movieRating = Integer.parseInt(metadata[6]);
 
-        return new Movie (title, genre, description, length, price, movieId, movieRating);
+        return new Movie (movieId, title, genre, description, length, price, movieRating);
     }
 
     @Override
@@ -59,7 +76,7 @@ public class MovieServiceImpl implements MovieService {
                     movie.setTitle(attributes[0]);
                     movie.setGenre(attributes[1]);
                     movie.setDescription(attributes[2]);
-                    movie.setLength(Duration.parse(attributes[3]));
+                    movie.setLength(attributes[3]);
                     movie.setPrice(Integer.parseInt(attributes[4]));
                     movie.setMovieId(Integer.parseInt(attributes[5]));
                 }
@@ -83,7 +100,7 @@ public class MovieServiceImpl implements MovieService {
                 movie.setTitle(attributes[0]);
                 movie.setGenre(attributes[1]);
                 movie.setDescription(attributes[2]);
-                movie.setLength(Duration.parse(attributes[3]));
+                movie.setLength(attributes[3]);
                 movie.setPrice(Integer.parseInt(attributes[4]));
                 movie.setMovieId(Integer.parseInt(attributes[5]));
                 results.add(movie);

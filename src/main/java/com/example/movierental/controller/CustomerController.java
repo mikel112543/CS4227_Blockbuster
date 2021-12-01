@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller //CRUD
-public class customerController {
+public class CustomerController {
 
     @Autowired
     UserServiceImpl userService;

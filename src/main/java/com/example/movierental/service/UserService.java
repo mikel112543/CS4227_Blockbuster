@@ -17,7 +17,7 @@ public interface UserService {
 
     User findByUserName(String user);
 
-    List<Rental> addMovie(int userId, Rental rental);
+    List<Rental> rentMovie(int userId, Rental rental);
 
     List<Rental> getRentals(int userId);
 }
