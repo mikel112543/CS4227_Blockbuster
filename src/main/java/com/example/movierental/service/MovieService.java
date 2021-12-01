@@ -5,15 +5,17 @@ import com.example.movierental.model.Movie;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface MovieService {
-    ArrayList<Movie> listAllMovies() throws IOException;
+
+    void InitializeList();
+
+    List<Movie> getMovies();
 
     Movie createMovie(String[] metadata);
 
     Movie findByMovieID(int movieID);
 
-    void InitializeList();
-
-    ArrayList<Movie> findByName(String searchbar) throws IOException;
+    ArrayList<Movie> findByName(String searchbar);
 }

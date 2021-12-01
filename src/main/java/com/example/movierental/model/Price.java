@@ -4,8 +4,11 @@ package com.example.movierental.model;
 //
 //@author Jack Murphy - 18254268
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public abstract class Price {
 
+    @JsonIgnore
     private int price; //price of the movie per day
     private int loyaltyPoints; //loyalty points per day of rental of the movie
 

@@ -6,16 +6,14 @@ import com.example.movierental.model.User;
 import java.util.List;
 
 public interface UserService {
-    //public abstract void registerUser(User user);
-    List<User> getCustomers();
+
+    List<User> getUsers();
 
     User findByID(int i);
 
     void addUser(User user);
 
     void initializeList();
-
-    User findByUserName(String user);
 
     List<Rental> rentMovie(int userId, Rental rental);
 

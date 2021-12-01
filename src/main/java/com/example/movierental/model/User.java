@@ -1,22 +1,34 @@
 package com.example.movierental.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 public class User {
 
+    @JsonIgnore
     private int userID;
-    private String username, password;
+
+    @JsonProperty("Username")
+    private String username;
+
+    @JsonIgnore
+    private String password;
+
+    @JsonProperty("Banned")
     private boolean banned;
 
+    @JsonProperty("Loyalty Points")
     private int loyaltyPoints;
 
+    @JsonProperty("Tier")
     private int tier;
 
-    @JsonProperty(value = "rental", required = true)
+    @JsonProperty("Rentals")
     private List<Rental> rentedMovies;
 
+    @JsonProperty("Is Admin")
     private boolean isAdmin;
 
     public User() {

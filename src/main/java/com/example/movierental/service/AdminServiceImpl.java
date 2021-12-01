@@ -1,19 +1,9 @@
 package com.example.movierental.service;
 
 import com.example.movierental.model.Movie;
-import com.example.movierental.model.Rental;
 import com.example.movierental.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,35 +12,44 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     UserServiceImpl userService;
 
-    ArrayList<User> listOfUsers = new ArrayList<User>();
-    ArrayList<Movie> listOfMovies = new ArrayList<Movie>();
+    @Autowired
+    MovieServiceImpl movieService;
+
     @Override
-    public void addMovie(String title, String genre, String description, Duration length, int price, int movieID, int movieRating) throws IOException {
-        Movie movie = new Movie(title, genre, description, length, price, movieID, movieRating);
+    public void addMovie(int movieID, String title, String genre, String description, String length, int price, int movieRating){
+        Movie movie = new Movie(movieID, title, genre, description, length, price, movieRating);
         //TODO: BUILDER METHOD GOES IN HERE
-        ListOfMovies.add(movie);
+        List<Movie> listOfMovies = movieService.getMovies();
+        listOfMovies.add(movie);
     }
 
     @Override
     public void deleteMovie(int movieID) {
+        List<Movie> listOfMovies = movieService.getMovies();
        Movie movie = movieService.findByMovieID(movieID);
-       for (int i = 0 ; i < ListOfMovies.size() ; i++){
+       for(int i = 0 ; i < listOfMovies.size() ; i++){
             if (movieID == movie.getMovieId()){
-                ListOfMovies.remove(movie);
+                listOfMovies.remove(movie);
             }
        }
     }
     @Override
-    public ArrayList<User> listAllUsers() {
-        return ListOfUsers;
+    public List<User> listAllUsers() {
+        return userService.getUsers();
+    }
+
+    @Override
+    public User createCustomer(String[] metadata) {
+        return null;
     }
 
     @Override
     public void banCustomer(int userID) {
-       User user = userService.findbyId(userID);
-        for (int i = 0 ; i < ListOfUsers.size() ; i++){
-            if (userID == user.getUserID()){
-                user.setBanned(true);
+        List<User> listOfUsers = userService.getUsers();
+        for (User listOfUser : listOfUsers) {
+            if (listOfUser.getUserID() == userID) {
+                listOfUser.setBanned(true);
+                return;
             }
         }
     }

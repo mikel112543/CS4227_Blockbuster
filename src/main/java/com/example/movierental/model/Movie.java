@@ -1,5 +1,6 @@
 package com.example.movierental.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
@@ -25,14 +26,17 @@ public class Movie {
     @JsonProperty("Length")
     private String length;
 
-    @JsonProperty("Movie ID")
+    @JsonIgnore
     private int movieId;
 
     @JsonProperty("Rating")
     private int movieRating;
 
-    @JsonProperty("Price")
+    @JsonIgnore
     private Price price;
+
+    @JsonProperty("Price")
+    private String priceStr;
 
     public Movie() {
         //empty constructor
@@ -50,6 +54,12 @@ public class Movie {
         this.length = length;
         this.price = p.getPrice(priceCode);
         this.movieRating = movieRating;
+        getPriceStr();
+    }
+
+
+    public int getMovieId() {
+        return movieId;
     }
 
     //calls prices get charge method
@@ -97,10 +107,6 @@ public class Movie {
         this.price = p.getPrice(priceCode);
     }
 
-    public int getMovieId() {
-        return movieId;
-    }
-
     public void setMovieId(int movieId) {
         this.movieId = movieId;
     }
@@ -113,6 +119,10 @@ public class Movie {
         this.movieRating = movieRating;
     }
 
+    public String getPriceStr() {
+        priceStr = "€"+ price.getPrice();
+        return priceStr;
+    }
 
     @Override
     public String toString() {
@@ -120,10 +130,10 @@ public class Movie {
                 "title='" + title + '\'' +
                 ", genre='" + genre + '\'' +
                 ", description='" + description + '\'' +
-                ", length=" + length +
+                ", length='" + length + '\'' +
                 ", movieId=" + movieId +
                 ", movieRating=" + movieRating +
-                ", price=" + price.toString() +
+                ", price=" + price +
                 '}';
     }
 }
