@@ -34,7 +34,7 @@ public class Rental {
 
     public String calculateRemainingDays() {
         LocalDate today = LocalDate.now();
-        daysRemaining = ChronoUnit.DAYS.between(rentLength, today) + "Days";
+        daysRemaining = ChronoUnit.DAYS.between(today, rentLength) + " Days";
         return daysRemaining;
     }
 

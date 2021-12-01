@@ -25,7 +25,7 @@ public class User {
     @JsonProperty("Tier")
     private int tier;
 
-    @JsonProperty("Rentals")
+    @JsonIgnore
     private List<Rental> rentedMovies;
 
     @JsonProperty("Is Admin")
