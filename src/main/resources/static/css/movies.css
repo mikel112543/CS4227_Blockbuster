@@ -1,0 +1,50 @@
+body {
+    /*background-image: url("https://wallpapercave.com/wp/wp7431826.jpg");*/
+    background-color: darkred;
+    background-size: auto;
+    background-position: center;
+}
+
+#nav_title {
+    font-size: 25px;
+}
+
+#title {
+    font-size: 25px;
+}
+
+#genre {
+    padding: 5px;
+    font-size: 15px;
+}
+
+#description {
+    padding: 5px;
+    font-size: 15px;
+
+}
+
+#length {
+    padding: 5px;
+    font-size: 15px;
+}
+
+#price {
+    padding: 5px;
+    font-size: 15px;
+}
+
+#rating {
+    padding: 5px;
+    font-size: 15px;
+}
+
+#card {
+    border-radius: 10px;
+    padding: 10px;
+}
+#rent_btn {
+    margin-left: 50px;
+    height: content-box;
+    width: content-box;
+}
