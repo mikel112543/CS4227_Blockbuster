@@ -66,7 +66,7 @@ public class MovieServiceImpl implements MovieService {
     public ArrayList<Movie> findByName(String searchbar){
         ArrayList<Movie> results = new ArrayList<>();
         for (Movie listOfMovie : listOfMovies) {
-            if (searchbar.contains(listOfMovie.getTitle())) {
+            if (listOfMovie.getTitle().toLowerCase().contains(searchbar.toLowerCase())) {
                 results.add(listOfMovie);
             }
         }

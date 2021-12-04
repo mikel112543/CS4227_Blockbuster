@@ -3,6 +3,7 @@ package com.example.movierental.controller;
 import com.example.movierental.model.User;
 import com.example.movierental.service.AdminServiceImpl;
 import com.example.movierental.service.MovieServiceImpl;
+import com.example.movierental.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,19 +16,24 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
+    UserServiceImpl userService;
+
+    @Autowired
     AdminServiceImpl adminService;
 
     @Autowired
     MovieServiceImpl movieService;
-/*
-    *//**
-     * @param userId - Unique identifier attached to each of the users.
-     * @return User - Returns object of type user.
-     *//*
-    @PostMapping(value = "admin/customerId/{CUSTOMER_ID}")
+
+    /**
+     * @param customerId - Unique identifier attached to each of the users.
+     * @return String
+     */
+    @PostMapping(value = "admin/customerId/{CUSTOMER_ID}/ban")
     public String banCustomer(@PathVariable("CUSTOMER_ID") final int customerId) {
-        return "User"
-    }*/
+        User user = userService.findByID(customerId);
+        adminService.banCustomer(customerId);
+        return "User: " + user.getUsername() + " has been banned";
+    }
 
     /**
      * @param movieTitle       - Title of the movie to be added
@@ -36,7 +42,7 @@ public class AdminController {
      * @param movieLength      - Length of movie to be added
      * @param moviePrice       - Starting price of movie to be added
      * @return - Json response
- /*    *//*
+     *//*
     @PostMapping(value = "admin/movieTitle/{MOVIE_TITLE}/movieGenre/{MOVIE_GENRE}/movieDescription/{MOVIE_DESCRIPTION}/movieLength/{MOVIE_LENGTH}/moviePrice/{MOVIE_PRICE}")
     public User addMovie(@PathVariable("MOVIE_TITLE") final String movieTitle,
                           @PathVariable("MOVIE_GENRE") final String movieGenre,
