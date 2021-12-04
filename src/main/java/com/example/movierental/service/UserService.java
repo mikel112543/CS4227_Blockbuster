@@ -14,8 +14,4 @@ public interface UserService {
     void addUser(User user);
 
     void initializeList();
-
-    List<Rental> rentMovie(int userId, Rental rental);
-
-    List<Rental> getRentals(int userId);
 }

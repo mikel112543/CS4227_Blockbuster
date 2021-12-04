@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Author - Michael Danaher
+ */
 @Controller //CRUD
 public class CustomerController {
 
@@ -14,14 +17,14 @@ public class CustomerController {
     /**
      *
      * @param customerId find by customer ID
-     * @return JSON Customer
+     * @return JSON Object Customer
      */
-    @GetMapping(value = "/CustomerId/{CUSTOMER_ID}")
+    @GetMapping(value = "/customerId/{CUSTOMER_ID}")
     @ResponseBody
     public User getUser(@PathVariable("CUSTOMER_ID") final String customerId) {
 
+        //Convert String to Integer
         int userId = Integer.parseInt(customerId);
-        userService.initializeList();
         return userService.findByID(userId);
     }
 }

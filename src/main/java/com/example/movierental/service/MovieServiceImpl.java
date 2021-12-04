@@ -1,6 +1,11 @@
 package com.example.movierental.service;
 
+import com.example.movierental.contants.Error;
+import com.example.movierental.exception.ServiceException;
+import com.example.movierental.logger.AbstractLogger;
+import com.example.movierental.logger.RequesterClient;
 import com.example.movierental.model.Movie;
+import com.example.movierental.model.ServiceError;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -10,6 +15,8 @@ import java.util.List;
 @Service
 public class MovieServiceImpl implements MovieService {
     ArrayList<Movie> listOfMovies = new ArrayList<>();
+
+    private static AbstractLogger chainLogger = RequesterClient.getChaining();
 
     @Override
     @PostConstruct
@@ -46,18 +53,18 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie findByMovieID(int movieID) {
-        Movie movie = new Movie();
-        for (Movie listOfMovie : listOfMovies) {
-            if (listOfMovie.getMovieId() == movieID) {
-                movie = listOfMovie;
+        for (Movie movie : listOfMovies) {
+            if (movie.getMovieId() == movieID) {
+                return movie;
             }
         }
-        return movie;
+        chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find movie");
+        throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_ID));
     }
 
     @Override
     public ArrayList<Movie> findByName(String searchbar){
-        ArrayList<Movie> results = new ArrayList<Movie>();
+        ArrayList<Movie> results = new ArrayList<>();
         for (Movie listOfMovie : listOfMovies) {
             if (searchbar.contains(listOfMovie.getTitle())) {
                 results.add(listOfMovie);

@@ -33,6 +33,7 @@ public class AdminServiceImpl implements AdminService {
             }
        }
     }
+
     @Override
     public List<User> listAllUsers() {
         return userService.getUsers();
