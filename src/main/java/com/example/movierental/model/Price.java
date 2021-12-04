@@ -1,10 +1,16 @@
 package com.example.movierental.model;
 
+//Price Class
+//
+//@author Jack Murphy - 18254268
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public abstract class Price {
 
-
-    private int price; //price of the movie
-    private int loyaltyPoints; //loyalty points per rental of the movie
+    @JsonIgnore
+    private int price; //price of the movie per day
+    private int loyaltyPoints; //loyalty points per day of rental of the movie
 
     public int getPrice() {
         return price;
@@ -20,6 +26,16 @@ public abstract class Price {
 
     public void setLoyaltyPoints(int loyaltyPoints) {
         this.loyaltyPoints = loyaltyPoints;
+    }
+
+    //Calculates charge based on number of days and type of movie
+    public int getCharge(int numberOfDays){
+        return getPrice()*numberOfDays;
+    }
+
+    //Calculates loyalty point earned based on number of days and type of movie
+    public int getLoyaltyPointsEarned(int numberOfDays){
+        return getLoyaltyPoints()*numberOfDays;
     }
 
     @Override

@@ -1,9 +1,10 @@
 package com.example.movierental.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import java.time.LocalTime;
+import java.time.Duration;
 
 //Movie Class
 //
@@ -21,51 +22,62 @@ public class Movie {
     @JsonProperty("Description")
     private String description;
 
+    //changed to duration
     @JsonProperty("Length")
-    private LocalTime length;
+    private String length;
 
-    @JsonProperty("Rent Length")
-    private LocalTime rentLength;
-
-    @JsonProperty("Price")
-    private int price;
-
-    @JsonProperty("Movie ID")
+    @JsonIgnore
     private int movieId;
 
     @JsonProperty("Rating")
     private int movieRating;
 
+    @JsonIgnore
+    private Price price;
+
+    @JsonProperty("Price")
+    private String priceStr;
+
     public Movie() {
         //empty constructor
     }
 
+    //PRICE CODES: 0 = newReleasePrice, 1 = standardReleasePrice, 2 = childrensReleasePrice
     //parameterised constructor
-    public Movie(String title, String genre, String description, LocalTime length, LocalTime rentLength, int price, int movieId, int movieRating) {
+    public Movie(int movieId, String title, String genre, String description, String length, int priceCode, int movieRating) {
+
+        PriceFactory p = new PriceFactory();
+        this.movieId = movieId;
         this.title = title;
         this.genre = genre;
         this.description = description;
         this.length = length;
-        this.rentLength = rentLength;
-        this.price = price;
-        this.movieId = movieId;
+        this.price = p.getPrice(priceCode);
         this.movieRating = movieRating;
+        getPriceStr();
+    }
+
+
+    public int getMovieId() {
+        return movieId;
+    }
+
+    //calls prices get charge method
+    public int getCharge(int numberOfDays){
+        return price.getCharge(numberOfDays);
+    }
+
+    //calls prices get loyalt points earned method
+    public int getLoyaltyPointsEarned(int numberOfDays){
+        return price.getLoyaltyPointsEarned(numberOfDays);
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getGenre() {
         return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
     }
 
     public String getDescription() {
@@ -76,32 +88,23 @@ public class Movie {
         this.description = description;
     }
 
-    public LocalTime getLength() {
+    public String getLength() {
         return length;
     }
 
-    public void setLength(LocalTime length) {
+    public void setLength(String length) {
         this.length = length;
     }
 
-    public LocalTime getRentLength() {
-        return rentLength;
-    }
-
-    public void setRentLength(LocalTime rentLength) {
-        this.rentLength = rentLength;
-    }
-
-    public int getPrice() {
+    public Price getPrice(){
         return price;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public int getMovieId() {
-        return movieId;
+    //not sure if it is necessary to be able to manually update values for each movie
+    //PRICE CODES: 0 = newReleasePrice, 1 = standardReleasePrice, 2 = childrensReleasePrice
+    public void setPrice(int priceCode) {
+        PriceFactory p = new PriceFactory();
+        this.price = p.getPrice(priceCode);
     }
 
     public void setMovieId(int movieId) {
@@ -116,10 +119,21 @@ public class Movie {
         this.movieRating = movieRating;
     }
 
-    //***MUST ADD IN MOVIE LENGTH***
+    public String getPriceStr() {
+        priceStr = "€"+ price.getPrice();
+        return priceStr;
+    }
+
     @Override
     public String toString() {
-        return new StringBuilder().append("Title: ").append(this.title).append(", Genre: ").append(this.genre).append(", Description: ").append(this.description).append(", Length: ").append(this.length).append(", Rent Length: ").append(this.rentLength).append(", Price: ").append(this.price)
-                .append(", Movie ID").append(this.movieId).append(", Movie Rating: ").append(this.movieRating).toString();
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", genre='" + genre + '\'' +
+                ", description='" + description + '\'' +
+                ", length='" + length + '\'' +
+                ", movieId=" + movieId +
+                ", movieRating=" + movieRating +
+                ", price=" + price +
+                '}';
     }
 }

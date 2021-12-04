@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - master
+      - Rental_Use_Case
+      - controllers
+      - mike_master_test
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
