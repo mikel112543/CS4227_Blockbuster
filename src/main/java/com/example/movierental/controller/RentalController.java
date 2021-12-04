@@ -4,12 +4,13 @@ import com.example.movierental.model.Rental;
 import com.example.movierental.service.RentalService;
 import com.example.movierental.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+/**
+ * Author - Michael Danaher
+ */
 @RestController
 public class RentalController {
 
@@ -27,10 +28,10 @@ public class RentalController {
 
     @PostMapping(value = "/customerId/{CUSTOMER_ID}/movieId/{MOVIE_ID}")
     public List<Rental> rentMovie(@PathVariable("CUSTOMER_ID") final String customerId,
-            @PathVariable("MOVIE_ID") final String movieId) {
+                                  @PathVariable("MOVIE_ID") final String movieId) {
 
-        int userId  = Integer.parseInt(customerId);
-        int filmId  = Integer.parseInt(movieId);
+        int userId = Integer.parseInt(customerId);
+        int filmId = Integer.parseInt(movieId);
 
         return rentalService.rentMovie(userId, filmId);
     }
@@ -44,7 +45,7 @@ public class RentalController {
     public List<Rental> showRentals(@PathVariable("CUSTOMER_ID") final String customerId) {
         int userId = Integer.parseInt(customerId);
 
-        return rentalService.listRentals(userId);
+        return rentalService.getRentals(userId);
     }
 
     /**
@@ -63,10 +64,10 @@ public class RentalController {
 
     /**
      * @param customerId - the ID of the customer who owns the rental
-     * @param rentalId    - Unique identifier for the movie
+     * @param rentalId   - Unique identifier for the movie
      * @return JSON Object
      */
-    @DeleteMapping(value = "/admin/removeRental/customer/{CUSTOMER_ID}/{RENTAL_ID}/")
+    @DeleteMapping(value = "/admin/removeRental/customerId/{CUSTOMER_ID}/{RENTAL_ID}/")
     public List<Rental> removeRentalView(@PathVariable("RENTAL_ID") final String rentalId,
                                          @PathVariable("CUSTOMER_ID") final String customerId) {
         int userId = Integer.parseInt(customerId);
