@@ -2,7 +2,6 @@ package com.example.movierental.service;
 
 import com.example.movierental.model.Rental;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 
@@ -10,7 +9,7 @@ import java.util.List;
 public interface RentalService {
     List<Rental> rentMovie(int customerId, int movieId);
 
-    List<Rental> listRentals(int userId);
+    List<Rental> getRentals(int userId);
 
     Rental getRental(int userId, int movieId);
 

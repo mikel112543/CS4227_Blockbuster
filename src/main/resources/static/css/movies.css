@@ -1,0 +1,61 @@
+body {
+    /*background-image: url("https://wallpapercave.com/wp/wp7431826.jpg");*/
+    background-color: darkred;
+    background-size: auto;
+    background-position: center;
+}
+
+#nav_title {
+    font-size: 25px;
+}
+
+#card {
+    border-radius: 10px;
+    padding: 15px;
+}
+
+#cover_image {
+    margin-right: 10px;
+    border-radius: 10px;
+}
+#title {
+    font-size: 25px;
+    padding-left: 5px;
+}
+
+#genre {
+    padding: 5px;
+    font-size: 15px;
+    margin-left: 5px;
+}
+
+#description {
+    padding: 5px;
+    font-size: 15px;
+    margin-left: 5px;
+}
+
+#length {
+    padding: 5px;
+    font-size: 15px;
+    margin-left: 5px;
+}
+
+#price {
+    padding: 5px;
+    font-size: 15px;
+    margin-left: 5px;
+}
+
+#rating {
+    padding: 5px;
+    font-size: 15px;
+    margin-left: 5px;
+}
+
+#rent_btn {
+    float: right;
+    margin-top: 5px;
+    height: content-box;
+    border-radius: 10px;
+}
