@@ -59,7 +59,6 @@ public class RentalController {
                             @PathVariable("MOVIE_ID") final int movieId) {
 
         return rentalService.getRental(customerId, movieId);
-        //Attach rental to model to be used in Thymeleaf
     }
 
     /**

@@ -16,10 +16,11 @@ public class AdminServiceImpl implements AdminService {
     MovieServiceImpl movieService;
 
     @Override
-    public void addMovie(int movieID, String title, String genre, String description, String length, int price, int movieRating){
-        Movie movie = new Movie(movieID, title, genre, description, length, price, movieRating);
-        //TODO: BUILDER METHOD GOES IN HERE
+    public void addMovie(String title, String genre, String description, double length, int priceCode, int movieRating){
         List<Movie> listOfMovies = movieService.getMovies();
+        int movieId = listOfMovies.get(listOfMovies.size()-1).getMovieId()+1;
+        Movie movie = new Movie(movieId, title, genre, description, length, priceCode, movieRating);
+        //TODO: BUILDER METHOD GOES IN HERE
         listOfMovies.add(movie);
     }
 

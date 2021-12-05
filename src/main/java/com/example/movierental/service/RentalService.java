@@ -2,7 +2,6 @@ package com.example.movierental.service;
 
 import com.example.movierental.model.Rental;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 
