@@ -3,15 +3,14 @@ package com.example.movierental.service;
 
 import com.example.movierental.model.Movie;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public interface MovieService {
-    ArrayList<Movie> listAllMovies() throws IOException;
-
-    Movie createMovie(String[] metadata);
+    ArrayList<Movie> listAllMovies();
 
     Movie findByMovieID(int movieID);
 
-    ArrayList<Movie> findByName(String searchbar) throws IOException;
+    ArrayList<Movie> findByName(String searchbar);
+
+    void initializeListOfMovies();
 }

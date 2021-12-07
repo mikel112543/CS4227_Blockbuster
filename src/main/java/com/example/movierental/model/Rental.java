@@ -21,10 +21,13 @@ public class Rental {
     public LocalDate getRentLength() {
         return rentLength;
     }
+    //YYYY-MM-DD
+
 
     public long calculateRemainingDays() {
         LocalDate today = LocalDate.now();
         return ChronoUnit.DAYS.between(rentLength, today);
+
     }
 
     @Override

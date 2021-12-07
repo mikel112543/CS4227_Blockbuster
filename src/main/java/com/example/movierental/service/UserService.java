@@ -7,17 +7,15 @@ import java.util.List;
 
 public interface UserService {
     //public abstract void registerUser(User user);
-    List<User> getCustomers();
+    List<User> getUsers();
 
-    User findByID(int i);
+    //void addUser(User user);
 
-    void addUser(User user);
+    void initializeListOfUsers();
 
-    void initializeList();
-
-    User findByUserName(String user);
-
-    List<Rental> addMovie(int userId, Rental rental);
+    void rentMovie(int userId, Rental rental);
 
     List<Rental> getRentals(int userId);
+
+    User findById(int userId);
 }

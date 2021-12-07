@@ -3,18 +3,15 @@ package com.example.movierental.service;
 
 import com.example.movierental.model.User;
 
-import java.io.IOException;
-import java.time.Duration;
 import java.util.ArrayList;
 
 public interface AdminService {
-    void addMovie(String title, String genre, String description, Duration length, int price, int movieID, int movieRating) throws IOException;
 
-    void deleteMovie(int movieID) throws IOException;
+    void addMovie(String title, String genre, String description, String length, int price, int movieID);
 
-    ArrayList<User> listAllUsers() throws IOException;
+    void deleteMovie(int movieID);
 
-    User createCustomer(String[] metadata);
+    ArrayList<User> listAllUsers();
 
-    void banCustomer(int userID) throws IOException;
+    void banCustomer(int userID);
 }

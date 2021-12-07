@@ -36,7 +36,7 @@ public class RentalServiceImpl implements RentalService {
     public Rental rentMovie(int userId, int movieId) {
         //Find by ID to locate movie and customer
         Movie movie;
-        User user = userService.findByID(userId);
+        User user = userService.findById(userId);
         int customerTier = user.getTier();
 
         try {
