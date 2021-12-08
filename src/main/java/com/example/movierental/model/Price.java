@@ -28,9 +28,14 @@ public abstract class Price {
         this.loyaltyPoints = loyaltyPoints;
     }
 
+    public double getCharge(){
+        return getPrice();
+    }
     //Calculates charge based on number of days and type of movie
-    public int getCharge(int numberOfDays){
-        return getPrice()*numberOfDays;
+    public double getCharge(int discount){
+        double d = 100.00-discount;
+        double h = 100.00;
+        return getPrice()*(d/h);
     }
 
     //Calculates loyalty point earned based on number of days and type of movie

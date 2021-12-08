@@ -33,13 +33,18 @@ public class Movie {
 
     public Movie () {}
 
-    public int getLoyaltyPointsEarned(int numberOfDays) {
-        return price.getLoyaltyPointsEarned(numberOfDays);
+
+    public int getMovieId() {
+        return movieId;
+    }
+
+    public double getCharge(){
+        return price.getCharge();
     }
 
     //calls prices get charge method
-    public int getCharge(int numberOfDays){
-        return price.getCharge(numberOfDays);
+    public double getCharge(int discount){
+        return price.getCharge(discount);
     }
 
     public String getMovieCoverUrl(){
@@ -49,6 +54,10 @@ public class Movie {
     public String getPriceStr() {
         priceStr = "€"+ price.getPrice();
         return priceStr;
+    }
+
+    public int getLoyaltyPoints(){
+        return price.getLoyaltyPoints();
     }
 
     public String getTitle() {
@@ -67,8 +76,8 @@ public class Movie {
         return length;
     }
 
-    public int getMovieId() {
-        return movieId;
+    public void setLength(String length) {
+        this.length = length;
     }
 
     public Price getPrice() {
