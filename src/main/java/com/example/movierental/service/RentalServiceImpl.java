@@ -22,6 +22,7 @@ public class RentalServiceImpl implements RentalService {
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
 
 
+
     @Autowired
     UserServiceImpl userService;
 
@@ -43,7 +44,7 @@ public class RentalServiceImpl implements RentalService {
         int customerTier = user.getTier();
 
         //Check if user has already rented movie
-        chainLogger.logMessage(AbstractLogger.OUTPUT_INFO,"User is getting " + lp + "Loyalty Points");
+        chainLogger.logMessage(AbstractLogger.OUTPUT_INFO,"User is getting " + lp + " Loyalty Points");
         for (Rental userRental : userRentals) {
             if (userRental.getMovie().getMovieId() == movieId) {
                 chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User is already currently renting this movie");
@@ -128,7 +129,7 @@ public class RentalServiceImpl implements RentalService {
      * @param userId  - Customer who owns the rental
      * @param movieId - Movie ID
      */
-    public List<Rental> removeRental(int userId, int movieId) {
+    public String removeRental(int userId, int movieId) {
         //Checks User ID
         User user = userService.findByID(userId);
         List<Rental> userRentals = user.getRentedMovies();
@@ -141,7 +142,9 @@ public class RentalServiceImpl implements RentalService {
             for (Rental userRental : userRentals) {
                 if (userRental.getMovie().getMovieId() == movieId) {
                     chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "Removing Rental...");
-                    return userRentals;
+                    userRentals.remove(userRental);
+                    return "User Name: " + user.getUsername() + " Rental: " + userRental.getMovie().getTitle() +
+                            " has been removed from their rentals";
                 }
             }
             //Last possible check for Movie ID

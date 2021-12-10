@@ -5,17 +5,18 @@ import com.example.movierental.model.Rental;
 import com.example.movierental.model.User;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.event.annotation.AfterTestExecution;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Author - Michael Danaher
+ */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @DisplayName("Rental Service Tests")
@@ -49,9 +50,11 @@ class RentalServiceImplTest {
     @AfterTestExecution
     public void tearDown() {
         rentalService.getRentals(testUser.getUserID()).clear();
+        adminService.deleteMovie(testMovieId);
     }
 
     @Test
+    @DisplayName("Should return Service error for movie already rented")
     void movieAlreadyRented() {
         ServiceException exception = assertThrows(ServiceException.class, () -> {
             rentalService.rentMovie(testUser.getUserID(), testMovieId);
@@ -72,19 +75,19 @@ class RentalServiceImplTest {
     @Test
     @DisplayName("Should return the List of users Rentals")
     void getRentals() {
-        Rental mockRental = rentalService.getRental(testUser.getUserID(), testMovieId);
-        assertEquals("Test Movie", mockRental.getMovie().getTitle());
-        assertEquals("Test Genre", mockRental.getMovie().getGenre());
-        assertEquals("Test Description", mockRental.getMovie().getDescription());
-        assertEquals(1.23, mockRental.getMovie().getLength());
-        assertEquals(4, mockRental.getMovie().getMovieRating());
+        List<Rental> testRentals = rentalService.getRentals(testUser.getUserID());
+        assertEquals("Test Movie", testRentals.get(0).getMovie().getTitle());
+        assertEquals("Test Genre", testRentals.get(0).getMovie().getGenre());
+        assertEquals("Test Description", testRentals.get(0).getMovie().getDescription());
+        assertEquals(1.23, testRentals.get(0).getMovie().getLength());
+        assertEquals(4, testRentals.get(0).getMovie().getMovieRating());
     }
 
     @Test
     @DisplayName("Should return a singular rental")
     void getRental() {
-        //Set up so there is rental in users account
-        List<Rental> mockRentals = rentalService.rentMovie(testUser.getUserID(), testMovieId);
+        //Rent movie to set up test
+        rentalService.rentMovie(testUser.getUserID(), testMovieId);
         Rental rental = rentalService.getRental(testUser.getUserID(), testMovieId);
         assertEquals("Test Movie", rental.getMovie().getTitle());
         assertEquals("Test Genre", rental.getMovie().getGenre());
@@ -93,6 +96,10 @@ class RentalServiceImplTest {
     }
 
     @Test
+    @DisplayName("Should remove the movie from the users rentals")
     void removeRental() {
+        rentalService.rentMovie(testUser.getUserID(), testMovieId);
+        String result = rentalService.removeRental(testUser.getUserID(),testMovieId);
+        assertEquals("User Name: test Rental: Test Movie has been removed from their rentals", result);
     }
 }

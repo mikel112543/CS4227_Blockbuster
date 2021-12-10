@@ -13,5 +13,5 @@ public interface RentalService {
 
     Rental getRental(int userId, int movieId);
 
-    List<Rental> removeRental(int customerId, int movieId);
+    String removeRental(int customerId, int movieId);
 }

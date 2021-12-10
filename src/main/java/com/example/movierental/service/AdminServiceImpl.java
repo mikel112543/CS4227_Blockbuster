@@ -18,7 +18,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void addMovie(String title, String genre, String description, double length, int priceCode, int movieRating){
         List<Movie> listOfMovies = movieService.getMovies();
-        int movieId = listOfMovies.get(listOfMovies.size()-1).getMovieId()+1;
+        int movieId;
+        if(listOfMovies.isEmpty()) {
+            movieId = 1;
+        }else{
+             movieId = listOfMovies.get(listOfMovies.size()-1).getMovieId()+1;
+        }
         Movie movie = new Movie(movieId, title, genre, description, length, priceCode, movieRating);
         //TODO: BUILDER METHOD GOES IN HERE
         listOfMovies.add(movie);

@@ -58,7 +58,7 @@
                                         <form action="#" th:action="@{'/customerId/1/movieId/' + ${movie.movieId}}"
                                               method="post">
                                             <input th:id="rent_btn" id="rent_btn" type="submit"
-                                                   th:value="${movie.priceStr} + ' | Rent'"
+                                                   th:value="'€' + ${movie.getPrice().getPrice()} + ' | Rent'"
                                                    class="btn btn-success"/>
                                         </form>
                                     </div>

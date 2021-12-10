@@ -13,6 +13,9 @@ import java.time.Duration;
 @JsonRootName("Movie Details")
 public class Movie {
 
+    @JsonIgnore
+    private int movieId;
+
     @JsonProperty("Title")
     private String title;
 
@@ -28,9 +31,6 @@ public class Movie {
 
     @JsonProperty("Movie Length")
     private String movieLength;
-
-    @JsonIgnore
-    private int movieId;
 
     @JsonProperty("Rating")
     private int movieRating;
