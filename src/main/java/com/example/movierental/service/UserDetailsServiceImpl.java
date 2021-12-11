@@ -1,4 +1,4 @@
-package com.example.movierental.services;
+package com.example.movierental.service;
 
 import com.example.movierental.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public User loadUserByUsername(String userName) throws UsernameNotFoundException {
-        if (userRepoService.findByUserName(userName) != null) {
-            return userRepoService.findByUserName(userName);
+        User user = userRepoService.findByUserName(userName);
+        if (user != null) {
+            return user;
         } else {
             throw new UsernameNotFoundException(String.format("Username %s not found", userName));
         }

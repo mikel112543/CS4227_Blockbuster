@@ -1,9 +1,7 @@
 package com.example.movierental;
 
 import com.example.movierental.model.User;
-import com.example.movierental.services.UserDetailsServiceImpl;
-import com.example.movierental.services.UserRepoService;
-import com.example.movierental.services.UserRepoServiceImpl;
+import com.example.movierental.service.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

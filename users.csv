@@ -1,8 +1,8 @@
-1,admin,admin,ROLE_ADMIN,3000,3,TRUE
-2,john,tipp,ROLE_USER,200,1,TRUE
-3,michael,limerick,ROLE_USER,500,1,TRUE
-4,jack,business,ROLE_USER,750,2,TRUE
-5,aaron,sligo,ROLE_USER,1000,2,TRUE
-6,eireann,kerry,ROLE_USER,1500,2,TRUE
-7,sean,cork,ROLE_USER,2000,3,FALSE
-8,aimee,mayo,ROLE_USER,2500,3,TRUE
+1,admin,admin,ROLE_ADMIN,3000,3,FALSE
+2,john,tipp,ROLE_USER,200,1,FALSE
+3,michael,limerick,ROLE_USER,1700,2,FALSE
+4,jack,business,ROLE_USER,3050,3,FALSE
+5,aaron,sligo,ROLE_USER,1000,2,FALSE
+6,eireann,kerry,ROLE_USER,1500,2,FALSE
+7,sean,cork,ROLE_USER,2000,3,TRUE
+8,aimee,mayo,ROLE_USER,2500,3,FALSE

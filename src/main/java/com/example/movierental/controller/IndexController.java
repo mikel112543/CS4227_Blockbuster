@@ -1,22 +1,17 @@
 package com.example.movierental.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/")
-public class TemplateController {
-
+public class IndexController {
     @GetMapping("login")
-    public String getLoginView() {
+    public String getLoginView()
+    {
         return "login";
-    }
-
-    @GetMapping("home")
-    public String getHomeView() {
-        return "home";
     }
 }
 

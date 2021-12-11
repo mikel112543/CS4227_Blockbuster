@@ -6,14 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+/**
+ * Author - Michael Danaher
+ */
 @Controller //CRUD
 public class MovieController {
 
-    @Autowired
     MovieService movieService;
 
+    @Autowired
+    public MovieController(MovieService movieService) {
+        this.movieService = movieService;
+    }
+
     /**
-     * @return List of Movies
+     * @param model - List of movies to be attached to model
+     * @return - movies.html
      */
     @GetMapping(value = "/movies")
     public String showMovies(Model model) {
@@ -32,12 +43,12 @@ public class MovieController {
     }
 
     /**
-     *
      * @param movieName - name of movie to be searched
      * @return JSON Movie
      */
- /* @GetMapping(value = "/movies/search/{MOVIE_NAME}")
-    public Movie searchMovie(@PathVariable("MOVIE_NAME") String movieName) {
-        return movieService.searchMovie(movieName);
-    }*/
+    @GetMapping(value = "/movies/search/{MOVIE_NAME}")
+    @ResponseBody
+    public List<Movie> searchMovie(@PathVariable("MOVIE_NAME") String movieName) {
+        return movieService.findByName(movieName);
+    }
 }

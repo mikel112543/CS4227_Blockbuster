@@ -34,7 +34,6 @@ public class MovieServiceImpl implements MovieService {
         listOfMovies.add(luca);
     }
 
-
     public List<Movie> getMovies() {
         return listOfMovies;
     }

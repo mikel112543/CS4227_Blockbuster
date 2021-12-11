@@ -9,11 +9,14 @@ import java.util.List;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-    @Autowired
-    UserServiceImpl userService;
+    private final UserRepoServiceImpl userService;
+    private final MovieServiceImpl movieService;
 
     @Autowired
-    MovieServiceImpl movieService;
+    public AdminServiceImpl(UserRepoServiceImpl userService, MovieServiceImpl movieService) {
+        this.userService = userService;
+        this.movieService = movieService;
+    }
 
     @Override
     public void addMovie(int movieID, String title, String genre, String description, String length, int price, int movieRating){

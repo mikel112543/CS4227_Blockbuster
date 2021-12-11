@@ -4,8 +4,6 @@ package com.example.movierental.service;
 import com.example.movierental.model.User;
 
 import java.io.IOException;
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface AdminService {

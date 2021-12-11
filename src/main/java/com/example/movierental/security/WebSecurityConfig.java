@@ -1,6 +1,6 @@
 package com.example.movierental.security;
 
-import com.example.movierental.services.UserDetailsServiceImpl;
+import com.example.movierental.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/index")
+                .antMatchers("/", "index")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
-                .defaultSuccessUrl("/home", true)
+                .defaultSuccessUrl("/movies", true)
                 .failureUrl("/login?error=true")
                 .and()
                 .rememberMe()

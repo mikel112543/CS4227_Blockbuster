@@ -1,8 +1,8 @@
 package com.example.movierental.controller;
 
-import com.example.movierental.model.Rental;
 import com.example.movierental.service.RentalService;
-import com.example.movierental.service.UserService;
+import com.example.movierental.service.UserRepoServiceImpl;
+import com.example.movierental.states.Rental;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +14,14 @@ import java.util.List;
 @RestController
 public class RentalController {
 
-    @Autowired
     RentalService rentalService;
+    UserRepoServiceImpl userService;
 
     @Autowired
-    UserService userService;
+    public RentalController(RentalService rentalService, UserRepoServiceImpl userService) {
+        this.rentalService = rentalService;
+        this.userService = userService;
+    }
 
     /**
      * @param customerId - Customer ID wanting the rent the movie

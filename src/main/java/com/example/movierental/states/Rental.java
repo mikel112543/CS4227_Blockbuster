@@ -1,22 +1,24 @@
-package com.example.movierental.model;
+package com.example.movierental.states;
 
+import com.example.movierental.model.Movie;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-// POJO
-public class Rental {
+// Super state
+public abstract class Rental {
 
     @JsonProperty("Movie")
-    private final Movie movie;
+    protected final Movie movie;
 
     @JsonIgnore
-    private final LocalDate rentLength;
+    protected final LocalDate rentLength;
 
     @JsonProperty("Days Remaining")
-    private String daysRemaining;
+    protected String daysRemaining;
 
     public Rental(Movie movie, LocalDate rentLength) {
         this.movie = movie;
@@ -45,5 +47,4 @@ public class Rental {
                 ", rentLength=" + rentLength +
                 '}';
     }
-
 }

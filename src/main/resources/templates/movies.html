@@ -13,8 +13,8 @@
 <nav class="navbar navbar-dark  bg-dark">
     <div class="container-fluid">
         <span class="navbar-brand mb-0 h1" id="nav_title" th:id="nav_title">Movies</span>
-        <form class="d-flex">
-            <h1 class="btn btn-outline-danger" href="#" th:id="logout" id="logout" type="submit">Logout</h1>
+        <form class="form-signin" method="get" action="/logout">
+            <button class="btn btn-lg btn-primary btn-block" th:bgcolor="red" type="submit">Logout</button>
         </form>
     </div>
 </nav>

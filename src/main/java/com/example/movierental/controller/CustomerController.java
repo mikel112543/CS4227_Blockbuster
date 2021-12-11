@@ -1,6 +1,6 @@
 package com.example.movierental.controller;
 import com.example.movierental.model.User;
-import com.example.movierental.service.UserServiceImpl;
+import com.example.movierental.service.UserRepoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @Controller //CRUD
 public class CustomerController {
 
+    UserRepoServiceImpl userService;
+
     @Autowired
-    UserServiceImpl userService;
+    public CustomerController(UserRepoServiceImpl userService) {
+        this.userService = userService;
+    }
 
     /**
      *

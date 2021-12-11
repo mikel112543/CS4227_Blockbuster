@@ -14,11 +14,14 @@ import java.util.List;
 @RestController //CRUD
 public class AdminController {
 
-    @Autowired
     AdminServiceImpl adminService;
+    MovieServiceImpl movieService;
 
     @Autowired
-    MovieServiceImpl movieService;
+    public AdminController(AdminServiceImpl adminService, MovieServiceImpl movieService) {
+        this.adminService = adminService;
+        this.movieService = movieService;
+    }
 /*
     *//**
      * @param userId - Unique identifier attached to each of the users.
