@@ -28,7 +28,7 @@ public class User {
     @JsonIgnore
     private List<Rental> rentedMovies;
 
-    @JsonProperty("Is Admin")
+    @JsonIgnore
     private boolean isAdmin;
 
     public User() {
