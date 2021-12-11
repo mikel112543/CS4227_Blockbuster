@@ -44,14 +44,15 @@ public class RentalServiceImpl implements RentalService {
         int customerTier = user.getTier();
 
         //Check if user has already rented movie
-        chainLogger.logMessage(AbstractLogger.OUTPUT_INFO,"User is getting " + lp + " Loyalty Points");
         for (Rental userRental : userRentals) {
+            chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Checking if user has already rented the movie");
             if (userRental.getMovie().getMovieId() == movieId) {
-                chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User is already currently renting this movie");
+                chainLogger.logMessage(AbstractLogger.ERROR_INFO, "User is already currently renting this movie");
                 throw new ServiceException(new ServiceError(Error.ALREADY_RENTING));
             }
         }
         //Apply discount for Tier 1
+        chainLogger.logMessage(AbstractLogger.OUTPUT_INFO,"User is getting " + lp + " Loyalty Points");
         if (customerTier == 1) {
             Rental rental = new Rental(movie, LocalDate.now().plusDays(4));
             chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Adding Movie to users catalog");
@@ -62,20 +63,20 @@ public class RentalServiceImpl implements RentalService {
             return user.getRentedMovies();
             //Apply discount for Tier 2
         } else if (customerTier == 2) {
-            Rental rental = new Rental(movie, LocalDate.now().plusDays(8));
+            Rental rental = new Rental(movie, LocalDate.now().plusDays(6));
             chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Adding Movie to users catalog");
             userRentals.add(rental);
             //Add loyalty points to users account
             user.setLoyaltyPoints(user.getLoyaltyPoints() + lp);
-            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 8 days");
+            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 6 days");
             return user.getRentedMovies();
         } else {
             //Apply discount for Tier 3
-            Rental rental = new Rental(movie, LocalDate.now().plusDays(16));
+            Rental rental = new Rental(movie, LocalDate.now().plusDays(10));
             userRentals.add(rental);
             //Add loyalty points to users account
             user.setLoyaltyPoints(user.getLoyaltyPoints() + lp);
-            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 16 days");
+            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 10 days");
             return user.getRentedMovies();
         }
     }
