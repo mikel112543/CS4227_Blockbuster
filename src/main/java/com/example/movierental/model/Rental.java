@@ -1,17 +1,27 @@
 package com.example.movierental.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 // POJO
 public class Rental {
 
+    @JsonProperty("Movie")
     private final Movie movie;
+
+    @JsonIgnore
     private final LocalDate rentLength;
+
+    @JsonProperty("Days Remaining")
+    private String daysRemaining;
 
     public Rental(Movie movie, LocalDate rentLength) {
         this.movie = movie;
         this.rentLength = rentLength;
+        calculateRemainingDays();
     }
 
     public Movie getMovie() {
@@ -21,13 +31,11 @@ public class Rental {
     public LocalDate getRentLength() {
         return rentLength;
     }
-    //YYYY-MM-DD
 
-
-    public long calculateRemainingDays() {
+    public String calculateRemainingDays() {
         LocalDate today = LocalDate.now();
-        return ChronoUnit.DAYS.between(rentLength, today);
-
+        daysRemaining = ChronoUnit.DAYS.between(today, rentLength) + " Days";
+        return daysRemaining;
     }
 
     @Override

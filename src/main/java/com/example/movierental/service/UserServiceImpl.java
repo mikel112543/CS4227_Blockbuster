@@ -1,5 +1,6 @@
 package com.example.movierental.service;
 
+import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
 import com.example.movierental.logger.AbstractLogger;
 import com.example.movierental.logger.RequesterClient;
@@ -10,6 +11,7 @@ import com.example.movierental.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -20,14 +22,18 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static AbstractLogger chainLogger = RequesterClient.getChaining();
-
     @Autowired
     MovieServiceImpl movieService;
 
+    private static AbstractLogger chainLogger = RequesterClient.getChaining();
+    private final List<User> users = new ArrayList<>();
+
+    @Autowired
+    AdminServiceImpl adminService;
+
     List<User> ListOfUsers = new ArrayList<User>();
     List<Movie> ListOfMovies = new ArrayList<Movie>();
-    //List<Rental> ListOfRentals = new ArrayList<Rental>();
+    List<Rental> ListOfRentals = new ArrayList<Rental>();
 
     @Override
     public List<User> getUsers() {
@@ -35,21 +41,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(int userId) {
-        User user = new User();
-        for (int i = 0; i < ListOfUsers.size(); i++) {
-            if (ListOfUsers.get(i).getUserID() == userId) {
-                user = ListOfUsers.get(i);
+    public User findByID(int userId) {
+        User user;
+        //Aaron: Can remove user and just return what is in For Loop
+        for (User value : users)
+            if (value.getUserID() == userId) {
+                user = value;
+                return user;
             }
-        }
-        return user;
-    }
-
-    @Override
-    public void rentMovie(int userId, Rental rental){
-        User user = findById(userId);
-        List<Rental>userRentals = user.getRentedMovies();
-        userRentals.add(rental);
+        chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
+        throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
     }
 
     @Override

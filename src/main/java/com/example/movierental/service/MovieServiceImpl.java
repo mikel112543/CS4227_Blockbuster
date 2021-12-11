@@ -1,40 +1,46 @@
 package com.example.movierental.service;
 
+import com.example.movierental.logger.AbstractLogger;
+import com.example.movierental.logger.RequesterClient;
 import com.example.movierental.model.Movie;
+import com.example.movierental.model.ServiceError;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MovieServiceImpl implements MovieService {
-    // this gets autowired in I believe
-    ArrayList<Movie> ListOfMovies = new ArrayList<Movie>();
+    ArrayList<Movie> listOfMovies = new ArrayList<>();
+    private static AbstractLogger chainLogger = RequesterClient.getChaining();
+
 
     public ArrayList<Movie> listAllMovies() {
-        return ListOfMovies;
+        return listOfMovies;
     }
 
     @Override
     public Movie findByMovieID(int movieID) {
-        Movie movie = new Movie();
-        for (int i = 0; i < ListOfMovies.size(); i++) {
-            if (ListOfMovies.get(i).getMovieId() == movieID) {
-                movie = ListOfMovies.get(i);
+        for (Movie movie : listOfMovies) {
+            if (movie.getMovieId() == movieID) {
+                return movie;
             }
         }
-        return movie;
+        chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find movie");
+        throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_ID));
     }
 
     @Override
-    public ArrayList<Movie> findByName(String searchbar) {
-        ArrayList<Movie> results = new ArrayList<Movie>();
-        for (int i = 0; i < ListOfMovies.size(); i++) {
-            if (searchbar.contains(ListOfMovies.get(i).getTitle())) {
-                results.add(ListOfMovies.get(i));
+    public ArrayList<Movie> findByName(String searchbar){
+        ArrayList<Movie> results = new ArrayList<>();
+        for (Movie listOfMovie : listOfMovies) {
+            if (listOfMovie.getTitle().toLowerCase().contains(searchbar.toLowerCase())) {
+                results.add(listOfMovie);
             }
         }
         return results;
@@ -57,7 +63,7 @@ public class MovieServiceImpl implements MovieService {
                 movie.setMovieId(Integer.parseInt(values[5]));
                  */
                 Movie movie = new Movie.MovieBuilder(values[0], values[1], values[2], values[3], Integer.parseInt(values[5])).setPrice(Integer.parseInt(values[4])).build();
-                ListOfMovies.add(movie);
+                listOfMovies.add(movie);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

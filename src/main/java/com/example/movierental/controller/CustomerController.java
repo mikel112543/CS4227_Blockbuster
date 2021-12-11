@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Author - Michael Danaher
+ */
 @Controller //CRUD
-public class customerController {
+public class CustomerController {
 
     @Autowired
     UserServiceImpl userService;
@@ -14,14 +17,11 @@ public class customerController {
     /**
      *
      * @param customerId find by customer ID
-     * @return JSON Customer
+     * @return JSON Object Customer
      */
-    @GetMapping(value = "/CustomerId/{CUSTOMER_ID}")
+    @GetMapping(value = "/customerId/{CUSTOMER_ID}")
     @ResponseBody
-    public User getUser(@PathVariable("CUSTOMER_ID") final String customerId) {
-
-        int userId = Integer.parseInt(customerId);
-        userService.initializeList();
-        return userService.findByID(userId);
+    public User getUser(@PathVariable("CUSTOMER_ID") final int customerId) {
+        return userService.findByID(customerId);
     }
 }

@@ -3,7 +3,11 @@ package com.example.movierental.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-//builder pattern here...
+import java.time.Duration;
+
+//Movie Class
+//
+//@author Jack Murphy - 18254268
 
 @JsonRootName("Movie Details")
 public class Movie {
@@ -28,6 +32,11 @@ public class Movie {
 
     public int getLoyaltyPointsEarned(int numberOfDays) {
         return price.getLoyaltyPointsEarned(numberOfDays);
+    }
+
+    //calls prices get charge method
+    public int getCharge(int numberOfDays){
+        return price.getCharge(numberOfDays);
     }
 
     public String getTitle() {
