@@ -29,8 +29,7 @@ public class UserRepoServiceImpl implements UserRepoService {
     }
 
     @Override
-    @PostConstruct
-    public void InitializeUsers() {
+    public void initializeUsers() {
         String path = "users.csv";
         String line;
         try {
@@ -76,5 +75,10 @@ public class UserRepoServiceImpl implements UserRepoService {
             }
         }
         return user;
+    }
+
+    @Override
+    public void addUser(User user) {
+        users.add(user.getUserID() - 1 , user);
     }
 }

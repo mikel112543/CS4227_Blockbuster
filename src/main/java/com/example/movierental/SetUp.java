@@ -2,7 +2,7 @@ package com.example.movierental;
 
 import com.example.movierental.service.MovieServiceImpl;
 import com.example.movierental.service.RentalServiceImpl;
-import com.example.movierental.service.UserServiceImpl;
+import com.example.movierental.service.UserRepoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 public final class SetUp {
 
     @Autowired
-    UserServiceImpl userService;
+    UserRepoServiceImpl userService;
 
     @Autowired
     MovieServiceImpl movieService;
@@ -25,7 +25,7 @@ public final class SetUp {
     //Will run upon Springboot Start Up
     @PostConstruct
     private void setUp() {
-        userService.initializeList();
+        userService.initializeUsers();
         movieService.initializeList();
         //rentalService.initializeList();
         rentalService.checkRentals();

@@ -1,7 +1,7 @@
 package com.example.movierental.service;
 
 import com.example.movierental.exception.ServiceException;
-import com.example.movierental.model.Rental;
+import com.example.movierental.states.*;
 import com.example.movierental.model.User;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +29,7 @@ class RentalServiceImplTest {
     RentalServiceImpl rentalService;
 
     @Autowired
-    UserServiceImpl userService;
+    UserRepoServiceImpl userService;
 
     @Autowired
     MovieServiceImpl movieService;
@@ -41,7 +41,10 @@ class RentalServiceImplTest {
     @BeforeEach
     public void setUp() {
         List<Rental> mockRentals = new ArrayList<>();
-        testUser = new User(99, "test", "test", false, 26, 2, mockRentals, false);
+        testUser = new User(99, "test", "test", "ROLE_USER", false);
+        testUser.setRentedMovies(mockRentals);
+        testUser.setTier(2);
+        testUser.setLoyaltyPoints(700);
         userService.addUser(testUser);
         adminService.addMovie("Test Movie", "Test Genre", "Test Description", 1.23, 1, 4);
         testMovieId = movieService.findByName("Test Movie").get(0).getMovieId();

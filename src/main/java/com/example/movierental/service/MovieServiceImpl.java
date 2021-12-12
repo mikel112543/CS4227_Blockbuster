@@ -8,7 +8,6 @@ import com.example.movierental.model.Movie;
 import com.example.movierental.model.ServiceError;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,6 @@ public class MovieServiceImpl implements MovieService {
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
 
     @Override
-    @PostConstruct
     public void initializeList() {
         Movie transformers = new Movie(1,"Transformers", "Action", "The movie", 1.54, 1, 3);
         Movie piratesOfTheCaribbean = new Movie(2,"Pirates of the Caribbean", "Action", "pirates", 1.38, 1, 4);

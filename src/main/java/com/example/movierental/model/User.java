@@ -1,8 +1,5 @@
 package com.example.movierental.model;
 
-
-import com.example.movierental.security.UserPermission;
-import com.example.movierental.security.UserRole;
 import com.example.movierental.states.Rental;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +14,7 @@ import static com.example.movierental.security.UserRole.USER;
 
 public class User implements UserDetails {
 
-    @JsonIgnore
+/*    @JsonProperty
     private int userID;
 
     @JsonProperty("Username")
@@ -41,6 +38,17 @@ public class User implements UserDetails {
     @JsonIgnore
     private boolean isAdmin;
 
+    @JsonProperty
+    private boolean isAccountNonLocked;
+
+    private Set<SimpleGrantedAuthority> authorities = new HashSet<>();*/
+
+    private int userID, loyaltyPoints;
+    private String username, password;
+    private boolean isAccountNonLocked, isEnabled;
+    private boolean isAdmin;
+    private int tier;
+    private List<Rental> rentedMovies = new ArrayList<>();
     private Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
     public User(int userID, String username, String password, String authority, boolean banned) {

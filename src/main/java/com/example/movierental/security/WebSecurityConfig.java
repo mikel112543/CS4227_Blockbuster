@@ -40,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "index")
                 .permitAll()
                 .antMatchers("/customerId/**").hasRole(USER.name())
+                .antMatchers("/movies").hasAnyRole(USER.name(), ADMIN.name())
                 .anyRequest()
                 .authenticated()
                 .and()
