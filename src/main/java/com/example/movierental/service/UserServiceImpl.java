@@ -48,7 +48,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByID(int userId) {
         User user;
-        //Aaron: Can remove user and just return what is in For Loop
         for (User value : users)
             if (value.getUserID() == userId) {
                 user = value;
