@@ -10,7 +10,13 @@ import com.example.movierental.model.ServiceError;
 import com.example.movierental.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,6 +34,33 @@ public class RentalServiceImpl implements RentalService {
     @Autowired
     MovieServiceImpl movieService;
 
+    List<Rental> listOfAllRentals = new ArrayList<Rental>();
+
+    @Override
+    public void intializeListOfRentals(){
+        String path = "rentals.csv";
+        String line = "";
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            while ((br.readLine() != null)){
+                String [] values = line.split(",");
+                Movie movie = movieService.findByMovieID(Integer.parseInt(values[0]));
+                User user = userService.findByUserID(Integer.parseInt(values[1]));
+                Rental rental = new Rental (movie, LocalDate.parse(values[2]));
+                listOfAllRentals.add(rental);
+                user.getRentedMovies().add(rental);
+            }
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public List<Rental> getListOfRentals(){
+        return listOfAllRentals;
+    }
     /**
      * @param userId  - User renting the movie
      * @param movieId - Movie to be rented
@@ -36,7 +69,7 @@ public class RentalServiceImpl implements RentalService {
     public List<Rental> rentMovie(int userId, int movieId) {
         //Check Movie ID and User ID
         Movie movie = movieService.findByMovieID(movieId);
-        User user = userService.findByID(userId);
+        User user = userService.findByUserID(userId);
         int lp = movie.getPrice().getLoyaltyPoints();
 
         List<Rental> userRentals = user.getRentedMovies();
@@ -86,7 +119,7 @@ public class RentalServiceImpl implements RentalService {
      */
     public List<Rental> getRentals(int userId) {
         //Check User ID
-        User user = userService.findByID(userId);
+        User user = userService.findByUserID(userId);
         //Check if user has no rentals
         if (user.getRentedMovies().isEmpty()) {
             chainLogger.logMessage(AbstractLogger.ERROR_INFO, "User has no rentals");
@@ -104,7 +137,7 @@ public class RentalServiceImpl implements RentalService {
      */
     public Rental getRental(int userId, int movieId) {
         //Checks User ID
-        User user = userService.findByID(userId);
+        User user = userService.findByUserID(userId);
         List<Rental> userRentals = user.getRentedMovies();
         //Check if user has no rentals
         if (userRentals.isEmpty()) {
@@ -130,7 +163,7 @@ public class RentalServiceImpl implements RentalService {
      */
     public List<Rental> removeRental(int userId, int movieId) {
         //Checks User ID
-        User user = userService.findByID(userId);
+        User user = userService.findByUserID(userId);
         List<Rental> userRentals = user.getRentedMovies();
 
         //Checks if rentals are empty

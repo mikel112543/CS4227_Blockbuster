@@ -3,8 +3,6 @@ package com.example.movierental.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import java.time.Duration;
-
 //Movie Class
 //
 //@author Jack Murphy - 18254268
@@ -23,6 +21,8 @@ public class Movie {
     private String length;
     @JsonProperty("Movie ID")
     private int movieId;
+    @JsonProperty("Movie Cover")
+    private String movieCoverUrl;
 
     //optional properties
     @JsonProperty("Price")
@@ -37,6 +37,10 @@ public class Movie {
     //calls prices get charge method
     public int getCharge(int numberOfDays){
         return price.getCharge(numberOfDays);
+    }
+
+    public String getMovieCoverUrl(){
+        return movieCoverUrl;
     }
 
     public String getTitle() {
@@ -78,15 +82,18 @@ public class Movie {
         private String description;
         private String length;
         private int movieId;
+        private String movieCoverUrl;
+
         //optional parameters
         private Price price;
 
-        public MovieBuilder(String title, String genre, String description, String length, int movieId) { //required parameters in here only
+        public MovieBuilder(String title, String genre, String description, String length, int movieId, String movieCoverUrl) { //required parameters in here only
             this.title = title;
             this.genre = genre;
             this.description = description;
             this.length = length;
             this.movieId = movieId;
+            this.movieCoverUrl = movieCoverUrl;
         }
 
 

@@ -3,15 +3,19 @@ package com.example.movierental.service;
 
 import com.example.movierental.model.User;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface AdminService {
 
-    void addMovie(String title, String genre, String description, String length, int price, int movieID);
+    void addMovie(String title, String genre, String description, String length, int priceCode, String movieCoverUrl);
 
     void deleteMovie(int movieID);
 
-    ArrayList<User> listAllUsers();
+    List<User> listAllUsers();
 
     void banCustomer(int userID);
+
+    void unbanCustomer(int userID);
+
 }
+

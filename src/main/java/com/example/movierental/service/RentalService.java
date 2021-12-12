@@ -7,6 +7,11 @@ import java.util.List;
 
 @Service
 public interface RentalService {
+
+    void intializeListOfRentals();
+
+    List<Rental> getListOfRentals();
+
     List<Rental> rentMovie(int customerId, int movieId);
 
     List<Rental> getRentals(int userId);

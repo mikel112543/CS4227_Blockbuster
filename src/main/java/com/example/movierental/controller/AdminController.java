@@ -30,7 +30,7 @@ public class AdminController {
      */
     @PostMapping(value = "admin/customerId/{CUSTOMER_ID}/ban")
     public String banCustomer(@PathVariable("CUSTOMER_ID") final int customerId) {
-        User user = userService.findByID(customerId);
+        User user = userService.findByUserID(customerId);
         adminService.banCustomer(customerId);
         return "User: " + user.getUsername() + " has been banned";
     }
@@ -47,13 +47,12 @@ public class AdminController {
     public String addMovie(@PathVariable("MOVIE_TITLE") final String movieTitle,
                          @PathVariable("MOVIE_GENRE") final String movieGenre,
                          @PathVariable("MOVIE_DESCRIPTION") String movieDescription,
-                         @PathVariable("MOVIE_LENGTH") final double movieLength,
+                         @PathVariable("MOVIE_LENGTH") final String movieLength,
                          @PathVariable("MOVIE_PRICE") int moviePriceCode,
-                         @PathVariable("RATING") int rating) {
+                         @PathVariable("RATING") String movieCoverUrl) {
 
         adminService.addMovie(movieTitle, movieGenre, movieDescription,
-                movieLength, moviePriceCode, rating);
-
+                movieLength, moviePriceCode, movieCoverUrl);
         return movieTitle + "has been added to the catalog";
     }
 
