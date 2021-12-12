@@ -38,10 +38,20 @@ public class Movie {
         return movieId;
     }
 
+    /**
+     * Calculates the charge based on the type of movie (type of price object)
+     * Calls getCharge in Price Class
+     * @return double charge for renting movie
+     */
     public double getCharge(){
         return price.getCharge();
     }
 
+    /**
+     * Calculates the charge based on the type of movie and discount given as int meaning percentage
+     * @param discount
+     * @return double charge for renting movie
+     */
     //calls prices get charge method
     public double getCharge(int discount){
         return price.getCharge(discount);
@@ -70,6 +80,10 @@ public class Movie {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getLength() {

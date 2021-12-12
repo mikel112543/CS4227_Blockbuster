@@ -3,8 +3,16 @@ package com.example.movierental.model;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assert.assertEquals;
 
+/**
+ * UserTest Class
+ * Author - Jack Murphy - 18254268
+ */
 public class UserTest {
 
+    /**
+     * Creates a User to be tested
+     * @return User
+     */
     private User createUser(){
         User user = new User();
 
@@ -19,6 +27,10 @@ public class UserTest {
         return user;
     }
 
+    /**
+     * Test that the users getters match the values set by the setters in createUser
+     */
+    @Test
     public void testSettersAndGetters(){
         User user = createUser();
 
@@ -31,10 +43,13 @@ public class UserTest {
         assertEquals(true,user.isAdmin());
     }
 
-    //needs to be updated properly
+    /**
+     * Tests the toString() matches expected
+     */
+    @Test
     public void testToString(){
         User user = createUser();
 
-        asserEquals("User{userID=12344321, username=\"Test User\"}",user.toString());
+        asserEquals("User{userID=12344321, username='Test User'}",user.toString());
     }
 }

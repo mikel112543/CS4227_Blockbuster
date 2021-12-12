@@ -4,6 +4,10 @@ package com.example.movierental.model;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assert.assertEquals;
 
+/**
+ * UserTest Class
+ * Author - Jack Murphy - 18254268
+ */
 public class PriceTest {
 
     //Method for creating accounts in example?
