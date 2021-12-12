@@ -2,7 +2,14 @@ plugins {
     id 'org.springframework.boot' version '2.5.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id "jacoco"
     id "org.sonarqube" version "3.3"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
 }
 
 sonarqube {
@@ -28,7 +35,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.5.6'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.6.1'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.1'
     implementation 'org.springframework.boot:spring-boot-starter-security:2.6.1'
     implementation 'org.springframework.security:spring-security-test:5.5.1'
