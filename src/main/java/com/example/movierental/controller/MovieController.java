@@ -15,12 +15,8 @@ import java.util.List;
 @Controller //CRUD
 public class MovieController {
 
-    MovieService movieService;
-
     @Autowired
-    public MovieController(MovieService movieService) {
-        this.movieService = movieService;
-    }
+    MovieService movieService;
 
     /**
      * @param model - List of movies to be attached to model

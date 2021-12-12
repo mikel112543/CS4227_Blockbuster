@@ -1,63 +1,40 @@
 package com.example.movierental.model;
 
 
+import com.example.movierental.security.UserPermission;
+import com.example.movierental.security.UserRole;
 import com.example.movierental.states.Rental;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
+import static com.example.movierental.security.UserRole.ADMIN;
+import static com.example.movierental.security.UserRole.USER;
+
 public class User implements UserDetails {
 
-    /*//@JsonIgnore
-    private int userID;
-
-    @JsonProperty("Username")
-    private String username;
-
-    //@JsonIgnore
-    private String password;
-
-    @JsonProperty("Authority")
-    private String authority;
-
-    @JsonProperty("Banned")
-    private boolean isAccountNonLocked; // False for banned
-
-    @JsonProperty("Loyalty Points")
-    private int loyaltyPoints;
-
-    @JsonProperty("Tier")
-    private int tier;
-
-    @JsonProperty("Enabled")
-    private boolean isEnabled;
-
-    @JsonIgnore
-    private List<Rental> rentedMovies;
-
-    @JsonProperty("Is Admin")
-    private boolean isAdmin;
-
-    @JsonProperty("Granted Authorities")
-    private final Set<GrantedAuthority> authorities = new HashSet<>();*/
-
     private int userID, loyaltyPoints;
-    private String username, password, authority;
+    private String username, password;
     private boolean isAccountNonLocked, isEnabled;
     private boolean isAdmin;
     private int tier;
-    private List<Rental> rentedMovies = Collections.EMPTY_LIST;
-    private final Set<GrantedAuthority> authorities = new HashSet<>();
+    private List<Rental> rentedMovies = new ArrayList<>();
+    private Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
     public User(int userID, String username, String password, String authority, boolean banned) {
         this.userID = userID;
         this.username = username;
         this.password = password;
-        this.authority = authority;
         isAccountNonLocked = !banned;
+        if (authority.equals("ROLE_USER")) {
+            authorities = USER.getGrantedAuthorities();
+        } else {
+            authorities = ADMIN.getGrantedAuthorities();
+        }
     }
 
     public int getUserID() {
@@ -96,7 +73,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     public int getLoyaltyPoints() {
@@ -115,6 +92,10 @@ public class User implements UserDetails {
         return isAdmin;
     }
 
+    public void setAuthorities(Set<SimpleGrantedAuthority> grantedAuthorities) {
+        authorities = grantedAuthorities;
+    }
+
     public void setLoyaltyPoints(int loyaltyPoints) {
         this.loyaltyPoints = loyaltyPoints;
     }
@@ -122,8 +103,6 @@ public class User implements UserDetails {
     public void setTier(int tier) {
         this.tier = tier;
     }
-
-    public void setAuthority(String authority) { this.authority = authority;}
 
     public void setBanned(boolean banned) {
         isAccountNonLocked = !banned;

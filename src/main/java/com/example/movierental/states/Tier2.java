@@ -12,11 +12,4 @@ public class Tier2 extends Rental {
         super(movie, rentLength.plusDays(7));
     }
 
-    @Override
-    public String calculateRemainingDays() {
-        LocalDate today = LocalDate.now();
-        daysRemaining = ChronoUnit.DAYS.between(today, rentLength) + " Days";
-        return daysRemaining;
-    }
-
 }

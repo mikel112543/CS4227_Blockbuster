@@ -14,6 +14,8 @@ import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.*;
 
+import static com.example.movierental.security.UserRole.USER;
+
 
 @Repository("users")
 public class UserRepoServiceImpl implements UserRepoService {
