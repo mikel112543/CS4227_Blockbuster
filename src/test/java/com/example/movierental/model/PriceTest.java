@@ -1,8 +1,8 @@
 package com.example.movierental.model;
 
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assert.assertEquals;
+
 
 /**
  * UserTest Class
@@ -44,9 +44,9 @@ public class PriceTest {
 
     @Test
     public void testToString(){
-        asserEquals("newReleasePrice{price=10, loyaltyPoints=3}",newRelease.toString());
-        asserEquals("standardReleasePrice{price=10, loyaltyPoints=3}",standardRelease.toString());
-        asserEquals("childrensReleasePrice{price=10, loyaltyPoints=3}",childrensRelease.toString());
+        assertEquals("newReleasePrice{price=10, loyaltyPoints=3}",newRelease.toString());
+        assertEquals("standardReleasePrice{price=10, loyaltyPoints=3}",standardRelease.toString());
+        assertEquals("childrensReleasePrice{price=10, loyaltyPoints=3}",childrensRelease.toString());
     }
 
 }
