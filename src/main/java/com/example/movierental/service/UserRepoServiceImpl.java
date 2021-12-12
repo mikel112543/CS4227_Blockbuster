@@ -10,23 +10,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
-import java.io.*;
-import java.util.*;
-
-import static com.example.movierental.security.UserRole.USER;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Repository("users")
 public class UserRepoServiceImpl implements UserRepoService {
+
+
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
-    ArrayList<User> users = new ArrayList<>();
+    List<User> ListOfUsers = new ArrayList<User>();
     final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserRepoServiceImpl(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
+
+    /*
+    @Autowired
+    MovieServiceImpl movieService;
+
+    @Autowired
+    AdminServiceImpl adminService;
+
+     */
 
     @Override
     public void initializeUsers() {
@@ -41,7 +53,7 @@ public class UserRepoServiceImpl implements UserRepoService {
                                     values[3], Boolean.valueOf(values[6]));
                 user.setLoyaltyPoints(Integer.valueOf(values[4]));
                 user.setTier(Integer.valueOf(values[5]));
-                users.add(user);
+                ListOfUsers.add(user);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -52,25 +64,28 @@ public class UserRepoServiceImpl implements UserRepoService {
 
     @Override
     public List<User> getUsers() {
-        return users;
+        return ListOfUsers;
     }
 
     @Override
-    public User findByID(int i) {
-        if(users.get(i - 1) == null) {
-            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
-            throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
-        } else {
-            return users.get(i - 1);
-        }
+    public User findByUserID(int userId) {
+        User user;
+        //Aaron: Can remove user and just return what is in For Loop
+        for (User value : ListOfUsers)
+            if (value.getUserID() == userId) {
+                user = value;
+                return user;
+            }
+        chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
+        throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
     }
 
     @Override
     public User findByUserName(String username) {
         User user = null;
-        for(int i = 0; i < users.size(); i++) {
-            if (users.get(i).getUsername().equals(username)) {
-                user = findByID(i + 1);
+        for(int i = 0; i < ListOfUsers.size(); i++) {
+            if (ListOfUsers.get(i).getUsername().equals(username)) {
+                user = findByUserID(i + 1);
                 break;
             }
         }
@@ -79,6 +94,6 @@ public class UserRepoServiceImpl implements UserRepoService {
 
     @Override
     public void addUser(User user) {
-        users.add(user.getUserID() - 1 , user);
+        ListOfUsers.add(user.getUserID() - 1 , user);
     }
 }

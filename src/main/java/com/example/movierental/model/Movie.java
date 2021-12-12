@@ -27,6 +27,9 @@ public class Movie {
     //optional properties
     @JsonProperty("Price")
     private Price price;
+    @JsonProperty("Price")
+    private String priceStr;
+
 
     public Movie () {}
 
@@ -41,6 +44,11 @@ public class Movie {
 
     public String getMovieCoverUrl(){
         return movieCoverUrl;
+    }
+
+    public String getPriceStr() {
+        priceStr = "€"+ price.getPrice();
+        return priceStr;
     }
 
     public String getTitle() {
@@ -108,18 +116,8 @@ public class Movie {
         }
     }
 
-    public void setMovieRating(int movieRating) {
-        this.movieRating = movieRating;
-    }
 
-    public String getMovieLength() {
-        return Double.toString(length) + "hrs";
-    }
 
-    public String getPriceStr() {
-        priceStr = "€"+ price.getPrice();
-        return priceStr;
-    }
 
     @Override
     public String toString() {
@@ -129,7 +127,6 @@ public class Movie {
                 ", description='" + description + '\'' +
                 ", length='" + length + '\'' +
                 ", movieId=" + movieId +
-                ", movieRating=" + movieRating +
                 ", price=" + price +
                 '}';
     }

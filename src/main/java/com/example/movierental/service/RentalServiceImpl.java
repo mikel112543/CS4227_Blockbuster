@@ -6,7 +6,6 @@ import com.example.movierental.logger.AbstractLogger;
 import com.example.movierental.logger.RequesterClient;
 import com.example.movierental.states.*;
 import com.example.movierental.model.Movie;
-import com.example.movierental.model.Rental;
 import com.example.movierental.model.ServiceError;
 import com.example.movierental.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,7 +113,7 @@ public class RentalServiceImpl implements RentalService {
             user.setLoyaltyPoints(user.getLoyaltyPoints() + lp);
             chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 14 days");
         }
-        userService.findByID(userId).stateCheck();
+        userService.findByUserID(userId).stateCheck();
         return userRentals;
     }
 

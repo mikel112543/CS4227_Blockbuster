@@ -1,19 +1,18 @@
 package com.example.movierental.service;
 
-import com.example.movierental.model.Rental;
 import com.example.movierental.model.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserRepoService {
 
     List<User> getUsers();
 
     void addUser(User user);
 
-    void initializeListOfUsers();
-
-    List<Rental> getRentals(int userId);
+    void initializeUsers();
 
     User findByUserID(int userId);
+
+    User findByUserName(String username);
 }
