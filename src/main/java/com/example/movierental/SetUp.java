@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 
+/**
+ * Author - Michael Danaher
+ */
 @Service
 public final class SetUp {
 
@@ -19,6 +22,7 @@ public final class SetUp {
     @Autowired
     RentalServiceImpl rentalService;
 
+    //Will run upon Springboot Start Up
     @PostConstruct
     private void setUp() {
         userService.initializeList();

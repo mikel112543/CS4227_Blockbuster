@@ -6,7 +6,6 @@ package com.example.movierental.contants;
 //Enum class to hold unchangeable error messages and Codes
 public enum Error {
 
-    PAYMENT_DECLINED("2001", "Payment was unfortunately declined"),
     INVALID_USER_ID("2002", "Invalid customer ID"),
     INVALID_MOVIE_ID("2003", "Invalid movie ID"),
     INVALID_LOGIN("2004", "Invalid Login please try again"),

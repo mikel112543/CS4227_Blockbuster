@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 
+/**
+ * Author - Michael Danaher
+ */
 @Service
 public interface RentalService {
     List<Rental> rentMovie(int customerId, int movieId);

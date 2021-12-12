@@ -63,7 +63,7 @@ public class RentalController {
 
     /**
      * @param customerId - the ID of the customer who owns the rental
-     * @param movieId   - Unique identifier for the movie
+     * @param movieId    - Unique identifier for the movie
      * @return JSON Object
      */
     @DeleteMapping(value = "/customerId/{CUSTOMER_ID}/removeRental/{MOVIE_ID}")
@@ -71,6 +71,5 @@ public class RentalController {
                                @PathVariable("MOVIE_ID") final int movieId) {
 
         return rentalService.removeRental(customerId, movieId);
-
     }
 }
