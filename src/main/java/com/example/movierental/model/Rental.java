@@ -16,7 +16,7 @@ public class Rental {
     private final LocalDate rentLength;
 
     @JsonProperty("Days Remaining")
-    private String daysRemaining;
+    private int daysRemaining;
 
     public Rental(Movie movie, LocalDate rentLength) {
         this.movie = movie;
@@ -32,9 +32,9 @@ public class Rental {
         return rentLength;
     }
 
-    public String calculateRemainingDays() {
+    public int calculateRemainingDays() {
         LocalDate today = LocalDate.now();
-        daysRemaining = ChronoUnit.DAYS.between(today, rentLength) + " Days";
+        daysRemaining = (int) (ChronoUnit.DAYS.between(today, rentLength));
         return daysRemaining;
     }
 

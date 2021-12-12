@@ -14,4 +14,6 @@ public interface RentalService {
     Rental getRental(int userId, int movieId);
 
     String removeRental(int customerId, int movieId);
+
+    void checkRentals();
 }

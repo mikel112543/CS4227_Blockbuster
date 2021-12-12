@@ -20,7 +20,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     @PostConstruct
-    public void InitializeList() {
+    public void initializeList() {
         Movie transformers = new Movie(1,"Transformers", "Action", "The movie", 1.54, 1, 3);
         Movie piratesOfTheCaribbean = new Movie(2,"Pirates of the Caribbean", "Action", "pirates", 1.38, 1, 4);
         Movie titanic = new Movie(3,"The Titanic", "Romance", "It has boats", 2.23, 1, 4);

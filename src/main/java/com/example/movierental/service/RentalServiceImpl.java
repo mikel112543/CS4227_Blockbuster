@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Author - Michael Danaher
@@ -21,6 +23,7 @@ public class RentalServiceImpl implements RentalService {
 
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
 
+    private final Timer timer = new Timer();
 
 
     @Autowired
@@ -52,7 +55,7 @@ public class RentalServiceImpl implements RentalService {
             }
         }
         //Apply discount for Tier 1
-        chainLogger.logMessage(AbstractLogger.OUTPUT_INFO,"User is getting " + lp + " Loyalty Points");
+        chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User is getting " + lp + " Loyalty Points");
         if (customerTier == 1) {
             Rental rental = new Rental(movie, LocalDate.now().plusDays(4));
             chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Adding Movie to users catalog");
@@ -82,7 +85,6 @@ public class RentalServiceImpl implements RentalService {
     }
 
     /**
-     *
      * @param userId - Unique Identifier for User
      * @return JSON list of user rented movies
      */
@@ -99,8 +101,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     /**
-     *
-     * @param userId - Unique Identifier for User
+     * @param userId  - Unique Identifier for User
      * @param movieId -Unique Identifier for Movie
      * @return JSON Rental
      */
@@ -152,5 +153,32 @@ public class RentalServiceImpl implements RentalService {
             chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find movie");
             throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_ID));
         }
+    }
+
+    /**
+     * Routinely checks expiry of all users rentals
+     */
+    @Override
+    public void checkRentals() {
+        List<User> users = userService.getUsers();
+        TimerTask checkRentals = new TimerTask() {
+            @Override
+            public void run() {
+                //Loop to get users
+                chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Checking users rentals...");
+                for (User user : users) {
+                    List<Rental> userRentals = user.getRentedMovies();
+                    //Loop to get users rentals
+                    chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "Removing expired rentals...");
+                    for (Rental rental : userRentals) {
+                        if (rental.calculateRemainingDays() == 0) {
+                            removeRental(user.getUserID(), rental.getMovie().getMovieId());
+                        }
+                    }
+                }
+            }
+        };
+        //Set timer to run check every 5 hours
+        timer.schedule(checkRentals, 0L, 1000L *60*60*60*60*60*60);
     }
 }
