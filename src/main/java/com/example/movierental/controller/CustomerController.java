@@ -25,10 +25,7 @@ public class CustomerController {
      */
     @GetMapping(value = "/customerId/{CUSTOMER_ID}")
     @ResponseBody
-    public User getUser(@PathVariable("CUSTOMER_ID") final String customerId) {
-
-        //Convert String to Integer
-        int userId = Integer.parseInt(customerId);
-        return userService.findByID(userId);
+    public User getUser(@PathVariable("CUSTOMER_ID") final int customerId) {
+        return userService.findByID(customerId);
     }
 }

@@ -63,21 +63,17 @@ public class RentalController {
                             @PathVariable("MOVIE_ID") final int movieId) {
 
         return rentalService.getRental(customerId, movieId);
-        //Attach rental to model to be used in Thymeleaf
     }
 
     /**
      * @param customerId - the ID of the customer who owns the rental
-     * @param rentalId   - Unique identifier for the movie
+     * @param movieId    - Unique identifier for the movie
      * @return JSON Object
      */
-    @DeleteMapping(value = "/admin/removeRental/customerId/{CUSTOMER_ID}/{RENTAL_ID}/")
-    public List<Rental> removeRentalView(@PathVariable("RENTAL_ID") final String rentalId,
-                                         @PathVariable("CUSTOMER_ID") final String customerId) {
-        int userId = Integer.parseInt(customerId);
-        int rentId = Integer.parseInt(rentalId);
+    @DeleteMapping(value = "/customerId/{CUSTOMER_ID}/removeRental/{MOVIE_ID}")
+    public String removeRental(@PathVariable("CUSTOMER_ID") final int customerId,
+                               @PathVariable("MOVIE_ID") final int movieId) {
 
-        return rentalService.removeRental(userId, rentId);
-
+        return rentalService.removeRental(customerId, movieId);
     }
 }

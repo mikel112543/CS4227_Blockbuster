@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MovieService {
 
-    void InitializeList();
+    void initializeList();
 
     List<Movie> getMovies();
 

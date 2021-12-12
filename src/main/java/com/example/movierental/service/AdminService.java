@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface AdminService {
-    void addMovie(int movieID, String title, String genre, String description, String length, int price, int movieRating);
+    void addMovie(String title, String genre, String description, double length, int priceCode, int movieRating);
 
     void deleteMovie(int movieID);
 

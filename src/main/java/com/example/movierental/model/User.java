@@ -17,12 +17,30 @@ import static com.example.movierental.security.UserRole.USER;
 
 public class User implements UserDetails {
 
-    private int userID, loyaltyPoints;
-    private String username, password;
-    private boolean isAccountNonLocked, isEnabled;
-    private boolean isAdmin;
+    @JsonIgnore
+    private int userID;
+
+    @JsonProperty("Username")
+    private String username;
+
+    @JsonIgnore
+    private String password;
+
+    @JsonProperty("Banned")
+    private boolean banned;
+
+    @JsonProperty("Loyalty Points")
+    private int loyaltyPoints;
+
+    @JsonProperty("Tier")
     private int tier;
+
+    @JsonIgnore
     private List<Rental> rentedMovies = new ArrayList<>();
+
+    @JsonIgnore
+    private boolean isAdmin;
+
     private Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
     public User(int userID, String username, String password, String authority, boolean banned) {

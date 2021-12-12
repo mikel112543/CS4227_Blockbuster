@@ -1,5 +1,7 @@
 package com.example.movierental.model;
+
 import com.example.movierental.contants.Error;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Author - Michael Danaher
@@ -8,7 +10,10 @@ import com.example.movierental.contants.Error;
 //Error Model
 public class ServiceError {
 
+    @JsonProperty("Error Code")
     private String errorCode;
+
+    @JsonProperty("Error Message")
     private String errorMessage;
 
     //Enum as argument

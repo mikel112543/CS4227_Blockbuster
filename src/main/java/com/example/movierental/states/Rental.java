@@ -4,7 +4,6 @@ import com.example.movierental.model.Movie;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -18,7 +17,7 @@ public abstract class Rental {
     protected final LocalDate rentLength;
 
     @JsonProperty("Days Remaining")
-    protected String daysRemaining;
+    private int daysRemaining;
 
     public Rental(Movie movie, LocalDate rentLength) {
         this.movie = movie;
@@ -34,9 +33,9 @@ public abstract class Rental {
         return rentLength;
     }
 
-    public String calculateRemainingDays() {
+    public int calculateRemainingDays() {
         LocalDate today = LocalDate.now();
-        daysRemaining = ChronoUnit.DAYS.between(today, rentLength) + " Days";
+        daysRemaining = (int) (ChronoUnit.DAYS.between(today, rentLength));
         return daysRemaining;
     }
 
@@ -47,4 +46,5 @@ public abstract class Rental {
                 ", rentLength=" + rentLength +
                 '}';
     }
+
 }
