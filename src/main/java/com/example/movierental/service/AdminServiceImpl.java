@@ -9,16 +9,20 @@ import java.util.List;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-    @Autowired
-    UserServiceImpl userService;
+    private final UserRepoServiceImpl userService;
+    private final MovieServiceImpl movieService;
 
     @Autowired
-    MovieServiceImpl movieService;
+    public AdminServiceImpl(UserRepoServiceImpl userService, MovieServiceImpl movieService) {
+        this.userService = userService;
+        this.movieService = movieService;
+    }
 
     @Override
     public void addMovie(String title, String genre, String description, String length, int priceCode, String movieCoverUrl){
         List<Movie> listOfMovies = movieService.listAllMovies();
         int movieId = listOfMovies.get(listOfMovies.size()-1).getMovieId()+1;
+
         Movie movie = new Movie.MovieBuilder(title, genre, description, length, movieId, movieCoverUrl).setPrice(priceCode).build();
         listOfMovies.add(movie);
     }

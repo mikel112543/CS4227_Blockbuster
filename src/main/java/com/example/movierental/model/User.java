@@ -1,13 +1,20 @@
 package com.example.movierental.model;
 
+import com.example.movierental.states.Rental;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.List;
+import java.util.*;
 
-public class User {
+import static com.example.movierental.security.UserRole.ADMIN;
+import static com.example.movierental.security.UserRole.USER;
 
-    @JsonIgnore
+public class User implements UserDetails {
+
+/*    @JsonProperty
     private int userID;
 
     @JsonProperty("Username")
@@ -26,92 +33,124 @@ public class User {
     private int tier;
 
     @JsonIgnore
-    private List<Rental> rentedMovies;
+    private List<Rental> rentedMovies = new ArrayList<>();
 
-    @JsonProperty("Is Admin")
+    @JsonIgnore
     private boolean isAdmin;
 
-    public User() {
-    }
+    @JsonProperty
+    private boolean isAccountNonLocked;
 
-    public User(int userID, String username, String password, boolean banned, int loyaltyPoints, int tier, List<Rental> rentedMovies, boolean isAdmin) {
+    private Set<SimpleGrantedAuthority> authorities = new HashSet<>();*/
+
+    private int userID, loyaltyPoints;
+    private String username, password;
+    private boolean isAccountNonLocked, isEnabled;
+    private boolean isAdmin;
+    private int tier;
+    private List<Rental> rentedMovies = new ArrayList<>();
+    private Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+
+    public User(int userID, String username, String password, String authority, boolean banned) {
         this.userID = userID;
         this.username = username;
         this.password = password;
-        this.banned = banned;
-        this.loyaltyPoints = loyaltyPoints;
-        this.tier = tier;
-        this.rentedMovies = rentedMovies;
-        this.isAdmin = isAdmin;
-    }
-
-    public User(int userID, String username) {
-        this.userID = userID;
-        this.username = username;
+        isAccountNonLocked = !banned;
+        if (authority.equals("ROLE_USER")) {
+            authorities = USER.getGrantedAuthorities();
+        } else {
+            authorities = ADMIN.getGrantedAuthorities();
+        }
     }
 
     public int getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
+    @Override
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    @Override
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public boolean isBanned() {
-        return banned;
+    @Override
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
     }
 
-    public void setBanned(boolean banned) {
-        this.banned = banned;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     public int getLoyaltyPoints() {
         return loyaltyPoints;
     }
 
-    public void setLoyaltyPoints(int loyaltyPoints) {
-        this.loyaltyPoints = loyaltyPoints;
-    }
-
     public int getTier() {
         return tier;
-    }
-
-    public void setTier(int tier) {
-        this.tier = tier;
     }
 
     public List<Rental> getRentedMovies() {
         return rentedMovies;
     }
 
-    public void setRentedMovies(List<Rental> rentedMovies) {
-        this.rentedMovies = rentedMovies;
-    }
-
     public boolean isAdmin() {
         return isAdmin;
     }
 
+    public void setAuthorities(Set<SimpleGrantedAuthority> grantedAuthorities) {
+        authorities = grantedAuthorities;
+    }
+
+    public void setLoyaltyPoints(int loyaltyPoints) {
+        this.loyaltyPoints = loyaltyPoints;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
+    }
+
+    public void setBanned(boolean banned) {
+        isAccountNonLocked = !banned;
+    }
+
+    public void setRentedMovies(List<Rental> rentedMovies) {
+        this.rentedMovies = rentedMovies;
+    }
+
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public void stateCheck() {
+        int lp = this.getLoyaltyPoints();
+        if(lp > 500 && lp < 1500) {
+            this.setTier(2);
+        } else if (lp > 1500 && lp < 3000) {
+            this.setTier(3);
+        } else if (lp > 3000) {
+            this.setLoyaltyPoints(3000);
+        }
     }
 
     @Override

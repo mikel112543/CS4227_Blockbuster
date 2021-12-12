@@ -7,15 +7,15 @@ package com.example.movierental.model;
 public class PriceFactory {
 
     //getPrice returns the required Price object based on the priceCode
-    //PRICE CODES: 0 = newReleasePrice, 1 = standardReleasePrice, 2 = childrensReleasePrice
+    //PRICE CODES: 0 = NewPrice, 1 = StandardPrice, 2 = ChildrensPrice
     public Price getPrice(int priceCode){
 
         if(priceCode == 0){
-            return new newReleasePrice();
+            return new NewPrice();
         } else if(priceCode == 1){
-            return new standardReleasePrice();
+            return new StandardPrice();
         }else if(priceCode == 2){
-            return new childrensReleasePrice();
+            return new ChildrensPrice();
         }else{
             System.out.println("Enter error checking here");
         }

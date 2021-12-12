@@ -107,7 +107,30 @@ public class Movie {
             return new Movie(this);
         }
     }
+
+    public void setMovieRating(int movieRating) {
+        this.movieRating = movieRating;
+    }
+
+    public String getMovieLength() {
+        return Double.toString(length) + "hrs";
+    }
+
+    public String getPriceStr() {
+        priceStr = "€"+ price.getPrice();
+        return priceStr;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", genre='" + genre + '\'' +
+                ", description='" + description + '\'' +
+                ", length='" + length + '\'' +
+                ", movieId=" + movieId +
+                ", movieRating=" + movieRating +
+                ", price=" + price +
+                '}';
+    }
 }
-
-
-

@@ -6,10 +6,10 @@ import com.example.movierental.model.User;
 import java.util.List;
 
 public interface UserService {
-    //public abstract void registerUser(User user);
+
     List<User> getUsers();
 
-    //void addUser(User user);
+    void addUser(User user);
 
     void initializeListOfUsers();
 

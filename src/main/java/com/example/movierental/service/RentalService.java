@@ -1,10 +1,13 @@
 package com.example.movierental.service;
 
-import com.example.movierental.model.Rental;
+import com.example.movierental.states.Rental;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 
+/**
+ * Author - Michael Danaher
+ */
 @Service
 public interface RentalService {
 
@@ -18,5 +21,7 @@ public interface RentalService {
 
     Rental getRental(int userId, int movieId);
 
-    List<Rental> removeRental(int customerId, int movieId);
+    String removeRental(int customerId, int movieId);
+
+    void checkRentals();
 }

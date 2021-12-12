@@ -1,9 +1,10 @@
 package com.example.movierental.controller;
 
-import com.example.movierental.model.Rental;
 import com.example.movierental.service.RentalService;
-import com.example.movierental.service.UserService;
+import com.example.movierental.service.UserRepoServiceImpl;
+import com.example.movierental.states.Rental;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,11 +15,14 @@ import java.util.List;
 @RestController
 public class RentalController {
 
-    @Autowired
     RentalService rentalService;
+    UserRepoServiceImpl userService;
 
     @Autowired
-    UserService userService;
+    public RentalController(RentalService rentalService, UserRepoServiceImpl userService) {
+        this.rentalService = rentalService;
+        this.userService = userService;
+    }
 
     /**
      * @param customerId - Customer ID wanting the rent the movie
@@ -63,16 +67,13 @@ public class RentalController {
 
     /**
      * @param customerId - the ID of the customer who owns the rental
-     * @param rentalId   - Unique identifier for the movie
+     * @param movieId    - Unique identifier for the movie
      * @return JSON Object
      */
-    @DeleteMapping(value = "/admin/removeRental/customerId/{CUSTOMER_ID}/{RENTAL_ID}/")
-    public List<Rental> removeRentalView(@PathVariable("RENTAL_ID") final String rentalId,
-                                         @PathVariable("CUSTOMER_ID") final String customerId) {
-        int userId = Integer.parseInt(customerId);
-        int rentId = Integer.parseInt(rentalId);
+    @DeleteMapping(value = "/customerId/{CUSTOMER_ID}/removeRental/{MOVIE_ID}")
+    public String removeRental(@PathVariable("CUSTOMER_ID") final int customerId,
+                               @PathVariable("MOVIE_ID") final int movieId) {
 
-        return rentalService.removeRental(userId, rentId);
-
+        return rentalService.removeRental(customerId, movieId);
     }
 }

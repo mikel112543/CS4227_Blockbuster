@@ -4,6 +4,7 @@ import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
 import com.example.movierental.logger.AbstractLogger;
 import com.example.movierental.logger.RequesterClient;
+import com.example.movierental.states.*;
 import com.example.movierental.model.Movie;
 import com.example.movierental.model.Rental;
 import com.example.movierental.model.ServiceError;
@@ -18,7 +19,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Author - Michael Danaher
@@ -28,11 +30,16 @@ public class RentalServiceImpl implements RentalService {
 
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
 
-    @Autowired
-    UserServiceImpl userService;
+    private final Timer timer = new Timer();
+
+    UserRepoServiceImpl userService;
+    MovieServiceImpl movieService;
 
     @Autowired
-    MovieServiceImpl movieService;
+    public RentalServiceImpl(UserRepoServiceImpl userService, MovieServiceImpl movieService) {
+        this.userService = userService;
+        this.movieService = movieService;
+    }
 
     List<Rental> listOfAllRentals = new ArrayList<Rental>();
 
@@ -76,40 +83,39 @@ public class RentalServiceImpl implements RentalService {
         int customerTier = user.getTier();
 
         //Check if user has already rented movie
-        chainLogger.logMessage(AbstractLogger.OUTPUT_INFO,"User is getting " + lp + "Loyalty Points");
-        for (Rental userRental : userRentals) {
-            if (userRental.getMovie().getMovieId() == movieId) {
-                chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User is already currently renting this movie");
-                throw new ServiceException(new ServiceError(Error.ALREADY_RENTING));
+        chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User is getting " + lp + "Loyalty Points");
+        if (!userRentals.isEmpty()) {
+            for (Rental userRental : userRentals) {
+                if (userRental.getMovie().getMovieId() == movieId) {
+                    chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User is already currently renting this movie");
+                    throw new ServiceException(new ServiceError(Error.ALREADY_RENTING));
+                }
             }
         }
-        //Apply discount for Tier 1
-        if (customerTier == 1) {
-            Rental rental = new Rental(movie, LocalDate.now().plusDays(4));
+        if (customerTier == 1) { //Apply discount for Tier 2
+            Rental rental = new Tier1(movie, LocalDate.now());
             chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Adding Movie to users catalog");
             userRentals.add(rental);
             //Add loyalty points to users account
             user.setLoyaltyPoints(user.getLoyaltyPoints() + lp);
-            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 4 days");
-            return user.getRentedMovies();
-            //Apply discount for Tier 2
-        } else if (customerTier == 2) {
-            Rental rental = new Rental(movie, LocalDate.now().plusDays(8));
+            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 3 days");
+        } else if (customerTier == 2) { //Apply discount for Tier 2
+            Rental rental = new Tier2(movie, LocalDate.now());
             chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Adding Movie to users catalog");
             userRentals.add(rental);
             //Add loyalty points to users account
             user.setLoyaltyPoints(user.getLoyaltyPoints() + lp);
-            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 8 days");
-            return user.getRentedMovies();
-        } else {
-            //Apply discount for Tier 3
-            Rental rental = new Rental(movie, LocalDate.now().plusDays(16));
+            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 7 days");
+        } else { //Apply discount for Tier 2
+            Rental rental = new Tier3(movie, LocalDate.now());
+            chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Adding Movie to users catalog");
             userRentals.add(rental);
             //Add loyalty points to users account
             user.setLoyaltyPoints(user.getLoyaltyPoints() + lp);
-            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 16 days");
-            return user.getRentedMovies();
+            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 14 days");
         }
+        userService.findByID(userId).stateCheck();
+        return userRentals;
     }
 
     /**
@@ -130,8 +136,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     /**
-     *
-     * @param userId - Unique Identifier for User
+     * @param userId  - Unique Identifier for User
      * @param movieId -Unique Identifier for Movie
      * @return JSON Rental
      */
@@ -161,7 +166,7 @@ public class RentalServiceImpl implements RentalService {
      * @param userId  - Customer who owns the rental
      * @param movieId - Movie ID
      */
-    public List<Rental> removeRental(int userId, int movieId) {
+    public String removeRental(int userId, int movieId) {
         //Checks User ID
         User user = userService.findByUserID(userId);
         List<Rental> userRentals = user.getRentedMovies();
@@ -174,12 +179,41 @@ public class RentalServiceImpl implements RentalService {
             for (Rental userRental : userRentals) {
                 if (userRental.getMovie().getMovieId() == movieId) {
                     chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "Removing Rental...");
-                    return userRentals;
+                    userRentals.remove(userRental);
+                    return "User Name: " + user.getUsername() + " Rental: " + userRental.getMovie().getTitle() +
+                            " has been removed from their rentals";
                 }
             }
             //Last possible check for Movie ID
             chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find movie");
             throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_ID));
         }
+    }
+
+    /**
+     * Routinely checks expiry of all users rentals
+     */
+    @Override
+    public void checkRentals() {
+        List<User> users = userService.getUsers();
+        TimerTask checkRentals = new TimerTask() {
+            @Override
+            public void run() {
+                //Loop to get users
+                chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Checking users rentals...");
+                for (User user : users) {
+                    List<Rental> userRentals = user.getRentedMovies();
+                    //Loop to get users rentals
+                    chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "Removing expired rentals...");
+                    for (Rental rental : userRentals) {
+                        if (rental.calculateRemainingDays() == 0) {
+                            removeRental(user.getUserID(), rental.getMovie().getMovieId());
+                        }
+                    }
+                }
+            }
+        };
+        //Set timer to run check every 5 hours
+        timer.schedule(checkRentals, 0L, 1000L *60*60*60*60*60*60);
     }
 }
