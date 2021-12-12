@@ -3,7 +3,7 @@ package com.example.movierental.controller;
 import com.example.movierental.model.User;
 import com.example.movierental.service.AdminServiceImpl;
 import com.example.movierental.service.MovieServiceImpl;
-import com.example.movierental.service.UserServiceImpl;
+import com.example.movierental.service.UserRepoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    UserServiceImpl userService;
+    UserRepoServiceImpl userService;
 
     @Autowired
     AdminServiceImpl adminService;
