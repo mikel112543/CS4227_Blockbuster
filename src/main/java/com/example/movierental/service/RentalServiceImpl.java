@@ -181,6 +181,5 @@ public class RentalServiceImpl implements RentalService {
             chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find movie");
             throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_ID));
         }
-        return userRentals;
     }
 }

@@ -18,9 +18,7 @@ public class Rental {
     @JsonProperty("Days Remaining")
     private String daysRemaining;
 
-    public Rental(){
 
-    }
 
     public Rental(Movie movie, LocalDate rentLength) {
         this.movie = movie;
