@@ -45,7 +45,7 @@ public class Movie {
         //empty constructor
     }
 
-    //PRICE CODES: 0 = newReleasePrice, 1 = standardReleasePrice, 2 = childrensReleasePrice
+    //PRICE CODES: 0 = NewPrice, 1 = StandardPrice, 2 = ChildrensPrice
     //parameterised constructor
     public Movie(int movieId, String title, String genre, String description, double length, int priceCode, int movieRating) {
 
@@ -105,7 +105,7 @@ public class Movie {
     }
 
     //not sure if it is necessary to be able to manually update values for each movie
-    //PRICE CODES: 0 = newReleasePrice, 1 = standardReleasePrice, 2 = childrensReleasePrice
+    //PRICE CODES: 0 = NewPrice, 1 = StandardPrice, 2 = ChildrensPrice
     public void setPrice(int priceCode) {
         PriceFactory p = new PriceFactory();
         this.price = p.getPrice(priceCode);

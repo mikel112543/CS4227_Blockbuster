@@ -3,6 +3,7 @@ package com.example.movierental.controller;
 import com.example.movierental.model.Rental;
 import com.example.movierental.model.User;
 import com.example.movierental.service.RentalServiceImpl;
+import com.example.movierental.service.UserRepoServiceImpl;
 import com.example.movierental.service.UserServiceImpl;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +33,7 @@ class RentalControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    UserServiceImpl userService;
+    UserRepoServiceImpl userService;
 
     @Autowired
     RentalServiceImpl rentalService;
