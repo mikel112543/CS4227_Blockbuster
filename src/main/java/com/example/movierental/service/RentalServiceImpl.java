@@ -47,6 +47,7 @@ public class RentalServiceImpl implements RentalService {
         int lp = movie.getPrice().getLoyaltyPoints();
 
         List<Rental> userRentals = user.getRentedMovies();
+        int customerTier = user.getTier();
 
         //Check if user has already rented movie
         chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User is getting " + lp + "Loyalty Points");

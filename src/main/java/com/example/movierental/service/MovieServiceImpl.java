@@ -8,44 +8,20 @@ import com.example.movierental.model.Movie;
 import com.example.movierental.model.ServiceError;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class MovieServiceImpl implements MovieService {
     ArrayList<Movie> listOfMovies = new ArrayList<>();
-
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
 
-    @Override
-    public void initializeList() {
-        Movie transformers = new Movie(1,"Transformers", "Action", "The movie", 1.54, 1, 3);
-        Movie piratesOfTheCaribbean = new Movie(2,"Pirates of the Caribbean", "Action", "pirates", 1.38, 1, 4);
-        Movie titanic = new Movie(3,"The Titanic", "Romance", "It has boats", 2.23, 1, 4);
-        Movie peterPan = new Movie(4,"Peter Pan", "Animation", "It's fun", 1.2, 2, 3);
-        Movie luca = new Movie(5,"Luca", "Animation", "Another kids movie", 1.28, 1, 3);
 
-        listOfMovies.add(transformers);
-        listOfMovies.add(piratesOfTheCaribbean);
-        listOfMovies.add(titanic);
-        listOfMovies.add(peterPan);
-        listOfMovies.add(luca);
-    }
-
-    public List<Movie> getMovies() {
+    public ArrayList<Movie> listAllMovies() {
         return listOfMovies;
-    }
-    //method used to create the movie object when given an array of it's attributes.
-    public Movie createMovie(String [] metadata){
-        String title = metadata[0];
-        String genre = metadata[1];
-        String description = metadata[2];
-        double length = Double.parseDouble(metadata[3]);
-        int price = Integer.parseInt(metadata[4]);
-        int movieId = Integer.parseInt(metadata[5]);
-        int movieRating = Integer.parseInt(metadata[6]);
-
-        return new Movie (movieId, title, genre, description, length, price, movieRating);
     }
 
     @Override
@@ -67,6 +43,29 @@ public class MovieServiceImpl implements MovieService {
                 results.add(listOfMovie);
             }
         }
+        if (results.isEmpty()){
+            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "No movies available");
+            throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_NAME));
+        }
         return results;
+
+    }
+
+    @Override
+    public void initializeListOfMovies() {
+        String path = "movies.csv";
+        String line = "";
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            while ((br.readLine() != null)) {
+                String[] values = line.split(",");
+                Movie movie = new Movie.MovieBuilder(values[0], values[1], values[2], values[3], Integer.parseInt(values[5]), values[6]).setPrice(Integer.parseInt(values[4])).build();
+                listOfMovies.add(movie);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

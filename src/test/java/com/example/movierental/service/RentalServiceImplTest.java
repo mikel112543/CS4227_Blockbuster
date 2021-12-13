@@ -46,7 +46,7 @@ class RentalServiceImplTest {
         testUser.setTier(2);
         testUser.setLoyaltyPoints(700);
         userService.addUser(testUser);
-        adminService.addMovie("Test Movie", "Test Genre", "Test Description", 1.23, 1, 4);
+        adminService.addMovie("Test Movie", "Test Genre", "Test Description", "1.23", 1, "MOVIECOVERURL");
         testMovieId = movieService.findByName("Test Movie").get(0).getMovieId();
     }
 
@@ -83,7 +83,7 @@ class RentalServiceImplTest {
         assertEquals("Test Genre", testRentals.get(0).getMovie().getGenre());
         assertEquals("Test Description", testRentals.get(0).getMovie().getDescription());
         assertEquals(1.23, testRentals.get(0).getMovie().getLength());
-        assertEquals(4, testRentals.get(0).getMovie().getMovieRating());
+        assertEquals("URLFORPHOTO", testRentals.get(0).getMovie().getMovieCoverUrl());
     }
 
     @Test

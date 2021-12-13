@@ -17,6 +17,8 @@ public class Rental {
     @JsonProperty("Days Remaining")
     private int daysRemaining;
 
+
+
     public Rental(Movie movie, LocalDate rentLength) {
         this.movie = movie;
         this.rentLength = rentLength;

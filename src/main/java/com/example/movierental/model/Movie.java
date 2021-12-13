@@ -1,10 +1,7 @@
 package com.example.movierental.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-
-import java.time.Duration;
 
 //Movie Class
 //
@@ -13,67 +10,64 @@ import java.time.Duration;
 @JsonRootName("Movie Details")
 public class Movie {
 
-    @JsonIgnore
-    private int movieId;
-
+    //required parameters:
     @JsonProperty("Title")
     private String title;
-
     @JsonProperty("Genre")
     private String genre;
-
     @JsonProperty("Description")
     private String description;
+    @JsonProperty("Length")
+    private String length;
+    @JsonProperty("Movie ID")
+    private int movieId;
+    @JsonProperty("Movie Cover")
+    private String movieCoverUrl;
 
-    //changed to duration
-    @JsonIgnore
-    private double length;
-
-    @JsonProperty("Movie Length")
-    private String movieLength;
-
-    @JsonProperty("Rating")
-    private int movieRating;
-
-    @JsonIgnore
+    //optional properties
+    @JsonProperty("Price")
     private Price price;
-
     @JsonProperty("Price")
     private String priceStr;
 
-    public Movie() {
-        //empty constructor
-    }
 
-    //PRICE CODES: 0 = NewPrice, 1 = StandardPrice, 2 = ChildrensPrice
-    //parameterised constructor
-    public Movie(int movieId, String title, String genre, String description, double length, int priceCode, int movieRating) {
-
-        PriceFactory p = new PriceFactory();
-        this.movieId = movieId;
-        this.title = title;
-        this.genre = genre;
-        this.description = description;
-        this.length = length;
-        this.price = p.getPrice(priceCode);
-        this.movieRating = movieRating;
-        getPriceStr();
-        getMovieLength();
-    }
+    public Movie () {}
 
 
     public int getMovieId() {
         return movieId;
     }
 
-    //calls prices get charge method
-    public int getCharge(int numberOfDays){
-        return price.getCharge(numberOfDays);
+    /**
+     * Calculates the charge based on the type of movie (type of price object)
+     * Calls getCharge in Price Class
+     * @return double charge for renting movie
+     */
+    public double getCharge(){
+        return price.getCharge();
     }
 
-    //calls prices get loyalt points earned method
-    public int getLoyaltyPointsEarned(int numberOfDays){
-        return price.getLoyaltyPointsEarned(numberOfDays);
+    /**
+     * Calculates the charge based on the type of movie and discount given as int meaning percentage
+     * @param discount
+     * @return double charge for renting movie
+     */
+    //calls prices get charge method
+    public double getCharge(int discount){
+        return price.getCharge(discount);
+    }
+
+    public String getMovieCoverUrl(){
+        return movieCoverUrl;
+    }
+
+    public String getPriceStr() {
+        priceStr = "€"+ price.getPrice();
+        return priceStr;
+    }
+
+    public int getLoyaltyPoints(){
+        return price.getLoyaltyPoints();
     }
 
     public String getTitle() {
@@ -92,45 +86,61 @@ public class Movie {
         this.description = description;
     }
 
-    public double getLength() {
+    public String getLength() {
         return length;
     }
 
-    public void setLength(double length) {
+    public void setLength(String length) {
         this.length = length;
     }
 
-    public Price getPrice(){
+    public Price getPrice() {
         return price;
     }
 
-    //not sure if it is necessary to be able to manually update values for each movie
-    //PRICE CODES: 0 = NewPrice, 1 = StandardPrice, 2 = ChildrensPrice
-    public void setPrice(int priceCode) {
-        PriceFactory p = new PriceFactory();
-        this.price = p.getPrice(priceCode);
+    private Movie(MovieBuilder builder) {
+        this.title = builder.title;
+        this.genre = builder.genre;
+        this.description = builder.description;
+        this.length = builder.length;
+        this.movieId = builder.movieId;
+        this.price = builder.price;
     }
 
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
+    public static class MovieBuilder {
+        private String title;
+        private String genre;
+        private String description;
+        private String length;
+        private int movieId;
+        private String movieCoverUrl;
+
+        //optional parameters
+        private Price price;
+
+        public MovieBuilder(String title, String genre, String description, String length, int movieId, String movieCoverUrl) { //required parameters in here only
+            this.title = title;
+            this.genre = genre;
+            this.description = description;
+            this.length = length;
+            this.movieId = movieId;
+            this.movieCoverUrl = movieCoverUrl;
+        }
+
+
+        public MovieBuilder setPrice(int priceCode) {
+            PriceFactory p = new PriceFactory();
+            this.price = p.getPrice(priceCode);
+            return this;
+        }
+
+        public Movie build() {
+            return new Movie(this);
+        }
     }
 
-    public int getMovieRating() {
-        return movieRating;
-    }
 
-    public void setMovieRating(int movieRating) {
-        this.movieRating = movieRating;
-    }
 
-    public String getMovieLength() {
-        return Double.toString(length) + "hrs";
-    }
-
-    public String getPriceStr() {
-        priceStr = "€"+ price.getPrice();
-        return priceStr;
-    }
 
     @Override
     public String toString() {
@@ -140,7 +150,6 @@ public class Movie {
                 ", description='" + description + '\'' +
                 ", length='" + length + '\'' +
                 ", movieId=" + movieId +
-                ", movieRating=" + movieRating +
                 ", price=" + price +
                 '}';
     }

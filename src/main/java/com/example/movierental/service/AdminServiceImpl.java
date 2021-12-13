@@ -19,28 +19,23 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void addMovie(String title, String genre, String description, double length, int priceCode, int movieRating){
-        List<Movie> listOfMovies = movieService.getMovies();
-        int movieId;
-        if(listOfMovies.isEmpty()) {
-            movieId = 1;
-        }else{
-             movieId = listOfMovies.get(listOfMovies.size()-1).getMovieId()+1;
-        }
-        Movie movie = new Movie(movieId, title, genre, description, length, priceCode, movieRating);
-        //TODO: BUILDER METHOD GOES IN HERE
+    public void addMovie(String title, String genre, String description, String length, int priceCode, String movieCoverUrl){
+        List<Movie> listOfMovies = movieService.listAllMovies();
+        int movieId = listOfMovies.get(listOfMovies.size()-1).getMovieId()+1;
+
+        Movie movie = new Movie.MovieBuilder(title, genre, description, length, movieId, movieCoverUrl).setPrice(priceCode).build();
         listOfMovies.add(movie);
     }
 
     @Override
     public void deleteMovie(int movieID) {
-        List<Movie> listOfMovies = movieService.getMovies();
-       Movie movie = movieService.findByMovieID(movieID);
-       for(int i = 0 ; i < listOfMovies.size() ; i++){
+        List<Movie> listOfMovies = movieService.listAllMovies();
+        Movie movie = movieService.findByMovieID(movieID);
+        for(int i = 0 ; i < listOfMovies.size() ; i++){
             if (movieID == movie.getMovieId()){
                 listOfMovies.remove(movie);
             }
-       }
+        }
     }
 
     @Override
@@ -49,17 +44,23 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public User createCustomer(String[] metadata) {
-        return null;
+    public void banCustomer(int userID) {
+        List<User> listOfUsers = userService.getUsers();
+        User user = userService.findByUserID(userID);
+        for (int i = 0 ; i < listOfUsers.size() ; i++){
+            if (userID == user.getUserID()){
+                user.setBanned(true);
+            }
+        }
     }
 
     @Override
-    public void banCustomer(int userID) {
+    public void unbanCustomer(int userID){
         List<User> listOfUsers = userService.getUsers();
-        for (User listOfUser : listOfUsers) {
-            if (listOfUser.getUserID() == userID) {
-                listOfUser.setBanned(true);
-                return;
+        User user = userService.findByUserID(userID);
+        for (int i = 0 ; i < listOfUsers.size() ; i++){
+            if (userID == user.getUserID()){
+                user.setBanned(false);
             }
         }
     }
