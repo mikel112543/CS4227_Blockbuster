@@ -1,13 +1,16 @@
 package com.example.movierental.states;
 
 import com.example.movierental.model.Movie;
+import com.example.movierental.model.Rental;
 
+import javax.rmi.CORBA.Tie;
 import java.time.LocalDate;
 
-// State
-public class Tier1 extends Rental {
+// Concrete State
+public class Tier1 implements Tier {
 
-    public Tier1(Movie movie, LocalDate rentLength) {
-        super(movie, rentLength.plusDays(3));
+    @Override
+    public int getDays() {
+        return 3;
     }
 }

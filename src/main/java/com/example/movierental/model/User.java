@@ -1,6 +1,5 @@
 package com.example.movierental.model;
 
-import com.example.movierental.states.Rental;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,7 +13,7 @@ import static com.example.movierental.security.UserRole.USER;
 
 public class User implements UserDetails {
 
-/*    @JsonProperty
+    @JsonProperty
     private int userID;
 
     @JsonProperty("Username")
@@ -41,14 +40,6 @@ public class User implements UserDetails {
     @JsonProperty
     private boolean isAccountNonLocked;
 
-    private Set<SimpleGrantedAuthority> authorities = new HashSet<>();*/
-
-    private int userID, loyaltyPoints;
-    private String username, password;
-    private boolean isAccountNonLocked, isEnabled;
-    private boolean isAdmin;
-    private int tier;
-    private List<Rental> rentedMovies = new ArrayList<>();
     private Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
     public User(int userID, String username, String password, String authority, boolean banned) {
@@ -56,6 +47,7 @@ public class User implements UserDetails {
         this.username = username;
         this.password = password;
         isAccountNonLocked = !banned;
+        tier = 1;
         if (authority.equals("ROLE_USER")) {
             authorities = USER.getGrantedAuthorities();
         } else {

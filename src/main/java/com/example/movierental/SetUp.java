@@ -27,7 +27,6 @@ public final class SetUp {
     private void setUp() {
         userService.initializeUsers();
         movieService.initializeList();
-        //rentalService.initializeList();
         rentalService.checkRentals();
     }
 }

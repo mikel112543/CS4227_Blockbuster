@@ -4,7 +4,6 @@ import com.example.movierental.model.Rental;
 import com.example.movierental.model.User;
 import com.example.movierental.service.RentalServiceImpl;
 import com.example.movierental.service.UserRepoServiceImpl;
-import com.example.movierental.service.UserServiceImpl;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

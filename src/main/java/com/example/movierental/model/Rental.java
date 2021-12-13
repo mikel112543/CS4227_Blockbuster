@@ -1,14 +1,12 @@
-package com.example.movierental.states;
+package com.example.movierental.model;
 
-import com.example.movierental.model.Movie;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-// Super state
-public abstract class Rental {
+public class Rental {
 
     @JsonProperty("Movie")
     protected final Movie movie;
@@ -46,5 +44,4 @@ public abstract class Rental {
                 ", rentLength=" + rentLength +
                 '}';
     }
-
 }

@@ -1,7 +1,7 @@
 package com.example.movierental.service;
 
 import com.example.movierental.exception.ServiceException;
-import com.example.movierental.states.*;
+import com.example.movierental.model.Rental;
 import com.example.movierental.model.User;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;

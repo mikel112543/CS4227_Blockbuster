@@ -4,6 +4,7 @@ import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
 import com.example.movierental.logger.AbstractLogger;
 import com.example.movierental.logger.RequesterClient;
+import com.example.movierental.model.Rental;
 import com.example.movierental.states.*;
 import com.example.movierental.model.Movie;
 import com.example.movierental.model.ServiceError;
@@ -46,7 +47,6 @@ public class RentalServiceImpl implements RentalService {
         int lp = movie.getPrice().getLoyaltyPoints();
 
         List<Rental> userRentals = user.getRentedMovies();
-        int customerTier = user.getTier();
 
         //Check if user has already rented movie
         chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User is getting " + lp + "Loyalty Points");
@@ -58,28 +58,13 @@ public class RentalServiceImpl implements RentalService {
                 }
             }
         }
-        if (customerTier == 1) { //Apply discount for Tier 2
-            Rental rental = new Tier1(movie, LocalDate.now());
-            chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Adding Movie to users catalog");
-            userRentals.add(rental);
-            //Add loyalty points to users account
-            user.setLoyaltyPoints(user.getLoyaltyPoints() + lp);
-            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 3 days");
-        } else if (customerTier == 2) { //Apply discount for Tier 2
-            Rental rental = new Tier2(movie, LocalDate.now());
-            chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Adding Movie to users catalog");
-            userRentals.add(rental);
-            //Add loyalty points to users account
-            user.setLoyaltyPoints(user.getLoyaltyPoints() + lp);
-            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 7 days");
-        } else { //Apply discount for Tier 2
-            Rental rental = new Tier3(movie, LocalDate.now());
-            chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Adding Movie to users catalog");
-            userRentals.add(rental);
-            //Add loyalty points to users account
-            user.setLoyaltyPoints(user.getLoyaltyPoints() + lp);
-            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 14 days");
-        }
+        StateHandler stateHandler = new StateHandler(user);
+        Rental rental = new Rental(movie, LocalDate.now().plusDays(stateHandler.getCurrentTier().getDays()));
+        chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Adding Movie to users catalog");
+        userRentals.add(rental);
+        //Add loyalty points to users account
+        user.setLoyaltyPoints(user.getLoyaltyPoints() + lp);
+        chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 3 days");
         userService.findByID(userId).stateCheck();
         return userRentals;
     }
@@ -96,9 +81,8 @@ public class RentalServiceImpl implements RentalService {
         if (user.getRentedMovies().isEmpty()) {
             chainLogger.logMessage(AbstractLogger.ERROR_INFO, "User has no rentals");
             throw new ServiceException(new ServiceError(Error.NO_RENTALS));
-        } else {
-            return user.getRentedMovies();
         }
+        return user.getRentedMovies();
     }
 
     /**
