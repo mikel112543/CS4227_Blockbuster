@@ -4,36 +4,53 @@
 
 <head>
     <title>Login</title>
-    <link th:href="@{/css/stylesheet.css}" rel="stylesheet" type="text/css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css}" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link href="../static/css/login.css" th:href="@{/css/login.css}" rel="stylesheet"/>
 </head>
 <body>
+<div class="container">
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <h1 id="page_heading" th:id="page_heading">Movies Galore</h1>
+            <div th:if="${param.error}">
+                Invalid username or password.
+            </div>
+            <!-- show notification of logout -->
+            <div th:if="${param.logout}">
+                You have been logged out.
+            </div>
+            <!-- login form -->
+            <div>
+                <form th:action="@{/}" method="post" id="login_form" th:id="login_form">
+                    <h2 id="login_title">Login</h2>
+                    <input type="text" name="username" placeholder="Username" th:placeholder="Username"  id="login_username" th:id="login_username" th:required="required" th:autofocus="autofocus"/>
+                    <br/>
+                    <input type="password" name="password" placeholder="Password" th:placeholder="Password" id="login_password" th:id="login_password" th:required="required" />
+                    <br/>
+                    <label id="remember-me_label" for="remember-me">Remember me?</label>:
+                    <input type="checkbox" id="remember-me" th:id="remember-me" name="remember-me" /> <br />
+                    <input type="submit" class="btn btn-primary" value="Sign In" id="sign_in_btn" th:id="sign_in_btn"/>
+                </form>
+                </br>
+                <h1 id="OR">OR</h1>
+            </div>
+            <div>
+                <form th:action="@{/}" method="post" id="register_form" th:id="register_form">
+                    <h2 id="register_title">Register</h2>
+                    <input type="text" name="username" placeholder="Username" th:placeholder="Username"  id="register_username" th:id="register_username" th:required="required" th:autofocus="autofocus"/>
+                    <br/>
+                    <input type="password" name="password" placeholder="Password" th:placeholder="Password" id="register_password" th:id="register_password" th:required="required" />
+                    <br/>
+                    <input type="submit" class="btn btn-success" value="Register" id="register_btn" th:id="sign_in_btn"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- show notification on error -->
-<div th:if="${param.error}">
-    Invalid username or password.
-</div>
-
-<!-- show notification of logout -->
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
-
-<!-- login form -->
-<div>
-    <form th:action="@{/}" method="post">
-        <h2 >Please sign in</h2>
-        <label >User Name</label>
-        <input type="text" name="username" th:required="required" th:autofocus="autofocus"/>
-        <br/>
-
-        <label>Password</label>
-        <input type="password" name="password" th:required="required" />
-        <br/>
-
-        <label for="remember-me">Remember me?</label>:
-        <input type="checkbox" id="remember-me" name="remember-me" /> <br />
-
-        <input type="submit" value="Sign In"/>
-    </form>
-</div>
 </body>
 </html>
