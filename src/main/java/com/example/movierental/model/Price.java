@@ -53,13 +53,24 @@ public abstract class Price {
     }
 
     /**
-     * Calculates charge based on the type of movie and the discount applied
-     * @param discount
+     * Calculates charge based on the type of movie and the users tier applied
+     * Tier 1 - No Discount
+     * Tier 2 - 10% Discount
+     * Tier 3 - 20% Discount
+     * @param tier
      */
-    public double getCharge(int discount){
-        double d = 100.00-discount;
-        double h = 100.00;
-        return getPrice()*(d/h);
+    public double getCharge(int tier){
+        if(tier == 1){
+            return getPrice();
+        }else if(tier == 2){
+            double d = 0.9;
+            return getPrice()*(d);
+        }else if(tier == 3){
+            double d = 0.8;
+            return getPrice()*(d);
+        }else{
+            return getPrice();
+        }
     }
 
     /**
