@@ -36,7 +36,6 @@ public class Movie {
 
     public Movie () {}
 
-
     public int getMovieId() {
         return movieId;
     }
@@ -68,14 +67,14 @@ public class Movie {
             t = 3;
         }
 
-        String s = "Movie Price: €" + round(getCharge(), 2) + "\n"
+        String s = "Movie Price: €" +getCharge() + "\n"
                     + "User Tier: " + t + ", No discount applied\n"
-                    + "Charge for Rental: " + getCharge();
+                    + "Charge for Rental: €" + getCharge();
 
         if(t > 1) {
-             s = "Movie Price: €" + round(getCharge(), 2) + "\n"
+             s = "Movie Price: €" + getCharge() + "\n"
                     + "User Tier: " + t + ", Discount applied\n"
-                    + "Charge for Rental: " + getCharge(t);
+                    + "Charge for Rental: €" + getCharge(t);
         }
         return s;
     }
@@ -121,6 +120,7 @@ public class Movie {
         return price;
     }
 
+
     private Movie(MovieBuilder builder) {
         this.title = builder.title;
         this.genre = builder.genre;
@@ -128,6 +128,7 @@ public class Movie {
         this.length = builder.length;
         this.movieId = builder.movieId;
         this.price = builder.price;
+        this.movieCoverUrl = builder.movieCoverUrl;
     }
 
     public static class MovieBuilder {

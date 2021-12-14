@@ -8,6 +8,8 @@ import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
 import com.example.movierental.logger.AbstractLogger;
 import com.example.movierental.logger.RequesterClient;
+import com.example.movierental.model.ServiceError;
+import java.io.IOException;
 
 import java.rmi.server.ServerCloneException;
 
@@ -29,5 +31,6 @@ public class PriceFactory {
             chainLogger.logMessage(AbstractLogger.ERROR_INFO,"Incorrect price code entered: Must be one of 0,1,2");
             throw new ServiceException(new ServiceError(Error.INVALID_PRICE_CODE));
         }
+        //return null;
     }
 }

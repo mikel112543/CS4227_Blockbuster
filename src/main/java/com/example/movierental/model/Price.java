@@ -65,7 +65,7 @@ public abstract class Price {
         }else if(tier == 2){
             double d = 0.9;
             return getPrice()*(d);
-        }else if(tier == 3){
+        }else if(tier >= 3){
             double d = 0.8;
             return getPrice()*(d);
         }else{
