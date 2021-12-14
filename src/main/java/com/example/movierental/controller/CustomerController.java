@@ -4,6 +4,8 @@ import com.example.movierental.service.UserRepoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 /**
  * Author - Michael Danaher
@@ -27,5 +29,14 @@ public class CustomerController {
     @ResponseBody
     public User getUser(@PathVariable("CUSTOMER_ID") final int customerId) {
         return userService.findByID(customerId);
+    }
+
+    @PostMapping(value = "/register")
+    public String getUserDetails(@RequestParam("userName") String userName,
+                                 @RequestParam("password") String password,
+                                 RedirectAttributes redirectAttributes){
+            userService.registerUser(userName, password);
+            redirectAttributes.addFlashAttribute("Success", "Registration Successful");
+            return "redirect:/";
     }
 }

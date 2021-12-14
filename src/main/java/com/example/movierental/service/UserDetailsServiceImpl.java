@@ -12,10 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService, UserRepoService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
 
     UserRepoServiceImpl userRepoService;
@@ -36,28 +35,4 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserRepoServi
         }
     }
 
-    @Override
-    public List<User> getUsers() {
-        return null;
-    }
-
-    @Override
-    public void addUser(User user) {
-
-    }
-
-    @Override
-    public void initializeUsers() {
-
-    }
-
-    @Override
-    public User findByID(int i) {
-        return null;
-    }
-
-    @Override
-    public User findByUserName(String username) {
-        return null;
-    }
 }

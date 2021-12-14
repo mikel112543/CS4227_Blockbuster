@@ -1,7 +1,10 @@
 package com.example.movierental.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+
+import static jdk.nashorn.internal.objects.NativeMath.round;
 
 //Movie Class
 //
@@ -19,20 +22,19 @@ public class Movie {
     private String description;
     @JsonProperty("Length")
     private String length;
-    @JsonProperty("Movie ID")
+    @JsonIgnore
     private int movieId;
-    @JsonProperty("Movie Cover")
+    @JsonIgnore
     private String movieCoverUrl;
 
     //optional properties
-    @JsonProperty("Price")
+    @JsonIgnore
     private Price price;
     @JsonProperty("Price")
     private String priceStr;
 
 
     public Movie () {}
-
 
     public int getMovieId() {
         return movieId;
@@ -49,12 +51,32 @@ public class Movie {
 
     /**
      * Calculates the charge based on the type of movie and discount given as int meaning percentage
-     * @param discount
+     * @param tier
      * @return double charge for renting movie
      */
-    //calls prices get charge method
-    public double getCharge(int discount){
-        return price.getCharge(discount);
+    public double getCharge(int tier){
+        return price.getCharge(tier);
+    }
+
+    public String getChargeString(int tier){
+
+        int t = tier;
+        if(t < 0){
+            t = 0;
+        }else if(t > 3){
+            t = 3;
+        }
+
+        String s = "Movie Price: €" +getCharge() + "\n"
+                    + "User Tier: " + t + ", No discount applied\n"
+                    + "Charge for Rental: €" + getCharge();
+
+        if(t > 1) {
+             s = "Movie Price: €" + getCharge() + "\n"
+                    + "User Tier: " + t + ", Discount applied\n"
+                    + "Charge for Rental: €" + getCharge(t);
+        }
+        return s;
     }
 
     public String getMovieCoverUrl(){
@@ -90,6 +112,7 @@ public class Movie {
         return price;
     }
 
+
     private Movie(MovieBuilder builder) {
         this.title = builder.title;
         this.genre = builder.genre;
@@ -98,6 +121,7 @@ public class Movie {
         this.movieId = builder.movieId;
         this.movieCoverUrl = builder.movieCoverUrl;
         this.price = builder.price;
+        this.movieCoverUrl = builder.movieCoverUrl;
     }
 
     public static class MovieBuilder {
@@ -109,18 +133,19 @@ public class Movie {
         private String movieCoverUrl;
 
         //optional parameters
+        @JsonIgnore
         private Price price;
 
-        public MovieBuilder(String title, String genre, String description, String length, int movieId, String movieCoverUrl) { //required parameters in here only
+        public MovieBuilder(String title, String genre, String description, String length, int movieId) { //required parameters in here only
             this.title = title;
             this.genre = genre;
             this.description = description;
             this.length = length;
             this.movieId = movieId;
-            this.movieCoverUrl = movieCoverUrl;
         }
 
 
+        @JsonIgnore
         public MovieBuilder setPrice(int priceCode) {
             PriceFactory p = new PriceFactory();
             this.price = p.getPrice(priceCode);
@@ -132,6 +157,9 @@ public class Movie {
         }
     }
 
+    public void setMovieCoverUrl(String movieCoverUrl) {
+        this.movieCoverUrl = movieCoverUrl;
+    }
 
 
 

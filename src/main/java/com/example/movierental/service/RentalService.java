@@ -2,6 +2,8 @@ package com.example.movierental.service;
 
 import com.example.movierental.model.Rental;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 import java.util.List;
 
 
@@ -23,5 +25,5 @@ public interface RentalService {
 
     String removeRental(int customerId, int movieId);
 
-    void checkRentals();
+    void checkRentals() throws IOException;
 }

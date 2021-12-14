@@ -42,6 +42,14 @@ public class User implements UserDetails {
 
     private Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
+    public User() {
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public User(int userID, String username, String password, String authority, boolean banned) {
         this.userID = userID;
         this.username = username;

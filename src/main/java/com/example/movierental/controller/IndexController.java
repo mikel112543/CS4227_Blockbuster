@@ -1,11 +1,14 @@
 package com.example.movierental.controller;
 
+import com.example.movierental.model.User;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 
 import java.security.Principal;
 
@@ -21,12 +24,18 @@ public class IndexController {
     }
 
     @GetMapping("/")
-    public String getLoginView(Principal principal)
-    {
-        if(isAuthenticated()) {
+    public String getLoginView(Principal principal) {
+        if (isAuthenticated()) {
             return "redirect:/movies";
+        } else {
+            return "login";
         }
-        else return "login";
+    }
+    @GetMapping("/registerForm")
+    public String showRegistration(Model model) {
+        User user = new User();
+        model.addAttribute("newUser", user);
+        return "registerForm";
     }
 }
 

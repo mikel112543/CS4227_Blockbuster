@@ -30,8 +30,8 @@ public class UserRepoServiceImpl implements UserRepoService {
     public void initializeUsers() throws IOException {
         String path = "users.csv";
         String line;
-        BufferedReader br = new BufferedReader(new FileReader(path));
         try {
+            BufferedReader br = new BufferedReader(new FileReader(path));
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 User user = new User(Integer.valueOf(values[0]),
@@ -41,14 +41,13 @@ public class UserRepoServiceImpl implements UserRepoService {
                 user.setTier(Integer.valueOf(values[5]));
                 users.add(user);
             }
+            br.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             chainLogger.logMessage(AbstractLogger.ERROR_INFO, "File not found");
             throw new ServiceException(new ServiceError(Error.FILE_NOT_FOUND));
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            br.close();
         }
     }
 
@@ -76,15 +75,34 @@ public class UserRepoServiceImpl implements UserRepoService {
                 break;
             }
         }
-        if(user == null) {
-            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Username not found");
-            throw new ServiceException(new ServiceError(Error.INVALID_LOGIN_CREDENTIALS));
-        }
         return user;
     }
 
     @Override
+    public void registerUser(String userName, String password) {
+        int userId = users.size()+1;
+        for(User user : users) {
+            if (Objects.equals(user.getUsername(), userName)) {
+                chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not register user as username already exists");
+                throw new ServiceException(new ServiceError(Error.INVALID_USERNAME));
+            }
+        }
+        try {
+            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "Registering user...");
+            User user = new User(userId, userName, passwordEncoder.encode(password), "ROLE_USER", false);
+            users.add(user);
+        }catch (ServiceException e) {
+            throw new ServiceException(new ServiceError(Error.INVALID_REGISTER));
+        }
+        chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "Registration successful");
+    }
+
+    @Override
     public void addUser(User user) {
-        users.add(user.getUserID() - 1 , user);
+        users.add(user);
+    }
+
+    public void removeUser(User user) {
+        users.remove(user);
     }
 }
