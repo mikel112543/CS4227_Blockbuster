@@ -18,4 +18,8 @@ public interface MovieService {
 
     ArrayList<Movie> findByGenre(String insertedGenre);
 
-    }
+    public void removeMovie();
+
+    public void addMovie(Movie movie);
+}
+

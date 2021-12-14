@@ -17,8 +17,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -57,8 +58,11 @@ public class RentalServiceImpl implements RentalService {
                 String [] values = line.split(",");
                 Movie movie = movieService.findByMovieID(Integer.parseInt(values[0]));
                 User user = userService.findByID(Integer.parseInt(values[1]));
-                Rental rental = new Rental (movie, LocalDate.parse(values[2]));
 
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
+                LocalDateTime dateTime = LocalDateTime.parse(values[2], formatter);
+
+                Rental rental = new Rental(movie, dateTime);
                 listOfRentals.add(rental);
                 user.getRentedMovies().add(rental);
             }
@@ -96,7 +100,7 @@ public class RentalServiceImpl implements RentalService {
             }
         }
         StateHandler stateHandler = new StateHandler(user);
-        Rental rental = new Rental(movie, LocalDate.now().plusDays(stateHandler.getCurrentTier().getDays()));
+        Rental rental = new Rental(movie, LocalDateTime.now().plusDays(stateHandler.getCurrentTier().getDays()));
         chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Adding Movie to users catalog");
         userRentals.add(rental);
         //Adds loyalty points to users account

@@ -1,10 +1,15 @@
 package com.example.movierental.service;
 
+import com.example.movierental.contants.Error;
+import com.example.movierental.exception.ServiceException;
+import com.example.movierental.logger.AbstractLogger;
+import com.example.movierental.logger.RequesterClient;
 import com.example.movierental.model.Movie;
 import com.example.movierental.model.ServiceError;
 import com.example.movierental.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
