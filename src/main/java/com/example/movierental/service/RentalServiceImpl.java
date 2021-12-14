@@ -65,7 +65,7 @@ public class RentalServiceImpl implements RentalService {
         Rental rental = new Rental(movie, LocalDate.now().plusDays(stateHandler.getCurrentTier().getDays()));
         chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Adding Movie to users catalog");
         userRentals.add(rental);
-        //Add loyalty points to users account
+        //Adds loyalty points to users account
         user.setLoyaltyPoints(user.getLoyaltyPoints() + lp);
         chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 3 days");
         userService.findByID(userId).stateCheck();
