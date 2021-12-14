@@ -29,7 +29,7 @@ public class CustomerController {
         return userService.findByID(customerId);
     }
 
-    @PostMapping(value = "/register")
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public String getUserDetails(@RequestParam(value = "userName") String userName,
                                @RequestParam(value = "password") String password) {
