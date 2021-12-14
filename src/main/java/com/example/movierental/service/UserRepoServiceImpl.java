@@ -84,6 +84,14 @@ public class UserRepoServiceImpl implements UserRepoService {
     }
 
     @Override
+    public void registerUser(String userName, String password) {
+        int userId = users.size();
+        passwordEncoder.encode(password);
+        User user = new User(userId, userName, password, "ROLE_USER", false);
+        users.add(user);
+    }
+
+    @Override
     public void addUser(User user) {
         users.add(user.getUserID() - 1 , user);
     }

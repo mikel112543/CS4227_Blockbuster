@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "index", "movies")
+                .antMatchers("/", "index")
                 .permitAll()
                 .antMatchers("/customerId/**").hasRole(USER.name())
                 .antMatchers("/movies").hasAnyRole(USER.name(), ADMIN.name())
@@ -44,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/")
+                .loginPage("/login")
                 .defaultSuccessUrl("/movies", true)
                 .failureUrl("/login?error=true")
                 .and()
