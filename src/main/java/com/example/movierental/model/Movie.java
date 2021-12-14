@@ -26,9 +26,9 @@ public class Movie {
     private String movieCoverUrl;
 
     //optional properties
-    @JsonProperty("Price")
-    private Price price;
     @JsonIgnore
+    private Price price;
+    @JsonProperty("Price")
     private String priceStr;
 
 
@@ -117,6 +117,7 @@ public class Movie {
         private String movieCoverUrl;
 
         //optional parameters
+        @JsonIgnore
         private Price price;
 
         public MovieBuilder(String title, String genre, String description, String length, int movieId, String movieCoverUrl) { //required parameters in here only
@@ -129,6 +130,7 @@ public class Movie {
         }
 
 
+        @JsonIgnore
         public MovieBuilder setPrice(int priceCode) {
             PriceFactory p = new PriceFactory();
             this.price = p.getPrice(priceCode);

@@ -10,6 +10,7 @@ public abstract class Price {
 
     @JsonIgnore
     private int price; //price of the movie per day
+    @JsonIgnore
     private int loyaltyPoints; //loyalty points per day of rental of the movie
 
     /**
@@ -56,6 +57,7 @@ public abstract class Price {
      * Calculates charge based on the type of movie and the discount applied
      * @param discount
      */
+    @JsonIgnore
     public double getCharge(int discount){
         double d = 100.00-discount;
         double h = 100.00;
