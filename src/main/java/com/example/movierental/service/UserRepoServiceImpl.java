@@ -9,7 +9,6 @@ import com.example.movierental.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.*;
@@ -28,11 +27,11 @@ public class UserRepoServiceImpl implements UserRepoService {
     }
 
     @Override
-    public void initializeUsers() {
+    public void initializeUsers() throws IOException {
         String path = "users.csv";
         String line;
+        BufferedReader br = new BufferedReader(new FileReader(path));
         try {
-            BufferedReader br = new BufferedReader(new FileReader(path));
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 User user = new User(Integer.valueOf(values[0]),
@@ -48,6 +47,8 @@ public class UserRepoServiceImpl implements UserRepoService {
             throw new ServiceException(new ServiceError(Error.FILE_NOT_FOUND));
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            br.close();
         }
     }
 

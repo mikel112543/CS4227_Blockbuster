@@ -38,8 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "index", "movies")
                 .permitAll()
-//                .antMatchers("/customerId/**").hasRole(USER.name())
-//                .antMatchers("/movies").hasAnyRole(USER.name(), ADMIN.name())
+                .antMatchers("/customerId/**").hasRole(USER.name())
+                .antMatchers("/movies").hasAnyRole(USER.name(), ADMIN.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -60,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth)  {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 
