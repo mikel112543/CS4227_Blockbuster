@@ -10,6 +10,7 @@ public abstract class Price {
 
     @JsonIgnore
     private int price; //price of the movie per day
+    @JsonIgnore
     private int loyaltyPoints; //loyalty points per day of rental of the movie
 
     /**
