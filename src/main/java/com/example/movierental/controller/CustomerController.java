@@ -26,6 +26,6 @@ public class CustomerController {
     @GetMapping(value = "/customerId/{CUSTOMER_ID}")
     @ResponseBody
     public User getUser(@PathVariable("CUSTOMER_ID") final int customerId) {
-        return userService.findByUserID(customerId);
+        return userService.findByID(customerId);
     }
 }

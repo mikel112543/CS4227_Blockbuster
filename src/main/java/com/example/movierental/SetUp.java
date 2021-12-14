@@ -12,21 +12,4 @@ import javax.annotation.PostConstruct;
  */
 @Service
 public final class SetUp {
-
-    @Autowired
-    UserRepoServiceImpl userService;
-
-    @Autowired
-    MovieServiceImpl movieService;
-
-    @Autowired
-    RentalServiceImpl rentalService;
-
-    //Will run upon Springboot Start Up
-    @PostConstruct
-    private void setUp() {
-        userService.initializeUsers();
-        movieService.initializeList();
-        rentalService.checkRentals();
-    }
 }

@@ -30,7 +30,7 @@ public class AdminController {
      */
     @PostMapping(value = "admin/customerId/{CUSTOMER_ID}/ban")
     public String banCustomer(@PathVariable("CUSTOMER_ID") final int customerId) {
-        User user = userService.findByUserID(customerId);
+        User user = userService.findByID(customerId);
         adminService.banCustomer(customerId);
         return "User: " + user.getUsername() + " has been banned";
     }

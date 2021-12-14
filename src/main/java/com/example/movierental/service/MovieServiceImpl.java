@@ -20,7 +20,7 @@ public class MovieServiceImpl implements MovieService {
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
 
 
-    public ArrayList<Movie> listAllMovies() {
+    public ArrayList<Movie> getMovies() {
         return listOfMovies;
     }
 
@@ -52,15 +52,17 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void initializeListOfMovies() {
-        String path = "movies.csv";
-        String line = "";
+    public void initializeMovies() {
+        String path = "Movies.csv";
+        String line;
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
-            while ((br.readLine() != null)) {
+            while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
+                                                    //title     genre      description length   movieID                       movieCover
                 Movie movie = new Movie.MovieBuilder(values[0], values[1], values[2], values[3], Integer.parseInt(values[5]), values[6]).setPrice(Integer.parseInt(values[4])).build();
                 listOfMovies.add(movie);
+                System.out.println(movie.getPrice().getCharge());
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

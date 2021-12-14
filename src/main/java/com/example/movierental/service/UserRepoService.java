@@ -12,7 +12,7 @@ public interface UserRepoService {
 
     void initializeUsers();
 
-    User findByUserID(int userId);
+    User findByID(int i);
 
     User findByUserName(String username);
 }

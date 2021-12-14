@@ -11,6 +11,8 @@ import com.example.movierental.model.ServiceError;
 import com.example.movierental.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Timer;
@@ -47,7 +49,6 @@ public class RentalServiceImpl implements RentalService {
         int lp = movie.getPrice().getLoyaltyPoints();
 
         List<Rental> userRentals = user.getRentedMovies();
-        int customerTier = user.getTier();
 
         //Check if user has already rented movie
         chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User is getting " + lp + "Loyalty Points");
@@ -145,23 +146,26 @@ public class RentalServiceImpl implements RentalService {
      * Routinely checks expiry of all users rentals
      */
     @Override
+    @PostConstruct
     public void checkRentals() {
-        List<User> users = userService.getUsers();
+        //userService.initializeUsers();
+        movieService.initializeMovies();
         TimerTask checkRentals = new TimerTask() {
             @Override
             public void run() {
+                List<User> users = userService.getUsers();
                 //Loop to get users
                 chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Checking users rentals...");
                 for (User user : users) {
                     List<Rental> userRentals = user.getRentedMovies();
                     //Loop to get users rentals
-                    chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "Removing expired rentals...");
                     for (Rental rental : userRentals) {
                         if (rental.calculateRemainingDays() == 0) {
                             removeRental(user.getUserID(), rental.getMovie().getMovieId());
                         }
                     }
                 }
+                chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "Removing expired rentals...");
             }
         };
         //Set timer to run check every 5 hours

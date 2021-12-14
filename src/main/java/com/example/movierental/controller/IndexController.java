@@ -23,7 +23,7 @@ public class IndexController {
     @GetMapping("/")
     public String getLoginView(Principal principal)
     {
-        if(isAuthenticated() == true) {
+        if(isAuthenticated()) {
             return "redirect:/movies";
         }
         else return "login";

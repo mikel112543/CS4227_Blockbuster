@@ -40,8 +40,8 @@ class RentalControllerTest {
     @BeforeEach
     void setUp() {
         List<Rental> testRentals = new ArrayList<>();
-        User test = new User(99, "test", "test", false, 680, 3, testRentals, false);
-        userService.addUser(test);
+        //User test = new User(99, "test", "test", false, 680, 3, testRentals, false);
+        //userService.addUser(test);
     }
 
     @AfterEach

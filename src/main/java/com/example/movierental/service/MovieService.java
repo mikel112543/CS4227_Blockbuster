@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface MovieService {
-    ArrayList<Movie> listAllMovies();
+    ArrayList<Movie> getMovies();
 
     Movie findByMovieID(int movieID);
 
     ArrayList<Movie> findByName(String searchbar);
 
-    void initializeListOfMovies();
+    void initializeMovies();
 }

@@ -9,13 +9,10 @@ import com.example.movierental.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.*;
-
-import static com.example.movierental.security.UserRole.USER;
-
 
 @Repository("users")
 public class UserRepoServiceImpl implements UserRepoService {
@@ -47,6 +44,8 @@ public class UserRepoServiceImpl implements UserRepoService {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "File not found");
+            throw new ServiceException(new ServiceError(Error.FILE_NOT_FOUND));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,6 +74,10 @@ public class UserRepoServiceImpl implements UserRepoService {
                 user = findByID(i + 1);
                 break;
             }
+        }
+        if(user == null) {
+            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Username not found");
+            throw new ServiceException(new ServiceError(Error.INVALID_LOGIN_CREDENTIALS));
         }
         return user;
     }

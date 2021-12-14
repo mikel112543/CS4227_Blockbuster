@@ -20,7 +20,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void addMovie(String title, String genre, String description, String length, int priceCode, String movieCoverUrl){
-        List<Movie> listOfMovies = movieService.listAllMovies();
+        List<Movie> listOfMovies = movieService.getMovies();
         int movieId = listOfMovies.get(listOfMovies.size()-1).getMovieId()+1;
 
         Movie movie = new Movie.MovieBuilder(title, genre, description, length, movieId, movieCoverUrl).setPrice(priceCode).build();
@@ -29,7 +29,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteMovie(int movieID) {
-        List<Movie> listOfMovies = movieService.listAllMovies();
+        List<Movie> listOfMovies = movieService.getMovies();
         Movie movie = movieService.findByMovieID(movieID);
         for(int i = 0 ; i < listOfMovies.size() ; i++){
             if (movieID == movie.getMovieId()){
@@ -46,7 +46,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void banCustomer(int userID) {
         List<User> listOfUsers = userService.getUsers();
-        User user = userService.findByUserID(userID);
+        User user = userService.findByID(userID);
         for (int i = 0 ; i < listOfUsers.size() ; i++){
             if (userID == user.getUserID()){
                 user.setBanned(true);
@@ -57,11 +57,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void unbanCustomer(int userID){
         List<User> listOfUsers = userService.getUsers();
-        User user = userService.findByUserID(userID);
+        User user = userService.findByID(userID);
         for (int i = 0 ; i < listOfUsers.size() ; i++){
             if (userID == user.getUserID()){
                 user.setBanned(false);
             }
         }
     }
+
 }
