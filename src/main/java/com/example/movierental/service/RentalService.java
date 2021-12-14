@@ -13,6 +13,8 @@ public interface RentalService {
 
     void initializeListOfRentals();
 
+    List<Rental> getListOfAllRentals();
+
     List<Rental> rentMovie(int customerId, int movieId);
 
     List<Rental> getRentals(int userId);

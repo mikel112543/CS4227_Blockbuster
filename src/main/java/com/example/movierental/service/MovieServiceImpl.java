@@ -24,6 +24,11 @@ public class MovieServiceImpl implements MovieService {
         return listOfMovies;
     }
 
+    /**
+     *
+     * @param movieID - ID of the movie
+     * @return Object of the movie if its in the list
+     */
     @Override
     public Movie findByMovieID(int movieID) {
         for (Movie movie : listOfMovies) {
@@ -35,6 +40,11 @@ public class MovieServiceImpl implements MovieService {
         throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_ID));
     }
 
+    /**
+     *
+     * @param searchbar - User searches X
+     * @return ArrayList of Movies if their title contains X in the title
+     */
     @Override
     public ArrayList<Movie> findByName(String searchbar){
         ArrayList<Movie> results = new ArrayList<>();
@@ -51,6 +61,9 @@ public class MovieServiceImpl implements MovieService {
 
     }
 
+    /**
+     * Initializes list of movies from movies csv
+     */
     @Override
     public void initializeMovies() {
         String path = "Movies.csv";

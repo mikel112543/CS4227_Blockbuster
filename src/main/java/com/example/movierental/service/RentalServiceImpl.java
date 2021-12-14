@@ -43,6 +43,9 @@ public class RentalServiceImpl implements RentalService {
         this.movieService = movieService;
     }
 
+    /**
+     * Initializes listOfRentals list from csv
+     */
     @Override
     public void initializeListOfRentals(){
         String path = "rentals.csv";
@@ -64,6 +67,10 @@ public class RentalServiceImpl implements RentalService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    @Override
+    public List<Rental> getListOfAllRentals(){
+        return listOfRentals;
     }
     /**
      * @param userId  - User renting the movie
