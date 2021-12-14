@@ -23,11 +23,11 @@ public class UserRepoServiceImpl implements UserRepoService {
 
 
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
-    List<User> ListOfUsers = new ArrayList<User>();
+    private List<User> listOfUsers = new ArrayList<User>();
     final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserRepoServiceImpl(PasswordEncoder passwordEncoder) {
+    private UserRepoServiceImpl(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -53,7 +53,7 @@ public class UserRepoServiceImpl implements UserRepoService {
                                     values[3], Boolean.valueOf(values[6]));
                 user.setLoyaltyPoints(Integer.valueOf(values[4]));
                 user.setTier(Integer.valueOf(values[5]));
-                ListOfUsers.add(user);
+                listOfUsers.add(user);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -64,14 +64,14 @@ public class UserRepoServiceImpl implements UserRepoService {
 
     @Override
     public List<User> getUsers() {
-        return ListOfUsers;
+        return listOfUsers;
     }
 
     @Override
     public User findByUserID(int userId) {
         User user;
         //Aaron: Can remove user and just return what is in For Loop
-        for (User value : ListOfUsers)
+        for (User value : listOfUsers)
             if (value.getUserID() == userId) {
                 user = value;
                 return user;
@@ -83,8 +83,8 @@ public class UserRepoServiceImpl implements UserRepoService {
     @Override
     public User findByUserName(String username) {
         User user = null;
-        for(int i = 0; i < ListOfUsers.size(); i++) {
-            if (ListOfUsers.get(i).getUsername().equals(username)) {
+        for(int i = 0; i < listOfUsers.size(); i++) {
+            if (listOfUsers.get(i).getUsername().equals(username)) {
                 user = findByUserID(i + 1);
                 break;
             }
@@ -92,8 +92,15 @@ public class UserRepoServiceImpl implements UserRepoService {
         return user;
     }
 
+    public void registerUser(String userName, String password) {
+        int userId = listOfUsers.size();
+        passwordEncoder.encode(password);
+        User user = new User(userId, userName, password, "ROLE_USER", false);
+        listOfUsers.add(user);
+    }
+
     @Override
     public void addUser(User user) {
-        ListOfUsers.add(user.getUserID() - 1 , user);
+        listOfUsers.add(user);
     }
 }

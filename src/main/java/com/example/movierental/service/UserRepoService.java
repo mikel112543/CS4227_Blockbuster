@@ -15,4 +15,6 @@ public interface UserRepoService {
     User findByUserID(int userId);
 
     User findByUserName(String username);
+
+    void registerUser(String userName, String password);
 }
