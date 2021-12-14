@@ -82,16 +82,8 @@ public class Movie {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getLength() {
         return length;
-    }
-
-    public void setLength(String length) {
-        this.length = length;
     }
 
     public Price getPrice() {
@@ -104,6 +96,7 @@ public class Movie {
         this.description = builder.description;
         this.length = builder.length;
         this.movieId = builder.movieId;
+        this.movieCoverUrl = builder.movieCoverUrl;
         this.price = builder.price;
     }
 

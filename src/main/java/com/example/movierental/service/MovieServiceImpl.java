@@ -58,7 +58,27 @@ public class MovieServiceImpl implements MovieService {
             throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_NAME));
         }
         return results;
+    }
 
+    /**
+     *
+     * @param insertedGenre - the genre a user searches for
+     * @return ArrayList of Movies if their genre contains the searched genre
+     */
+
+    @Override
+    public ArrayList<Movie> findByGenre(String insertedGenre){
+        ArrayList<Movie> results = new ArrayList<>();
+        for (Movie movie : listOfMovies){
+            if (movie.getGenre().toLowerCase().contains(insertedGenre.toLowerCase())){
+                results.add(movie);
+            }
+        }
+        if (results.isEmpty()){
+            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "No movies available");
+            throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_NAME));
+        }
+        return results;
     }
 
     /**
