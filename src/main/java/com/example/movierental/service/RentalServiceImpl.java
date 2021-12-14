@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Timer;
@@ -147,8 +148,8 @@ public class RentalServiceImpl implements RentalService {
      */
     @Override
     @PostConstruct
-    public void checkRentals() {
-        //userService.initializeUsers();
+    public void checkRentals() throws IOException {
+        userService.initializeUsers();
         movieService.initializeMovies();
         TimerTask checkRentals = new TimerTask() {
             @Override

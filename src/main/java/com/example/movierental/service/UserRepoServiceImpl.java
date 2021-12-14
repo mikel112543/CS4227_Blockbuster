@@ -30,8 +30,8 @@ public class UserRepoServiceImpl implements UserRepoService {
     public void initializeUsers() throws IOException {
         String path = "users.csv";
         String line;
-        BufferedReader br = new BufferedReader(new FileReader(path));
         try {
+            BufferedReader br = new BufferedReader(new FileReader(path));
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 User user = new User(Integer.valueOf(values[0]),
@@ -41,14 +41,13 @@ public class UserRepoServiceImpl implements UserRepoService {
                 user.setTier(Integer.valueOf(values[5]));
                 users.add(user);
             }
+            br.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             chainLogger.logMessage(AbstractLogger.ERROR_INFO, "File not found");
             throw new ServiceException(new ServiceError(Error.FILE_NOT_FOUND));
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            br.close();
         }
     }
 
@@ -75,10 +74,6 @@ public class UserRepoServiceImpl implements UserRepoService {
                 user = findByID(i + 1);
                 break;
             }
-        }
-        if(user == null) {
-            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Username not found");
-            throw new ServiceException(new ServiceError(Error.INVALID_LOGIN_CREDENTIALS));
         }
         return user;
     }
