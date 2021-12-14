@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <title>Login</title>
@@ -30,15 +31,16 @@
                     <br/>
                     <input type="password" name="password" placeholder="Password" th:placeholder="Password" id="login_password" th:id="login_password" th:required="required" />
                     <br/>
-                    <label id="remember-me_label" for="remember-me">Remember me?</label>:
-                    <input type="checkbox" id="remember-me" th:id="remember-me" name="remember-me" /> <br />
+                    <label id="remember-me_label" for="remember-me">Remember me?</label>
+                    <input type="checkbox" id="remember-me" th:id="remember-me" name="remember-me" />
+                    <br/>
                     <input type="submit" class="btn btn-primary" value="Sign In" id="sign_in_btn" th:id="sign_in_btn"/>
                 </form>
                 </br>
                 <h1 id="OR">OR</h1>
             </div>
             <div>
-                <form th:action="@{/register}" method="post" id="register_form" th:id="register_form">
+                <form th:action="@{/register}" method="post" th:method="post" id="register_form" th:id="register_form">
                     <h2 id="register_title">Register</h2>
                     <input type="text" name="username" placeholder="Username" th:placeholder="Username" th:name="userName" id="register_username" th:id="register_username" th:required="required" th:autofocus="autofocus"/>
                     <br/>

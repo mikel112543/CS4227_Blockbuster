@@ -30,6 +30,7 @@ public class RentalController {
      */
 
     @PostMapping(value = "/customerId/{CUSTOMER_ID}/movieId/{MOVIE_ID}")
+    @ResponseBody
     public List<Rental> rentMovie(@PathVariable("CUSTOMER_ID") final String customerId,
                                   @PathVariable("MOVIE_ID") final String movieId) {
 
@@ -45,6 +46,7 @@ public class RentalController {
      */
 
     @GetMapping(value = "/customerId/{CUSTOMER_ID}/rentals")
+    @ResponseBody
     public List<Rental> showRentals(@PathVariable("CUSTOMER_ID") final String customerId) {
         int userId = Integer.parseInt(customerId);
 

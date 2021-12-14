@@ -1,5 +1,6 @@
 package com.example.movierental.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
@@ -19,15 +20,15 @@ public class Movie {
     private String description;
     @JsonProperty("Length")
     private String length;
-    @JsonProperty("Movie ID")
+    @JsonIgnore
     private int movieId;
-    @JsonProperty("Movie Cover")
+    @JsonIgnore
     private String movieCoverUrl;
 
     //optional properties
     @JsonProperty("Price")
     private Price price;
-    @JsonProperty("Price")
+    @JsonIgnore
     private String priceStr;
 
 
