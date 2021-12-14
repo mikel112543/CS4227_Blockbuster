@@ -3,5 +3,80 @@
 }
 
 body {
-    background-image: url(https://www.google.com/url?sa=i&url=https%3A%2F%2Fwallpaperaccess.com%2Fhorror-movie-collage&psig=AOvVaw3p65GpFP8gM0XsiMWTFniG&ust=1638978400204000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCIj0wMGE0vQCFQAAAAAdAAAAABAD);
+    background-color: darkred;
+}
+
+#page_heading {
+    text-align: center;
+    color: white;
+}
+
+#login_form {
+    background-color: white;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+#login_title {
+    margin-left: 10px;
+}
+
+#login_username {
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 15px;
+}
+
+#login_password {
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 15px;
+}
+
+#remember-me_label{
+    margin-left: 10px;
+    font-size: 15px;
+}
+#remember-me {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+#sign_in_btn {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+#OR {
+    text-align: center;
+    color: white;
+}
+
+#register_form {
+    background-color: white;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+#register_title {
+    margin-left: 10px;
+}
+
+#register_username {
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 15px;
+}
+
+#register_password {
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 15px;
+}
+
+#register_btn {
+    margin-top: 10px;
+    margin-left: 10px;
 }

@@ -28,4 +28,13 @@ public class CustomerController {
     public User getUser(@PathVariable("CUSTOMER_ID") final int customerId) {
         return userService.findByID(customerId);
     }
+
+    @PostMapping(value = "/register")
+    @ResponseBody
+    public String getUserDetails(@RequestParam(value = "userName") String userName,
+                               @RequestParam(value = "password") String password) {
+
+        userService.registerUser(userName, password);
+        return "movies";
+    }
 }
