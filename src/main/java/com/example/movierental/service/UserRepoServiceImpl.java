@@ -80,15 +80,26 @@ public class UserRepoServiceImpl implements UserRepoService {
 
     @Override
     public void registerUser(String userName, String password) {
-        int userId = users.size();
-        passwordEncoder.encode(password);
-        User user = new User(userId, userName, password, "ROLE_USER", false);
-        users.add(user);
+        int userId = users.size()+1;
+        for(User user : users) {
+            if (Objects.equals(user.getUsername(), userName)) {
+                chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not register user as username already exists");
+                throw new ServiceException(new ServiceError(Error.INVALID_USERNAME));
+            }
+        }
+        try {
+            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "Registering user...");
+            User user = new User(userId, userName, passwordEncoder.encode(password), "ROLE_USER", false);
+            users.add(user);
+        }catch (ServiceException e) {
+            throw new ServiceException(new ServiceError(Error.INVALID_REGISTER));
+        }
+        chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "Registration successful");
     }
 
     @Override
     public void addUser(User user) {
-        users.add(user.getUserID() - 1 , user);
+        users.add(user);
     }
 
     public void removeUser(User user) {
