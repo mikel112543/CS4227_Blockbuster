@@ -13,7 +13,7 @@ import static com.example.movierental.security.UserRole.USER;
 
 public class User implements UserDetails {
 
-    @JsonProperty
+    @JsonIgnore
     private int userID;
 
     @JsonProperty("Username")
@@ -40,6 +40,7 @@ public class User implements UserDetails {
     @JsonProperty
     private boolean isAccountNonLocked;
 
+    @JsonIgnore
     private Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
     public User() {
@@ -132,6 +133,10 @@ public class User implements UserDetails {
 
     public void setBanned(boolean banned) {
         isAccountNonLocked = !banned;
+    }
+
+    public boolean isBanned() {
+        return banned;
     }
 
     public void setRentedMovies(List<Rental> rentedMovies) {

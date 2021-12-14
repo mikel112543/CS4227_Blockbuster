@@ -4,11 +4,14 @@ import com.example.movierental.model.User;
 import com.example.movierental.service.RentalService;
 import com.example.movierental.service.UserRepoServiceImpl;
 import com.example.movierental.model.Rental;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,11 +23,13 @@ public class RentalController {
 
     RentalService rentalService;
     UserRepoServiceImpl userService;
+    ObjectMapper mapper;
 
     @Autowired
-    public RentalController(RentalService rentalService, UserRepoServiceImpl userService) {
+    public RentalController(RentalService rentalService, UserRepoServiceImpl userService, ObjectMapper mapper) {
         this.rentalService = rentalService;
         this.userService = userService;
+        this.mapper = mapper;
     }
 
     /**
@@ -33,7 +38,7 @@ public class RentalController {
      */
     @GetMapping(value = "/rentals")
     @ResponseBody
-    public List<Rental> showRentals() {
+    public List<ObjectNode> showRentals() {
         int userId = 0;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
@@ -43,7 +48,19 @@ public class RentalController {
                 break;
             }
         }
-        return rentalService.getRentals(userId);
+        List<Rental> userRentals = rentalService.getRentals(userId);
+        List<ObjectNode> movieNodes = new ArrayList<>();
+        for(Rental rental : userRentals) {
+            ObjectNode movieNode = mapper.createObjectNode();
+            movieNode.put("Title", rental.getMovie().getTitle());
+            movieNode.put("Genre", rental.getMovie().getGenre());
+            movieNode.put("Description", rental.getMovie().getDescription());
+            movieNode.put("Length", rental.getMovie().getLength());
+            movieNode.put("Price", rental.getMovie().getCharge());
+            movieNode.put("Rent Length", rental.calculateRemainingDays());
+            movieNodes.add(movieNode);
+        }
+        return movieNodes;
     }
 
     /**
@@ -54,11 +71,22 @@ public class RentalController {
 
     @PostMapping(value = "/customerId/{CUSTOMER_ID}/movieId/{MOVIE_ID}")
     @ResponseBody
-    public List<Rental> rentMovie(@PathVariable("CUSTOMER_ID") final int customerId,
+    public List<ObjectNode> rentMovie(@PathVariable("CUSTOMER_ID") final int customerId,
                                   @PathVariable("MOVIE_ID") final int movieId) {
 
-
-        return rentalService.rentMovie(customerId, movieId);
+        List<Rental> userRentals = rentalService.rentMovie(customerId, movieId);
+        List<ObjectNode> movieNodes = new ArrayList<>();
+        for(Rental rental : userRentals) {
+            ObjectNode movieNode = mapper.createObjectNode();
+            movieNode.put("Title", rental.getMovie().getTitle());
+            movieNode.put("Genre", rental.getMovie().getGenre());
+            movieNode.put("Description", rental.getMovie().getDescription());
+            movieNode.put("Length", rental.getMovie().getLength());
+            movieNode.put("Price", rental.getMovie().getCharge());
+            movieNode.put("Rent Length", rental.calculateRemainingDays());
+            movieNodes.add(movieNode);
+        }
+        return movieNodes;
     }
 
     /**
