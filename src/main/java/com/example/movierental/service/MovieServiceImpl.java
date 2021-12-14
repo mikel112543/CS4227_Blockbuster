@@ -110,7 +110,7 @@ public class MovieServiceImpl implements MovieService {
     public void clearMovies() {
         listOfMovies.clear();
     }
-}
+
 
     @Override
     public void addMovie(Movie movie) {
