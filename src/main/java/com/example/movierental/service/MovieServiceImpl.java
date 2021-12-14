@@ -59,10 +59,12 @@ public class MovieServiceImpl implements MovieService {
             BufferedReader br = new BufferedReader(new FileReader(path));
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
-                                                    //title     genre      description length   movieID                       movieCover
-                Movie movie = new Movie.MovieBuilder(values[0], values[1], values[2], values[3], Integer.parseInt(values[5]), values[6]).setPrice(Integer.parseInt(values[4])).build();
+                                                    //title     genre      description length   movieID                                                  Price Code
+                Movie movie = new Movie.MovieBuilder(values[0], values[1], values[2], values[3], Integer.parseInt(values[5])).setPrice(Integer.parseInt(values[4])).build();
+                movie.setMovieCoverUrl(values[6]);
                 listOfMovies.add(movie);
             }
+            br.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

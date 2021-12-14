@@ -119,13 +119,12 @@ public class Movie {
         //optional parameters
         private Price price;
 
-        public MovieBuilder(String title, String genre, String description, String length, int movieId, String movieCoverUrl) { //required parameters in here only
+        public MovieBuilder(String title, String genre, String description, String length, int movieId) { //required parameters in here only
             this.title = title;
             this.genre = genre;
             this.description = description;
             this.length = length;
             this.movieId = movieId;
-            this.movieCoverUrl = movieCoverUrl;
         }
 
 
@@ -140,6 +139,9 @@ public class Movie {
         }
     }
 
+    public void setMovieCoverUrl(String movieCoverUrl) {
+        this.movieCoverUrl = movieCoverUrl;
+    }
 
 
 

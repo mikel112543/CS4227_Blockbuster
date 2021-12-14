@@ -90,4 +90,8 @@ public class UserRepoServiceImpl implements UserRepoService {
     public void addUser(User user) {
         users.add(user.getUserID() - 1 , user);
     }
+
+    public void removeUser(User user) {
+        users.remove(user);
+    }
 }
