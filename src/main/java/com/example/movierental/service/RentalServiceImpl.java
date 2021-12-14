@@ -4,16 +4,21 @@ import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
 import com.example.movierental.logger.AbstractLogger;
 import com.example.movierental.logger.RequesterClient;
-import com.example.movierental.model.Rental;
-import com.example.movierental.states.*;
 import com.example.movierental.model.Movie;
+import com.example.movierental.model.Rental;
 import com.example.movierental.model.ServiceError;
 import com.example.movierental.model.User;
+import com.example.movierental.states.StateHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,6 +35,7 @@ public class RentalServiceImpl implements RentalService {
 
     UserRepoServiceImpl userService;
     MovieServiceImpl movieService;
+    List<Rental> listOfRentals = new ArrayList<Rental>();
 
     @Autowired
     public RentalServiceImpl(UserRepoServiceImpl userService, MovieServiceImpl movieService) {
@@ -37,6 +43,28 @@ public class RentalServiceImpl implements RentalService {
         this.movieService = movieService;
     }
 
+    @Override
+    public void initializeListOfRentals(){
+        String path = "rentals.csv";
+        String line = "";
+
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            while((br.readLine() != null)){
+                String [] values = line.split(",");
+                Movie movie = movieService.findByMovieID(Integer.parseInt(values[0]));
+                User user = userService.findByID(Integer.parseInt(values[1]));
+                Rental rental = new Rental (movie, LocalDate.parse(values[2]));
+
+                listOfRentals.add(rental);
+                user.getRentedMovies().add(rental);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * @param userId  - User renting the movie
      * @param movieId - Movie to be rented

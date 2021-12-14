@@ -32,7 +32,7 @@ public class AdminServiceImpl implements AdminService {
         List<Movie> listOfMovies = movieService.getMovies();
         Movie movie = movieService.findByMovieID(movieID);
         for(int i = 0 ; i < listOfMovies.size() ; i++){
-            if (movieID == movie.getMovieId()){
+            if (movieID == listOfMovies.get(i).getMovieId()){
                 listOfMovies.remove(movie);
             }
         }
@@ -48,7 +48,7 @@ public class AdminServiceImpl implements AdminService {
         List<User> listOfUsers = userService.getUsers();
         User user = userService.findByID(userID);
         for (int i = 0 ; i < listOfUsers.size() ; i++){
-            if (userID == user.getUserID()){
+            if (userID == listOfUsers.get(i).getUserID()){
                 user.setBanned(true);
             }
         }
@@ -59,7 +59,7 @@ public class AdminServiceImpl implements AdminService {
         List<User> listOfUsers = userService.getUsers();
         User user = userService.findByID(userID);
         for (int i = 0 ; i < listOfUsers.size() ; i++){
-            if (userID == user.getUserID()){
+            if (userID == listOfUsers.get(i).getUserID()){
                 user.setBanned(false);
             }
         }
