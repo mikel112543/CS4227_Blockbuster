@@ -6,6 +6,7 @@ import com.example.movierental.logger.AbstractLogger;
 import com.example.movierental.logger.RequesterClient;
 import com.example.movierental.model.Movie;
 import com.example.movierental.model.ServiceError;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -18,6 +19,9 @@ import java.util.ArrayList;
 public class MovieServiceImpl implements MovieService {
     ArrayList<Movie> listOfMovies = new ArrayList<>();
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
+
+    @Autowired
+    UserRepoServiceImpl userRepoService;
 
 
     public ArrayList<Movie> getMovies() {
@@ -60,8 +64,7 @@ public class MovieServiceImpl implements MovieService {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                                                     //title     genre      description length   movieID                                                  Price Code
-                Movie movie = new Movie.MovieBuilder(values[0], values[1], values[2], values[3], Integer.parseInt(values[5])).setPrice(Integer.parseInt(values[4])).build();
-                movie.setMovieCoverUrl(values[6]);
+                Movie movie = new Movie.MovieBuilder(values[0], values[1], values[2], values[3], Integer.parseInt(values[5]), values[6]).setPrice(Integer.parseInt(values[4]),userRepoService).build();
                 listOfMovies.add(movie);
             }
             br.close();
@@ -70,5 +73,10 @@ public class MovieServiceImpl implements MovieService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void clearMovies() {
+        listOfMovies.clear();
     }
 }

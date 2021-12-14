@@ -6,4 +6,9 @@ public class Tier2 implements Tier {
     public int getDays() {
         return 5;
     }
+
+    @Override
+    public double getDiscount() {
+        return 0.9;
+    }
 }

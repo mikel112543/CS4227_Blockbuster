@@ -1,6 +1,8 @@
 package com.example.movierental.model;
 
+import com.example.movierental.service.UserRepoServiceImpl;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Price Class - Pricing Structure for the Movies
@@ -9,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public abstract class Price {
 
     @JsonIgnore
-    private int price; //price of the movie per day
+    private double price; //price of the movie per day
     @JsonIgnore
     private int loyaltyPoints; //loyalty points per day of rental of the movie
 
@@ -17,7 +19,7 @@ public abstract class Price {
      * Getter for price
      * @return int price
      */
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -25,7 +27,7 @@ public abstract class Price {
      * Setter for price
      * @param price
      */
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

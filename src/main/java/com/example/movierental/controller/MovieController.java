@@ -24,6 +24,7 @@ public class MovieController {
      */
     @GetMapping(value = "/movies")
     public String showMovies(Model model) {
+        movieService.initializeMovies();
         model.addAttribute("movies", movieService.getMovies());
         return "movies";
     }

@@ -23,8 +23,7 @@ public class AdminServiceImpl implements AdminService {
         List<Movie> listOfMovies = movieService.getMovies();
         int movieId = listOfMovies.get(listOfMovies.size()-1).getMovieId()+1;
 
-        Movie movie = new Movie.MovieBuilder(title, genre, description, length, movieId).setPrice(priceCode).build();
-        movie.setMovieCoverUrl(movieCoverUrl);
+        Movie movie = new Movie.MovieBuilder(title, genre, description, length, movieId, movieCoverUrl).setPrice(priceCode, userService).build();
         listOfMovies.add(movie);
     }
 

@@ -39,6 +39,7 @@ public class UserRepoServiceImpl implements UserRepoService {
                                     values[3], Boolean.valueOf(values[6]));
                 user.setLoyaltyPoints(Integer.valueOf(values[4]));
                 user.setTier(Integer.valueOf(values[5]));
+                user.setDiscount(Boolean.valueOf(values[7]));
                 users.add(user);
             }
             br.close();

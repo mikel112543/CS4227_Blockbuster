@@ -169,6 +169,7 @@ public class RentalServiceImpl implements RentalService {
                 chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "Removing expired rentals...");
             }
         };
+        movieService.clearMovies();
         //Set timer to run check every 5 hours
         timer.schedule(checkRentals, 0L, 1000L *60*60*60*60*60*60);
     }

@@ -1,5 +1,6 @@
 package com.example.movierental.model;
 
+import com.example.movierental.service.UserRepoServiceImpl;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -143,19 +144,20 @@ public class Movie {
         @JsonIgnore
         private Price price;
 
-        public MovieBuilder(String title, String genre, String description, String length, int movieId) { //required parameters in here only
+        public MovieBuilder(String title, String genre, String description, String length, int movieId, String movieCoverUrl) { //required parameters in here only
             this.title = title;
             this.genre = genre;
             this.description = description;
             this.length = length;
             this.movieId = movieId;
+            this.movieCoverUrl = movieCoverUrl;
         }
 
 
         @JsonIgnore
-        public MovieBuilder setPrice(int priceCode) {
+        public MovieBuilder setPrice(int priceCode, UserRepoServiceImpl userRepoService) {
             PriceFactory p = new PriceFactory();
-            this.price = p.getPrice(priceCode);
+            this.price = p.getPrice(priceCode, userRepoService);
             return this;
         }
 
@@ -167,8 +169,6 @@ public class Movie {
     public void setMovieCoverUrl(String movieCoverUrl) {
         this.movieCoverUrl = movieCoverUrl;
     }
-
-
 
     @Override
     public String toString() {
