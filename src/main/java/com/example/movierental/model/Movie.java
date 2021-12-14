@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import static jdk.nashorn.internal.objects.NativeMath.round;
-
 //Movie Class
 //
 //@author Jack Murphy - 18254268
@@ -105,16 +103,8 @@ public class Movie {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getLength() {
         return length;
-    }
-
-    public void setLength(String length) {
-        this.length = length;
     }
 
     public Price getPrice() {
@@ -128,16 +118,22 @@ public class Movie {
         this.description = builder.description;
         this.length = builder.length;
         this.movieId = builder.movieId;
-        this.price = builder.price;
         this.movieCoverUrl = builder.movieCoverUrl;
+        this.price = builder.price;
     }
 
     public static class MovieBuilder {
+        @JsonProperty("Title")
         private String title;
+        @JsonProperty("Genre")
         private String genre;
+        @JsonProperty("Description")
         private String description;
+        @JsonProperty("Length")
         private String length;
+        @JsonProperty("MovieID")
         private int movieId;
+        @JsonIgnore
         private String movieCoverUrl;
 
         //optional parameters
@@ -166,9 +162,6 @@ public class Movie {
         }
     }
 
-    public void setMovieCoverUrl(String movieCoverUrl) {
-        this.movieCoverUrl = movieCoverUrl;
-    }
 
     @Override
     public String toString() {

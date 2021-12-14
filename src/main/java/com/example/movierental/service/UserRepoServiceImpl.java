@@ -103,6 +103,7 @@ public class UserRepoServiceImpl implements UserRepoService {
         users.add(user);
     }
 
+    @Override
     public void removeUser(User user) {
         users.remove(user);
     }

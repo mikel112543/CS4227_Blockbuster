@@ -11,6 +11,8 @@ public interface UserRepoService {
 
     void addUser(User user);
 
+    void removeUser(User user);
+
     void initializeUsers() throws IOException;
 
     User findByID(int i);

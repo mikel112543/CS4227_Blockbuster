@@ -41,11 +41,21 @@ public class MovieController {
 
     /**
      * @param movieName - name of movie to be searched
-     * @return JSON Movie
+     * @return JSON List of movies
      */
     @GetMapping(value = "/movies/search/{MOVIE_NAME}")
     @ResponseBody
     public List<Movie> searchMovie(@PathVariable("MOVIE_NAME") String movieName) {
         return movieService.findByName(movieName);
+    }
+
+    /**
+     * @param genreName - name of genre to be searched
+     * @return JSON list of movies that the genre.
+     */
+    @GetMapping(value = "/movies/genreSearch/{GENRE_NAME}")
+    @ResponseBody
+    public List<Movie> genreSearchMovie(@PathVariable("GENRE_NAME") String genreName){
+        return movieService.findByGenre(genreName);
     }
 }

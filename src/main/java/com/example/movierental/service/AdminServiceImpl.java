@@ -1,6 +1,11 @@
 package com.example.movierental.service;
 
+import com.example.movierental.contants.Error;
+import com.example.movierental.exception.ServiceException;
+import com.example.movierental.logger.AbstractLogger;
+import com.example.movierental.logger.RequesterClient;
 import com.example.movierental.model.Movie;
+import com.example.movierental.model.ServiceError;
 import com.example.movierental.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +13,7 @@ import java.util.List;
 
 @Service
 public class AdminServiceImpl implements AdminService {
+    private static AbstractLogger chainLogger = RequesterClient.getChaining();
 
     private final UserRepoServiceImpl userService;
     private final MovieServiceImpl movieService;
@@ -36,6 +42,8 @@ public class AdminServiceImpl implements AdminService {
                 listOfMovies.remove(movie);
             }
         }
+        chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find movie");
+        throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_ID));
     }
 
     @Override
@@ -52,6 +60,8 @@ public class AdminServiceImpl implements AdminService {
                 user.setBanned(true);
             }
         }
+        chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
+        throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
     }
 
     @Override
@@ -63,6 +73,8 @@ public class AdminServiceImpl implements AdminService {
                 user.setBanned(false);
             }
         }
+        chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
+        throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
     }
 
 }

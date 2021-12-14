@@ -35,6 +35,18 @@ public class AdminController {
         return "User: " + user.getUsername() + " has been banned";
     }
 
+
+    /**
+     * @param customerId - Unique identifier attached to each of the users.
+     * @return String
+     */
+    @PostMapping(value = "admin/customerId/{CUSTOMER_ID}/unban")
+    public String unbanCustomer(@PathVariable("CUSTOMER_ID") final int customerId) {
+        User user = userService.findByID(customerId);
+        adminService.unbanCustomer(customerId);
+        return "User: " + user.getUsername() + " has been unbanned";
+    }
+
     /**
      * @param movieTitle       - Title of the movie to be added
      * @param movieGenre       - Genre of the movie to be added
@@ -43,13 +55,13 @@ public class AdminController {
      * @param moviePriceCode       - Starting price of movie to be added
      * @return - Json response
      */
-    @PostMapping(value = "admin/movieTitle/{MOVIE_TITLE}/movieGenre/{MOVIE_GENRE}/movieDescription/{MOVIE_DESCRIPTION}/movieLength/{MOVIE_LENGTH}/moviePrice/{MOVIE_PRICE}/rating/{RATING}")
+    @PostMapping(value = "admin/movieTitle/{MOVIE_TITLE}/movieGenre/{MOVIE_GENRE}/movieDescription/{MOVIE_DESCRIPTION}/movieLength/{MOVIE_LENGTH}/moviePrice/{MOVIE_PRICE}/movieCoverUrl/{MOVIE_COVER_URL}")
     public String addMovie(@PathVariable("MOVIE_TITLE") final String movieTitle,
                          @PathVariable("MOVIE_GENRE") final String movieGenre,
                          @PathVariable("MOVIE_DESCRIPTION") String movieDescription,
                          @PathVariable("MOVIE_LENGTH") final String movieLength,
                          @PathVariable("MOVIE_PRICE") int moviePriceCode,
-                         @PathVariable("RATING") String movieCoverUrl) {
+                         @PathVariable("MOVIE_COVER_URL") String movieCoverUrl) {
 
         adminService.addMovie(movieTitle, movieGenre, movieDescription,
                 movieLength, moviePriceCode, movieCoverUrl);

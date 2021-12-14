@@ -28,6 +28,10 @@ public class MovieServiceImpl implements MovieService {
         return listOfMovies;
     }
 
+    /**
+     * @param movieID - ID of the movie
+     * @return Object of the movie if its in the list
+     */
     @Override
     public Movie findByMovieID(int movieID) {
         for (Movie movie : listOfMovies) {
@@ -39,6 +43,10 @@ public class MovieServiceImpl implements MovieService {
         throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_ID));
     }
 
+    /**
+     * @param searchbar - User searches X
+     * @return ArrayList of Movies if their title contains X in the title
+     */
     @Override
     public ArrayList<Movie> findByName(String searchbar){
         ArrayList<Movie> results = new ArrayList<>();
@@ -47,7 +55,27 @@ public class MovieServiceImpl implements MovieService {
                 results.add(listOfMovie);
             }
         }
-        if (results.isEmpty()){
+        if (results.isEmpty()) {
+            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "No movies available");
+            throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_NAME));
+        }
+        return results;
+    }
+
+    /**
+     * @param insertedGenre - the genre a user searches for
+     * @return ArrayList of Movies if their genre contains the searched genre
+     */
+
+    @Override
+    public ArrayList<Movie> findByGenre(String insertedGenre) {
+        ArrayList<Movie> results = new ArrayList<>();
+        for (Movie movie : listOfMovies) {
+            if (movie.getGenre().toLowerCase().contains(insertedGenre.toLowerCase())) {
+                results.add(movie);
+            }
+        }
+        if (results.isEmpty()) {
             chainLogger.logMessage(AbstractLogger.ERROR_INFO, "No movies available");
             throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_NAME));
         }
@@ -55,6 +83,9 @@ public class MovieServiceImpl implements MovieService {
 
     }
 
+    /**
+     * Initializes list of movies from movies csv
+     */
     @Override
     public void initializeMovies() {
         String path = "Movies.csv";
@@ -79,4 +110,16 @@ public class MovieServiceImpl implements MovieService {
     public void clearMovies() {
         listOfMovies.clear();
     }
+}
+
+    @Override
+    public void addMovie(Movie movie) {
+        listOfMovies.add(movie);
+    }
+
+    @Override
+    public void removeMovie() {
+        listOfMovies.clear();
+    }
+
 }
