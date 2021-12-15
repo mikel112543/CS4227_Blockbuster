@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class loginTest {
-
+/*
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -14,5 +14,5 @@ public class loginTest {
     public void testFindByUser() {
         User user = userDetailsService.loadUserByUsername("admin");
         System.out.println(user.toString());
-    }
+    }*/
 }

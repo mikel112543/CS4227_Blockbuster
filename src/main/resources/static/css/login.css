@@ -1,15 +1,18 @@
 * {
-    font-family: 'Copperplate Gothic Light', sans-serif;
+    font-family: 'Monaco', sans-serif;
 }
 
 body {
-    background-color: darkred;
+    background-image: url("https://wallpaperbat.com/img/288302-movie-posters-wallpaper.jpg");
 }
 
 #page_heading {
     margin-top: 20px;
+    font-size: 80px;
+    border-radius: 10px;
     text-align: center;
-    color: white;
+    background-color: white;
+    color: purple;
 }
 
 #login_form {
@@ -51,7 +54,9 @@ body {
 
 #OR {
     text-align: center;
-    color: white;
+    color: purple;
+    background-color: white;
+    border-radius: 10px;
 }
 
 #register_form {

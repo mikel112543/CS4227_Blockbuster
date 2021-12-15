@@ -14,7 +14,7 @@ public enum Error {
     NO_RENTALS("2007", "User has no rentals"),
     ALREADY_RENTING("2008", "You are currently renting this movie"),
     INVALID_USER_RENTALS("2009", "Invalid Rentals"),
-    INVALID_MOVIE_NAME("2010", "Can't find movie with search, search for another movie isntead"),
+    INVALID_MOVIE_NAME("2010", "Can't find movie with search, search for another movie instead"),
     INVALID_LOGIN_CREDENTIALS("2011", "Login Credentials are Incorrect"),
     USER_LOAD_FAILURE("2012", "Failed to load user, Username may be invalid"),
     FILE_NOT_FOUND("2013", "Could not find specified file"),
