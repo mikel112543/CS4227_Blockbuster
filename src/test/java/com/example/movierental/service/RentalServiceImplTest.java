@@ -91,11 +91,11 @@ class RentalServiceImplTest {
     void getRental() {
         //Rent movie to set up test
         rentalService.rentMovie(testUser.getUserID(), testMovieId);
-        Rental rental = rentalService.getRental(testUser.getUserID(), testMovieId);
-        assertEquals("Test Movie", rental.getMovie().getTitle());
-        assertEquals("Test Genre", rental.getMovie().getGenre());
-        assertEquals("Test Description", rental.getMovie().getDescription());
-        assertEquals(1.23, rental.getMovie().getLength());
+        List<Rental> rental = rentalService.getRental(testUser.getUserID(), testMovieId);
+        assertEquals("Test Movie", rental.get(0).getMovie().getTitle());
+        assertEquals("Test Genre", rental.get(0).getMovie().getGenre());
+        assertEquals("Test Description", rental.get(0).getMovie().getDescription());
+        assertEquals("Length", rental.get(0).getMovie().getLength());
     }
 
     @Test

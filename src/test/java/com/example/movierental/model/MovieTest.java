@@ -18,11 +18,11 @@ class MovieTest {
 
     @BeforeEach
     void setUp() {
-        testMovieBuilder = new MovieBuilder("Test Movie One","Genre NewPrice","Described as \"Good for Testing\"","1.1",11111,"Test1.jpg");
+        //testMovieBuilder = new MovieBuilder("Test Movie One","Genre NewPrice","Described as \"Good for Testing\"","1.1",11111,"Test1.jpg");
         testMovieBuilder.setPrice(0);
         testMovie1 = testMovieBuilder.build();
 
-        testMovieBuilder = new MovieBuilder("Test Movie Two","Genre ChildrensPrice","Described as \"Grand for Testing\"","1.3",333333,"Test2.jpg");
+        //testMovieBuilder = new MovieBuilder("Test Movie Two","Genre ChildrensPrice","Described as \"Grand for Testing\"","1.3",333333,"Test2.jpg");
         testMovieBuilder.setPrice(2);
         testMovie2 = testMovieBuilder.build();
     }

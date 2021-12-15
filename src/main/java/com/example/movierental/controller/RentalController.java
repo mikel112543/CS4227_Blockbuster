@@ -23,13 +23,11 @@ public class RentalController {
 
     RentalService rentalService;
     UserRepoServiceImpl userService;
-    ObjectMapper mapper;
 
     @Autowired
-    public RentalController(RentalService rentalService, UserRepoServiceImpl userService, ObjectMapper mapper) {
+    public RentalController(RentalService rentalService, UserRepoServiceImpl userService) {
         this.rentalService = rentalService;
         this.userService = userService;
-        this.mapper = mapper;
     }
 
     /**
@@ -49,18 +47,7 @@ public class RentalController {
             }
         }
         List<Rental> userRentals = rentalService.getRentals(userId);
-        List<ObjectNode> movieNodes = new ArrayList<>();
-        for(Rental rental : userRentals) {
-            ObjectNode movieNode = mapper.createObjectNode();
-            movieNode.put("Title", rental.getMovie().getTitle());
-            movieNode.put("Genre", rental.getMovie().getGenre());
-            movieNode.put("Description", rental.getMovie().getDescription());
-            movieNode.put("Length", rental.getMovie().getLength());
-            movieNode.put("Price", rental.getMovie().getCharge());
-            movieNode.put("Rent Length", rental.calculateRemainingDays());
-            movieNodes.add(movieNode);
-        }
-        return movieNodes;
+        return rentalService.parseRentals(userRentals);
     }
 
     /**
@@ -75,18 +62,7 @@ public class RentalController {
                                   @PathVariable("MOVIE_ID") final int movieId) {
 
         List<Rental> userRentals = rentalService.rentMovie(customerId, movieId);
-        List<ObjectNode> movieNodes = new ArrayList<>();
-        for(Rental rental : userRentals) {
-            ObjectNode movieNode = mapper.createObjectNode();
-            movieNode.put("Title", rental.getMovie().getTitle());
-            movieNode.put("Genre", rental.getMovie().getGenre());
-            movieNode.put("Description", rental.getMovie().getDescription());
-            movieNode.put("Length", rental.getMovie().getLength());
-            movieNode.put("Price", rental.getMovie().getCharge());
-            movieNode.put("Rent Length", rental.calculateRemainingDays());
-            movieNodes.add(movieNode);
-        }
-        return movieNodes;
+        return rentalService.parseRentals(userRentals);
     }
 
     /**
@@ -96,10 +72,10 @@ public class RentalController {
 
     @GetMapping(value = "/customerId/{CUSTOMER_ID}/rentals")
     @ResponseBody
-    public List<Rental> showRentals(@PathVariable("CUSTOMER_ID") final String customerId) {
-        int userId = Integer.parseInt(customerId);
+    public List<ObjectNode> showRentals(@PathVariable("CUSTOMER_ID") final int customerId) {
 
-        return rentalService.getRentals(userId);
+        List<Rental> userRentals = rentalService.getRentals(customerId);
+        return rentalService.parseRentals(userRentals);
     }
 
     /**
@@ -109,10 +85,12 @@ public class RentalController {
      */
 
     @GetMapping(value = "/customerId/{CUSTOMER_ID}/rentals/{MOVIE_ID}")
-    public Rental getRental(@PathVariable("CUSTOMER_ID") final int customerId,
+    public List<ObjectNode> getRental(@PathVariable("CUSTOMER_ID") final int customerId,
                             @PathVariable("MOVIE_ID") final int movieId) {
 
-        return rentalService.getRental(customerId, movieId);
+        List<Rental> userRental = rentalService.getRental(customerId, movieId);
+
+        return rentalService.parseRentals(userRental);
     }
 
     /**

@@ -6,3 +6,4 @@
 6,eireann,kerry,ROLE_USER,1500,2,FALSE
 7,sean,cork,ROLE_USER,2000,3,TRUE
 8,aimee,mayo,ROLE_USER,2500,3,FALSE
+9,test,test,ROLE_USER,1,1,FALSE

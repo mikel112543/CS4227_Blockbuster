@@ -149,12 +149,15 @@ public class User implements UserDetails {
 
     public void stateCheck() {
         int lp = this.getLoyaltyPoints();
-        if(lp > 500 && lp < 1500) {
+        if(lp >= 500 && lp <= 1499) {
             this.setTier(2);
-        } else if (lp > 1500 && lp < 3000) {
+        } else if (lp >= 1500 && lp <= 2999) {
             this.setTier(3);
         } else if (lp > 3000) {
             this.setLoyaltyPoints(3000);
+            this.setTier(3);
+        }else{
+            this.setTier(1);
         }
     }
 
