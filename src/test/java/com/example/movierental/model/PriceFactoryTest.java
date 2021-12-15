@@ -13,15 +13,15 @@ import static org.junit.jupiter.api.Assertions.*;
  * Author - Jack Murphy 18254268
  */
 class PriceFactoryTest {
-
+/*
     private Price p1, p2, p3, p4;
     private PriceFactory p;
-    /**
+    *//**
      * priceCodes
      * 0 = New Release
      * 1 = Standard Release
      * 2 = Childrens Release
-     */
+     *//*
     @BeforeEach
     void setUp() {
         p = new PriceFactory();
@@ -54,5 +54,5 @@ class PriceFactoryTest {
             p4 = p.getPrice(5);
         });
         assertEquals("2013",exception.getServiceError().getErrorCode());
-    }
+    }*/
 }
