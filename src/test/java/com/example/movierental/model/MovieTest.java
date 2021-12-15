@@ -20,15 +20,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * Author - Jack Murphy 18254268
  */
 
-@Repository("users")
-@WithMockUser(username = "john")
+
 class MovieTest {
 
     @Autowired
     UserRepoServiceImpl userService;
-    MovieServiceImpl movieService;
-
-    //User testUser;
 
     private Movie testMovie1, testMovie2;
     private MovieBuilder testMovieBuilder;
