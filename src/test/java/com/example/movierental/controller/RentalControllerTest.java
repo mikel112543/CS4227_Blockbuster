@@ -2,8 +2,10 @@ package com.example.movierental.controller;
 
 import com.example.movierental.model.Rental;
 import com.example.movierental.model.User;
+import com.example.movierental.service.MovieServiceImpl;
 import com.example.movierental.service.RentalServiceImpl;
 import com.example.movierental.service.UserRepoServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@WithMockUser(username="test") // 1Lp Tier1
+@WithMockUser(username = "test") // 1Lp Tier1
 class RentalControllerTest {
 
     @Autowired
@@ -39,17 +41,23 @@ class RentalControllerTest {
     @Autowired
     RentalServiceImpl rentalService;
 
-    @BeforeEach
-    void setUp() {
-        List<Rental> testRentals = new ArrayList<>();
-        //User test = new User(99, "test", "test", false, 680, 3, testRentals, false);
-        //userService.addUser(test);
-    }
-
     @AfterEach
     void tearDown() {
         User user = userService.findByID(9);
         user.getRentedMovies().clear();
+    }
+
+    @Test
+    @DisplayName("GET to display logged in users rentals")
+    void showLoggedInRentals() throws Exception {
+        rentalService.rentMovie(9, 2);
+        mockMvc.perform(get("/rentals")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].Title", is("Transformers")))
+                .andExpect(jsonPath("$[0].Genre", is("Action")))
+                .andExpect(jsonPath("$[0].Price", is(8.0)));
+        tearDown();
     }
 
     @Test

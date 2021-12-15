@@ -4,14 +4,12 @@ import com.example.movierental.model.User;
 import com.example.movierental.service.RentalService;
 import com.example.movierental.service.UserRepoServiceImpl;
 import com.example.movierental.model.Rental;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 

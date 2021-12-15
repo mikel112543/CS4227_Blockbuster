@@ -1,6 +1,7 @@
 package com.example.movierental.service;
 
 import com.example.movierental.exception.ServiceException;
+import com.example.movierental.model.Movie;
 import com.example.movierental.model.Rental;
 import com.example.movierental.model.User;
 import org.junit.jupiter.api.*;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.event.annotation.AfterTestExecution;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,87 +22,136 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Rental Service Tests")
 class RentalServiceImplTest {
 
-    @Autowired
-    AdminServiceImpl adminService;
-
-    @Autowired
+    UserRepoServiceImpl userService;
+    MovieServiceImpl movieService;
     RentalServiceImpl rentalService;
 
-    @Autowired
-    UserRepoServiceImpl userService;
 
     @Autowired
-    MovieServiceImpl movieService;
-
-    private User testUser;
-    private int testMovieId;
-
-
-    @BeforeEach
-    public void setUp() {
-        List<Rental> mockRentals = new ArrayList<>();
-        testUser = new User(99, "test", "test", "ROLE_USER", false);
-        testUser.setRentedMovies(mockRentals);
-        testUser.setTier(2);
-        testUser.setLoyaltyPoints(700);
-        userService.addUser(testUser);
-        adminService.addMovie("Test Movie", "Test Genre", "Test Description", "1.23", 1, "MOVIECOVERURL");
-        testMovieId = movieService.findByName("Test Movie").get(0).getMovieId();
+    public RentalServiceImplTest(UserRepoServiceImpl userService, MovieServiceImpl movieService, RentalServiceImpl rentalService) {
+        this.userService = userService;
+        this.movieService = movieService;
+        this.rentalService = rentalService;
     }
 
     @AfterTestExecution
     public void tearDown() {
+        User testUser = userService.findByID(9);
         rentalService.getRentals(testUser.getUserID()).clear();
-        adminService.deleteMovie(testMovieId);
+    }
+
+    @Test
+    @DisplayName("Should return Tier 1 user rentals")
+    void rentMovieT1() {
+        User testUser = userService.findByID(9);
+        List<Rental> testRentals = rentalService.rentMovie(testUser.getUserID(), 2);
+        assertEquals(1, testRentals.size());
+        assertEquals("Transformers", testRentals.get(0).getMovie().getTitle());
+        assertEquals("Action", testRentals.get(0).getMovie().getGenre());
+        assertEquals("When Alien robots land on earth. There is only one man who can help.", testRentals.get(0).getMovie().getDescription());
+        assertEquals("2 hours 24 minutes", testRentals.get(0).getMovie().getLength());
+        assertEquals("images/transformers.jpg", testRentals.get(0).getMovie().getMovieCoverUrl());
+        assertEquals(3, testRentals.get(0).calculateRemainingDays());
+        tearDown();
+    }
+
+    @Test
+    @DisplayName("Should return Tier 2 user rentals")
+    void rentMovieT2() {
+        User testUser = userService.findByID(10);
+        List<Rental> testRentals = rentalService.rentMovie(testUser.getUserID(), 2);
+        assertEquals(1, testRentals.size());
+        assertEquals("Transformers", testRentals.get(0).getMovie().getTitle());
+        assertEquals("Action", testRentals.get(0).getMovie().getGenre());
+        assertEquals("When Alien robots land on earth. There is only one man who can help.", testRentals.get(0).getMovie().getDescription());
+        assertEquals("2 hours 24 minutes", testRentals.get(0).getMovie().getLength());
+        assertEquals("images/transformers.jpg", testRentals.get(0).getMovie().getMovieCoverUrl());
+        assertEquals(5, testRentals.get(0).calculateRemainingDays());
+    }
+
+    @Test
+    @DisplayName("Should return Tier 3 user rentals")
+    void rentMovieT3() {
+        User testUser = userService.findByID(11);
+        List<Rental> testRentals = rentalService.rentMovie(testUser.getUserID(), 2);
+        assertEquals(1, testRentals.size());
+        assertEquals("Transformers", testRentals.get(0).getMovie().getTitle());
+        assertEquals("Action", testRentals.get(0).getMovie().getGenre());
+        assertEquals("When Alien robots land on earth. There is only one man who can help.", testRentals.get(0).getMovie().getDescription());
+        assertEquals("2 hours 24 minutes", testRentals.get(0).getMovie().getLength());
+        assertEquals("images/transformers.jpg", testRentals.get(0).getMovie().getMovieCoverUrl());
+        assertEquals(10, testRentals.get(0).calculateRemainingDays());
     }
 
     @Test
     @DisplayName("Should return Service error for movie already rented")
     void movieAlreadyRented() {
+        User testUser = userService.findByID(9);
+        Movie testMovie = movieService.findByMovieID(2);
         ServiceException exception = assertThrows(ServiceException.class, () -> {
-            rentalService.rentMovie(testUser.getUserID(), testMovieId);
-            rentalService.rentMovie(testUser.getUserID(), testMovieId);
+            rentalService.rentMovie(testUser.getUserID(), testMovie.getMovieId());
+            rentalService.rentMovie(testUser.getUserID(), testMovie.getMovieId());
         });
-        assertEquals("2007", exception.getServiceError().getErrorCode());
+        assertEquals("2008", exception.getServiceError().getErrorCode());
+        tearDown();
     }
 
     @Test
     @DisplayName("Should return Service Error for No Rentals")
     void userRentalsEmpty() {
+        User testUser = userService.findByID(9);
         ServiceException exception = assertThrows(ServiceException.class, () -> {
             rentalService.getRentals(testUser.getUserID());
         });
-        assertEquals("2006", exception.getServiceError().getErrorCode());
+        assertEquals("2007", exception.getServiceError().getErrorCode());
     }
 
     @Test
     @DisplayName("Should return the List of users Rentals")
     void getRentals() {
+        User testUser = userService.findByID(9);
+        rentalService.rentMovie(testUser.getUserID(), 1);
+        rentalService.rentMovie(testUser.getUserID(), 2);
         List<Rental> testRentals = rentalService.getRentals(testUser.getUserID());
-        assertEquals("Test Movie", testRentals.get(0).getMovie().getTitle());
-        assertEquals("Test Genre", testRentals.get(0).getMovie().getGenre());
-        assertEquals("Test Description", testRentals.get(0).getMovie().getDescription());
-        assertEquals(1.23, testRentals.get(0).getMovie().getLength());
-        assertEquals("URLFORPHOTO", testRentals.get(0).getMovie().getMovieCoverUrl());
+        assertEquals("Titanic", testRentals.get(0).getMovie().getTitle());
+        assertEquals("Historical Drama", testRentals.get(0).getMovie().getGenre());
+        assertEquals("Doomed before departure. Titanic explores the relationship between a woman of high class and a " +
+                                    "commoner before the infamous tragedy.", testRentals.get(0).getMovie().getDescription());
+        assertEquals("2 hours", testRentals.get(0).getMovie().getLength());
+        assertEquals("images/titanic.jpg", testRentals.get(0).getMovie().getMovieCoverUrl());
+
+        assertEquals("Transformers", testRentals.get(1).getMovie().getTitle());
+        assertEquals("Action", testRentals.get(1).getMovie().getGenre());
+        assertEquals("When Alien robots land on earth. There is only one man who can help.", testRentals.get(1).getMovie().getDescription());
+        assertEquals("2 hours 24 minutes", testRentals.get(1).getMovie().getLength());
+        assertEquals("images/transformers.jpg", testRentals.get(1).getMovie().getMovieCoverUrl());
+        tearDown();
     }
 
     @Test
     @DisplayName("Should return a singular rental")
     void getRental() {
         //Rent movie to set up test
-        rentalService.rentMovie(testUser.getUserID(), testMovieId);
-        List<Rental> rental = rentalService.getRental(testUser.getUserID(), testMovieId);
-        assertEquals("Test Movie", rental.get(0).getMovie().getTitle());
-        assertEquals("Test Genre", rental.get(0).getMovie().getGenre());
-        assertEquals("Test Description", rental.get(0).getMovie().getDescription());
-        assertEquals("Length", rental.get(0).getMovie().getLength());
+        User testUser = userService.findByID(9);
+        Movie testMovie = movieService.findByMovieID(1);
+        rentalService.rentMovie(testUser.getUserID(), testMovie.getMovieId());
+        List<Rental> rental = rentalService.getRental(testUser.getUserID(), testMovie.getMovieId());
+        assertEquals("Titanic", rental.get(0).getMovie().getTitle());
+        assertEquals("Historical Drama", rental.get(0).getMovie().getGenre());
+        assertEquals("Doomed before departure. Titanic explores the relationship between a woman of high class and a " +
+                                    "commoner before the infamous tragedy.", rental.get(0).getMovie().getDescription());
+        assertEquals("2 hours", rental.get(0).getMovie().getLength());
+        assertEquals("images/titanic.jpg", rental.get(0).getMovie().getMovieCoverUrl());
+        tearDown();
     }
 
     @Test
     @DisplayName("Should remove the movie from the users rentals")
     void removeRental() {
-        rentalService.rentMovie(testUser.getUserID(), testMovieId);
-        String result = rentalService.removeRental(testUser.getUserID(),testMovieId);
-        assertEquals("User Name: test Rental: Test Movie has been removed from their rentals", result);
+        User testUser = userService.findByID(9);
+        Movie testMovie = movieService.findByMovieID(2);
+        rentalService.rentMovie(testUser.getUserID(), testMovie.getMovieId());
+        String result = rentalService.removeRental(testUser.getUserID(), testMovie.getMovieId());
+        assertEquals("User Name: test Rental: Transformers has been removed from their rentals", result);
     }
 }

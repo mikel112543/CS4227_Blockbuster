@@ -151,7 +151,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     /**
-     * Routinely checks expiry of all users rentals
+     * Routinely checks expiry of all users rentals and Initializes the data
      */
     @Override
     @PostConstruct
@@ -180,9 +180,15 @@ public class RentalServiceImpl implements RentalService {
         timer.schedule(checkRentals, 0L, 1000L * 60 * 60 * 60 * 60 * 60 * 60);
     }
 
+    /**
+     *
+     * @param userRentals - List of users Rentals
+     * @return Cleaned up List for JSON use
+     */
     @Override
     public List<ObjectNode> parseRentals(List<Rental> userRentals) {
         List<ObjectNode> movieNodes = new ArrayList<>();
+        chainLogger.logMessage(AbstractLogger.OUTPUT_INFO,"Parsing into clean JSON");
         for (Rental rental : userRentals) {
             ObjectNode movieNode = mapper.createObjectNode();
             movieNode.put("Title", rental.getMovie().getTitle());
