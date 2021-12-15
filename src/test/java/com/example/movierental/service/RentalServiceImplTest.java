@@ -52,7 +52,6 @@ class RentalServiceImplTest {
         assertEquals("2 hours 24 minutes", testRentals.get(0).getMovie().getLength());
         assertEquals("images/transformers.jpg", testRentals.get(0).getMovie().getMovieCoverUrl());
         assertEquals(3, testRentals.get(0).calculateRemainingDays());
-        tearDown();
     }
 
     @Test
