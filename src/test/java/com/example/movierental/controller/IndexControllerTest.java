@@ -17,4 +17,5 @@ class IndexControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
 }

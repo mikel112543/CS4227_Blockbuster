@@ -6,7 +6,6 @@ package com.example.movierental.model;
 
 import com.example.movierental.service.UserRepoServiceImpl;
 import com.example.movierental.states.StateHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 

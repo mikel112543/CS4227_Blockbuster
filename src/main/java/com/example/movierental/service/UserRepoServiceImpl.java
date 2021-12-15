@@ -34,12 +34,12 @@ public class UserRepoServiceImpl implements UserRepoService {
             BufferedReader br = new BufferedReader(new FileReader(path));
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
-                User user = new User(Integer.valueOf(values[0]),
+                User user = new User(Integer.parseInt(values[0]),
                                     values[1], passwordEncoder.encode(values[2]),
-                                    values[3], Boolean.valueOf(values[6]));
-                user.setLoyaltyPoints(Integer.valueOf(values[4]));
-                user.setTier(Integer.valueOf(values[5]));
-                user.setDiscount(Boolean.valueOf(values[7]));
+                                    values[3], Boolean.parseBoolean(values[6]));
+                user.setLoyaltyPoints(Integer.parseInt(values[4]));
+                user.setTier(Integer.parseInt(values[5]));
+                user.setDiscount(Boolean.parseBoolean(values[7]));
                 users.add(user);
             }
             br.close();
@@ -48,7 +48,8 @@ public class UserRepoServiceImpl implements UserRepoService {
             chainLogger.logMessage(AbstractLogger.ERROR_INFO, "File not found");
             throw new ServiceException(new ServiceError(Error.FILE_NOT_FOUND));
         } catch (IOException e) {
-            e.printStackTrace();
+            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Initialization Error");
+            throw new ServiceException(new ServiceError(Error.INVALID_INITIALIZATION));
         }
     }
 
@@ -59,11 +60,12 @@ public class UserRepoServiceImpl implements UserRepoService {
 
     @Override
     public User findByID(int i) {
-        if(users.get(i - 1) == null) {
+        User user = users.get(i - 1);
+        if(user == null) {
             chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
             throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
         } else {
-            return users.get(i - 1);
+            return user;
         }
     }
 
@@ -72,9 +74,13 @@ public class UserRepoServiceImpl implements UserRepoService {
         User user = null;
         for(int i = 0; i < users.size(); i++) {
             if (users.get(i).getUsername().equals(username)) {
-                user = findByID(i + 1);
+                user = users.get(i);
                 break;
             }
+        }
+        if (user == null) {
+            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Username not recognized");
+            throw new ServiceException(new ServiceError(Error.INVALID_USERNAME));
         }
         return user;
     }

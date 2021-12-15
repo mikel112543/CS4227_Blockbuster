@@ -53,8 +53,8 @@ class AdminControllerTest {
         User testUserBanned = new User(99, "test", "test", "ROLE_USER", true);
 
         User testAdmin = new User(100, "admin", "admin", "ROLE_ADMIN", false);
-        Movie movie1 = new Movie.MovieBuilder("The Dark Knight", "Action", "Batman and that", "2 hours", 99, "batmancoverphoto").setPrice(1).build();
-        Movie movie2 = new Movie.MovieBuilder("The return of the king", "Action", "Lord of the Rings", "2 hours", 100, "lordoftheringscoverphoto").setPrice(1).build();
+        Movie movie1 = new Movie.MovieBuilder("The Dark Knight", "Action", "Batman and that", "2 hours", 99, "batmancoverphoto").setPrice(1, userService).build();
+        Movie movie2 = new Movie.MovieBuilder("The return of the king", "Action", "Lord of the Rings", "2 hours", 100, "lordoftheringscoverphoto").setPrice(1, userService).build();
         movieService.addMovie(movie1);
         movieService.addMovie(movie2);
         userService.addUser(testUserUnbanned);

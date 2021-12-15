@@ -1,5 +1,10 @@
 package com.example.movierental.controller;
 
+import com.example.movierental.contants.Error;
+import com.example.movierental.exception.ServiceException;
+import com.example.movierental.logger.AbstractLogger;
+import com.example.movierental.logger.RequesterClient;
+import com.example.movierental.model.ServiceError;
 import com.example.movierental.model.User;
 import com.example.movierental.service.MovieServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +43,7 @@ public class IndexController {
             return "login";
         }
     }
+
     @GetMapping("/registerForm")
     public String showRegistration(Model model) {
         User user = new User();
