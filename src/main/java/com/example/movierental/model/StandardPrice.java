@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class StandardPrice extends Price {
 
+    static final double DEFAULT_PRICE = 8.0;
     //movie cost 8 per day
     //customer earns 2 loyalty points per rental per day of a movie
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -35,7 +36,11 @@ public class StandardPrice extends Price {
                 setLoyaltyPoints(2);
             }
         }
+    }
 
+    @Override
+    public double getDefaultPrice() {
+        return DEFAULT_PRICE;
     }
 
     @Override

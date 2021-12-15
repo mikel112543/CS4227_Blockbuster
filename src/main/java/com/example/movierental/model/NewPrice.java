@@ -14,6 +14,7 @@ public class NewPrice extends Price{
     //movie cost 10 per day
     //customer earns 3 loyalty points per rental per day of a movie
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    private static final double DEFAULT_PRICE = 10.0;
 
     public NewPrice(UserRepoServiceImpl userRepoService) {
         if (authentication == null) {
@@ -34,7 +35,11 @@ public class NewPrice extends Price{
                 setLoyaltyPoints(3);
             }
         }
+    }
 
+    @Override
+    public double getDefaultPrice() {
+        return DEFAULT_PRICE;
     }
 
     @Override

@@ -6,12 +6,12 @@ package com.example.movierental.model;
 
 import com.example.movierental.service.UserRepoServiceImpl;
 import com.example.movierental.states.StateHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class ChildrensPrice extends Price {
 
+    private static final double DEFAULT_PRICE = 5.0;
     //movie cost 5 per day
     //customer earns 1 loyalty points per rental per day of a movie
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -24,7 +24,7 @@ public class ChildrensPrice extends Price {
             User user = userRepoService.findByUserName(authentication.getName());
             StateHandler stateHandler = new StateHandler(user);
             boolean discount = user.isDiscount();
-            if (discount == false) {
+            if (!discount) {
                 setPrice(5);
                 setLoyaltyPoints(1);
             } else {
@@ -36,6 +36,11 @@ public class ChildrensPrice extends Price {
             }
         }
 
+    }
+
+    @Override
+    public double getDefaultPrice() {
+        return DEFAULT_PRICE;
     }
 
     @Override

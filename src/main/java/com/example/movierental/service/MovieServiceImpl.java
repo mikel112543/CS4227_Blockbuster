@@ -48,7 +48,7 @@ public class MovieServiceImpl implements MovieService {
      * @return ArrayList of Movies if their title contains X in the title
      */
     @Override
-    public ArrayList<Movie> findByName(String searchbar){
+    public ArrayList<Movie> findByName(String searchbar) {
         ArrayList<Movie> results = new ArrayList<>();
         for (Movie listOfMovie : listOfMovies) {
             if (listOfMovie.getTitle().toLowerCase().contains(searchbar.toLowerCase())) {
@@ -94,8 +94,8 @@ public class MovieServiceImpl implements MovieService {
             BufferedReader br = new BufferedReader(new FileReader(path));
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
-                                                    //title     genre      description length   movieID                                                  Price Code
-                Movie movie = new Movie.MovieBuilder(values[0], values[1], values[2], values[3], Integer.parseInt(values[5]), values[6]).setPrice(Integer.parseInt(values[4]),userRepoService).build();
+                //title     genre      description length   movieID                                                  Price Code
+                Movie movie = new Movie.MovieBuilder(values[0], values[1], values[2], values[3], Integer.parseInt(values[5]), values[6]).setPrice(Integer.parseInt(values[4]), userRepoService).build();
                 listOfMovies.add(movie);
             }
             br.close();
@@ -104,5 +104,13 @@ public class MovieServiceImpl implements MovieService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Empties the current list of movies
+     */
+    @Override
+    public void clearMovies() {
+        listOfMovies.clear();
     }
 }

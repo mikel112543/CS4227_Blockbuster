@@ -48,35 +48,6 @@ public class Movie {
         return price.getCharge();
     }
 
-    /**
-     * Calculates the charge based on the type of movie and discount given as int meaning percentage
-     * @param tier
-     * @return double charge for renting movie
-     */
-    public double getCharge(int tier){
-        return price.getCharge(tier);
-    }
-
-    public String getChargeString(int tier){
-
-        int t = tier;
-        if(t < 0){
-            t = 0;
-        }else if(t > 3){
-            t = 3;
-        }
-
-        String s = "Movie Price: €" +getCharge() + "\n"
-                    + "User Tier: " + t + ", No discount applied\n"
-                    + "Charge for Rental: €" + getCharge();
-
-        if(t > 1) {
-             s = "Movie Price: €" + getCharge() + "\n"
-                    + "User Tier: " + t + ", Discount applied\n"
-                    + "Charge for Rental: €" + getCharge(t);
-        }
-        return s;
-    }
 
     public String getMovieCoverUrl(){
         return movieCoverUrl;
@@ -107,7 +78,7 @@ public class Movie {
         return length;
     }
 
-    public Price getPrice() {
+    public Price getPriceObj() {
         return price;
     }
 

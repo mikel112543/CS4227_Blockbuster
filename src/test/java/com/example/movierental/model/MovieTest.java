@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class MovieTest {
 
-    private Movie testMovie1, testMovie2;
+   /* private Movie testMovie1, testMovie2;
     private MovieBuilder testMovieBuilder;
 
     @BeforeEach
@@ -114,5 +114,5 @@ class MovieTest {
                 "User Tier: 3, Discount applied\n" +
                 "Charge for Rental: €4.0",testMovie2.getChargeString(200));
 
-    }
+    }*/
 }
