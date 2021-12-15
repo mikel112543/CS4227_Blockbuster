@@ -13,7 +13,7 @@ import static com.example.movierental.security.UserRole.USER;
 
 public class User implements UserDetails {
 
-    @JsonProperty
+    @JsonIgnore
     private int userID;
 
     @JsonProperty("Username")
@@ -43,6 +43,7 @@ public class User implements UserDetails {
     @JsonProperty
     private boolean discount;
 
+    @JsonIgnore
     private Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
     public User() {
@@ -145,6 +146,10 @@ public class User implements UserDetails {
         isAccountNonLocked = !banned;
     }
 
+    public boolean isBanned() {
+        return banned;
+    }
+
     public void setRentedMovies(List<Rental> rentedMovies) {
         this.rentedMovies = rentedMovies;
     }
@@ -155,12 +160,15 @@ public class User implements UserDetails {
 
     public void stateCheck() {
         int lp = this.getLoyaltyPoints();
-        if(lp > 500 && lp < 1500) {
+        if(lp >= 500 && lp <= 1499) {
             this.setTier(2);
-        } else if (lp > 1500 && lp < 3000) {
+        } else if (lp >= 1500 && lp <= 2999) {
             this.setTier(3);
         } else if (lp > 3000) {
             this.setLoyaltyPoints(3000);
+            this.setTier(3);
+        }else{
+            this.setTier(1);
         }
     }
 

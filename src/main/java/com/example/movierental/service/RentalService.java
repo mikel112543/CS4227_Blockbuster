@@ -1,6 +1,7 @@
 package com.example.movierental.service;
 
 import com.example.movierental.model.Rental;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -21,9 +22,11 @@ public interface RentalService {
 
     List<Rental> getRentals(int userId);
 
-    Rental getRental(int userId, int movieId);
+    List<Rental> getRental(int userId, int movieId);
 
     String removeRental(int customerId, int movieId);
 
     void checkRentals() throws IOException;
+
+    List<ObjectNode> parseRentals(List<Rental> userRentals);
 }

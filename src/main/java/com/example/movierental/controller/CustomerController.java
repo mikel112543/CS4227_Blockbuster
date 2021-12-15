@@ -1,7 +1,10 @@
 package com.example.movierental.controller;
 import com.example.movierental.model.User;
 import com.example.movierental.service.UserRepoServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -20,6 +23,9 @@ public class CustomerController {
         this.userService = userService;
     }
 
+    @Autowired
+    ObjectMapper mapper;
+
     /**
      *
      * @param customerId find by customer ID
@@ -27,8 +33,13 @@ public class CustomerController {
      */
     @GetMapping(value = "/customerId/{CUSTOMER_ID}")
     @ResponseBody
-    public User getUser(@PathVariable("CUSTOMER_ID") final int customerId) {
-        return userService.findByID(customerId);
+    public ObjectNode getUser(@PathVariable("CUSTOMER_ID") final int customerId) {
+        User user =  userService.findByID(customerId);
+        ObjectNode userNode = mapper.createObjectNode();
+        userNode.put("Username" ,user.getUsername());
+        userNode.put("Is banned", user.isBanned());
+        userNode.put("Loyalty Points", user.getLoyaltyPoints());
+        return userNode;
     }
 
     @PostMapping(value = "/register")

@@ -105,21 +105,4 @@ public class MovieServiceImpl implements MovieService {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public void clearMovies() {
-        listOfMovies.clear();
-    }
-
-
-    @Override
-    public void addMovie(Movie movie) {
-        listOfMovies.add(movie);
-    }
-
-    @Override
-    public void removeMovie() {
-        listOfMovies.clear();
-    }
-
 }

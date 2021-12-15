@@ -4,6 +4,7 @@ import com.example.movierental.model.User;
 import com.example.movierental.service.RentalService;
 import com.example.movierental.service.UserRepoServiceImpl;
 import com.example.movierental.model.Rental;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +34,7 @@ public class RentalController {
      */
     @GetMapping(value = "/rentals")
     @ResponseBody
-    public List<Rental> showRentals() {
+    public List<ObjectNode> showRentals() {
         int userId = 0;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
@@ -43,7 +44,8 @@ public class RentalController {
                 break;
             }
         }
-        return rentalService.getRentals(userId);
+        List<Rental> userRentals = rentalService.getRentals(userId);
+        return rentalService.parseRentals(userRentals);
     }
 
     /**
@@ -54,11 +56,11 @@ public class RentalController {
 
     @PostMapping(value = "/customerId/{CUSTOMER_ID}/movieId/{MOVIE_ID}")
     @ResponseBody
-    public List<Rental> rentMovie(@PathVariable("CUSTOMER_ID") final int customerId,
+    public List<ObjectNode> rentMovie(@PathVariable("CUSTOMER_ID") final int customerId,
                                   @PathVariable("MOVIE_ID") final int movieId) {
 
-
-        return rentalService.rentMovie(customerId, movieId);
+        List<Rental> userRentals = rentalService.rentMovie(customerId, movieId);
+        return rentalService.parseRentals(userRentals);
     }
 
     /**
@@ -68,10 +70,10 @@ public class RentalController {
 
     @GetMapping(value = "/customerId/{CUSTOMER_ID}/rentals")
     @ResponseBody
-    public List<Rental> showRentals(@PathVariable("CUSTOMER_ID") final String customerId) {
-        int userId = Integer.parseInt(customerId);
+    public List<ObjectNode> showRentals(@PathVariable("CUSTOMER_ID") final int customerId) {
 
-        return rentalService.getRentals(userId);
+        List<Rental> userRentals = rentalService.getRentals(customerId);
+        return rentalService.parseRentals(userRentals);
     }
 
     /**
@@ -81,10 +83,12 @@ public class RentalController {
      */
 
     @GetMapping(value = "/customerId/{CUSTOMER_ID}/rentals/{MOVIE_ID}")
-    public Rental getRental(@PathVariable("CUSTOMER_ID") final int customerId,
+    public List<ObjectNode> getRental(@PathVariable("CUSTOMER_ID") final int customerId,
                             @PathVariable("MOVIE_ID") final int movieId) {
 
-        return rentalService.getRental(customerId, movieId);
+        List<Rental> userRental = rentalService.getRental(customerId, movieId);
+
+        return rentalService.parseRentals(userRental);
     }
 
     /**

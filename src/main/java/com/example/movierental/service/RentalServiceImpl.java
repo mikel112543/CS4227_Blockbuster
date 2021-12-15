@@ -5,10 +5,11 @@ import com.example.movierental.exception.ServiceException;
 import com.example.movierental.logger.AbstractLogger;
 import com.example.movierental.logger.RequesterClient;
 import com.example.movierental.model.Movie;
-import com.example.movierental.model.Rental;
 import com.example.movierental.model.ServiceError;
 import com.example.movierental.model.User;
 import com.example.movierental.states.StateHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -37,11 +40,14 @@ public class RentalServiceImpl implements RentalService {
     UserRepoServiceImpl userService;
     MovieServiceImpl movieService;
     List<Rental> listOfRentals = new ArrayList<Rental>();
+    ObjectMapper mapper;
+
 
     @Autowired
-    public RentalServiceImpl(UserRepoServiceImpl userService, MovieServiceImpl movieService) {
+    public RentalServiceImpl(UserRepoServiceImpl userService, MovieServiceImpl movieService, ObjectMapper mapper) {
         this.userService = userService;
         this.movieService = movieService;
+        this.mapper = mapper;
     }
 
     /**
@@ -111,7 +117,6 @@ public class RentalServiceImpl implements RentalService {
     }
 
     /**
-     *
      * @param userId - Unique Identifier for User
      * @return JSON list of user rented movies
      */
@@ -131,8 +136,9 @@ public class RentalServiceImpl implements RentalService {
      * @param movieId -Unique Identifier for Movie
      * @return JSON Rental
      */
-    public Rental getRental(int userId, int movieId) {
+    public List<Rental> getRental(int userId, int movieId) {
         //Checks User ID
+        List<Rental> userRental = new ArrayList<>();
         User user = userService.findByID(userId);
         List<Rental> userRentals = user.getRentedMovies();
         //Check if user has no rentals
@@ -141,9 +147,10 @@ public class RentalServiceImpl implements RentalService {
             throw new ServiceException(new ServiceError(Error.NO_RENTALS));
         } else {
             //Checking for rental in users catalog
-            for (Rental userRental : userRentals) {
-                if (userRental.getMovie().getMovieId() == movieId) {
+            for (Rental rental : userRentals) {
+                if (rental.getMovie().getMovieId() == movieId) {
                     chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "Retrieving Rental...");
+                    userRental.add(rental);
                     return userRental;
                 }
             }
@@ -182,7 +189,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     /**
-     * Routinely checks expiry of all users rentals
+     * Routinely checks expiry of all users rentals and Initializes the data
      */
     @Override
     @PostConstruct
@@ -209,6 +216,28 @@ public class RentalServiceImpl implements RentalService {
         };
         movieService.clearMovies();
         //Set timer to run check every 5 hours
-        timer.schedule(checkRentals, 0L, 1000L *60*60*60*60*60*60);
+        timer.schedule(checkRentals, 0L, 1000L * 60 * 60 * 60 * 60 * 60 * 60);
+    }
+
+    /**
+     *
+     * @param userRentals - List of users Rentals
+     * @return Cleaned up List for JSON use
+     */
+    @Override
+    public List<ObjectNode> parseRentals(List<Rental> userRentals) {
+        List<ObjectNode> movieNodes = new ArrayList<>();
+        chainLogger.logMessage(AbstractLogger.OUTPUT_INFO,"Parsing into clean JSON");
+        for (Rental rental : userRentals) {
+            ObjectNode movieNode = mapper.createObjectNode();
+            movieNode.put("Title", rental.getMovie().getTitle());
+            movieNode.put("Genre", rental.getMovie().getGenre());
+            movieNode.put("Description", rental.getMovie().getDescription());
+            movieNode.put("Length", rental.getMovie().getLength());
+            movieNode.put("Price", rental.getMovie().getCharge());
+            movieNode.put("Rent Length", rental.calculateRemainingDays());
+            movieNodes.add(movieNode);
+        }
+        return movieNodes;
     }
 }
