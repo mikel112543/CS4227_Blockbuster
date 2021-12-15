@@ -41,10 +41,20 @@ class RentalControllerTest {
     @Autowired
     RentalServiceImpl rentalService;
 
+    @Autowired
+    MovieServiceImpl movieService;
+
+    @BeforeEach
+    void setUp() {
+        movieService.initializeMovies();
+
+    }
+
     @AfterEach
     void tearDown() {
         User user = userService.findByID(9);
         user.getRentedMovies().clear();
+        movieService.getMovies().clear();
     }
 
     @Test

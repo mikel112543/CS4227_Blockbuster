@@ -34,10 +34,16 @@ class RentalServiceImplTest {
         this.rentalService = rentalService;
     }
 
+    @BeforeEach
+    void setUp() {
+        movieService.initializeMovies();
+    }
+
     @AfterTestExecution
     public void tearDown() {
         User testUser = userService.findByID(9);
         rentalService.getRentals(testUser.getUserID()).clear();
+        movieService.getMovies().clear();
     }
 
     @Test
