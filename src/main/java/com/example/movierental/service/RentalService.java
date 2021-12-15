@@ -14,6 +14,8 @@ import java.util.List;
 @Service
 public interface RentalService {
 
+    void initializeRentals();
+
     List<Rental> rentMovie(int customerId, int movieId);
 
     List<Rental> getRentals(int userId);

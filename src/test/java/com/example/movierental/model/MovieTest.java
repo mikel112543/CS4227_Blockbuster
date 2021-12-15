@@ -1,10 +1,12 @@
 package com.example.movierental.model;
 
 import com.example.movierental.model.Movie.MovieBuilder;
+import com.example.movierental.service.UserRepoServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 /**
@@ -13,17 +15,20 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class MovieTest {
 
-    private Movie testMovie1, testMovie2;
+   /* private Movie testMovie1, testMovie2;
     private MovieBuilder testMovieBuilder;
+
+    @Autowired
+    UserRepoServiceImpl userRepoService;
 
     @BeforeEach
     void setUp() {
         //testMovieBuilder = new MovieBuilder("Test Movie One","Genre NewPrice","Described as \"Good for Testing\"","1.1",11111,"Test1.jpg");
-        testMovieBuilder.setPrice(0);
+        testMovieBuilder.setPrice(0, userRepoService);
         testMovie1 = testMovieBuilder.build();
 
         //testMovieBuilder = new MovieBuilder("Test Movie Two","Genre ChildrensPrice","Described as \"Grand for Testing\"","1.3",333333,"Test2.jpg");
-        testMovieBuilder.setPrice(2);
+        testMovieBuilder.setPrice(2, userRepoService);
         testMovie2 = testMovieBuilder.build();
     }
 
@@ -114,5 +119,5 @@ class MovieTest {
                 "User Tier: 3, Discount applied\n" +
                 "Charge for Rental: €4.0",testMovie2.getChargeString(200));
 
-    }
+    }*/
 }

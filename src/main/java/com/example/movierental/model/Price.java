@@ -1,6 +1,8 @@
 package com.example.movierental.model;
 
+import com.example.movierental.service.UserRepoServiceImpl;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Price Class - Pricing Structure for the Movies
@@ -9,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public abstract class Price {
 
     @JsonIgnore
-    private int price; //price of the movie per day
+    private double price; //price of the movie per day
     @JsonIgnore
     private int loyaltyPoints; //loyalty points per day of rental of the movie
 
@@ -17,15 +19,19 @@ public abstract class Price {
      * Getter for price
      * @return int price
      */
-    public int getPrice() {
+    public double getPrice() {
         return price;
+    }
+
+    public double getDefaultPrice() {
+        return 0.0;
     }
 
     /**
      * Setter for price
      * @param price
      */
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -52,28 +58,6 @@ public abstract class Price {
     public double getCharge(){
         return getPrice();
     }
-
-    /**
-     * Calculates charge based on the type of movie and the users tier applied
-     * Tier 1 - No Discount
-     * Tier 2 - 10% Discount
-     * Tier 3 - 20% Discount
-     * @param tier
-     */
-    public double getCharge(int tier){
-        if(tier == 1){
-            return getPrice();
-        }else if(tier == 2){
-            double d = 0.9;
-            return getPrice()*(d);
-        }else if(tier >= 3){
-            double d = 0.8;
-            return getPrice()*(d);
-        }else{
-            return getPrice();
-        }
-    }
-
     /**
      * Calculates the loyalty points earned based on the type of movie the number of days and
      * @param numberOfDays

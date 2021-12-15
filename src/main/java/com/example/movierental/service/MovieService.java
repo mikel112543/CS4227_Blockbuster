@@ -16,4 +16,8 @@ public interface MovieService {
     ArrayList<Movie> findByName(String searchbar);
 
     void initializeMovies();
+
+    public void clearMovies();
+
+    ArrayList<Movie> findByGenre(String insertedGenre);
 }

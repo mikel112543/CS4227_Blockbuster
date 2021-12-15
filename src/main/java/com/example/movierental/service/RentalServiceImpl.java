@@ -4,19 +4,23 @@ import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
 import com.example.movierental.logger.AbstractLogger;
 import com.example.movierental.logger.RequesterClient;
-import com.example.movierental.model.Rental;
-import com.example.movierental.states.*;
 import com.example.movierental.model.Movie;
 import com.example.movierental.model.ServiceError;
 import com.example.movierental.model.User;
+import com.example.movierental.model.Rental;
+import com.example.movierental.states.StateHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -45,6 +49,32 @@ public class RentalServiceImpl implements RentalService {
     }
 
     /**
+     * Initializes listOfRentals list from csv
+     */
+    @Override
+    public void initializeRentals(){
+        String path = "rentals.csv";
+        String line = "";
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            while ((line = br.readLine()) != null){
+                String [] values = line.split(",");
+                Movie movie = movieService.findByMovieID(Integer.parseInt(values[0]));
+                User user = userService.findByID(Integer.parseInt(values[1]));
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime dateTime = LocalDateTime.parse(values[2], formatter);
+
+                Rental rental = new Rental(movie, dateTime);
+                user.getRentedMovies().add(rental);
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * @param userId  - User renting the movie
      * @param movieId - Movie to be rented
      */
@@ -53,7 +83,7 @@ public class RentalServiceImpl implements RentalService {
         //Check Movie ID and User ID
         Movie movie = movieService.findByMovieID(movieId);
         User user = userService.findByID(userId);
-        int lp = movie.getPrice().getLoyaltyPoints();
+        int lp = movie.getPriceObj().getLoyaltyPoints();
 
         List<Rental> userRentals = user.getRentedMovies();
 
@@ -68,7 +98,7 @@ public class RentalServiceImpl implements RentalService {
             }
         }
         StateHandler stateHandler = new StateHandler(user);
-        Rental rental = new Rental(movie, LocalDate.now().plusDays(stateHandler.getCurrentTier().getDays()));
+        Rental rental = new Rental(movie, LocalDateTime.now().plusDays(stateHandler.getCurrentTier().getDays()));
         chainLogger.logMessage(AbstractLogger.DEBUG_INFO, "Adding Movie to users catalog");
         userRentals.add(rental);
         //Adds loyalty points to users account
@@ -82,6 +112,7 @@ public class RentalServiceImpl implements RentalService {
      * @param userId - Unique Identifier for User
      * @return JSON list of user rented movies
      */
+    @Override
     public List<Rental> getRentals(int userId) {
         //Check User ID
         User user = userService.findByID(userId);
@@ -98,6 +129,7 @@ public class RentalServiceImpl implements RentalService {
      * @param movieId -Unique Identifier for Movie
      * @return JSON Rental
      */
+    @Override
     public List<Rental> getRental(int userId, int movieId) {
         //Checks User ID
         List<Rental> userRental = new ArrayList<>();
@@ -126,6 +158,7 @@ public class RentalServiceImpl implements RentalService {
      * @param userId  - Customer who owns the rental
      * @param movieId - Movie ID
      */
+    @Override
     public String removeRental(int userId, int movieId) {
         //Checks User ID
         User user = userService.findByID(userId);
@@ -153,11 +186,13 @@ public class RentalServiceImpl implements RentalService {
     /**
      * Routinely checks expiry of all users rentals and Initializes the data
      */
+
     @Override
     @PostConstruct
     public void checkRentals() throws IOException {
         userService.initializeUsers();
         movieService.initializeMovies();
+        initializeRentals();
         TimerTask checkRentals = new TimerTask() {
             @Override
             public void run() {
@@ -176,6 +211,7 @@ public class RentalServiceImpl implements RentalService {
                 chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "Removing expired rentals...");
             }
         };
+        movieService.clearMovies();
         //Set timer to run check every 5 hours
         timer.schedule(checkRentals, 0L, 1000L * 60 * 60 * 60 * 60 * 60 * 60);
     }

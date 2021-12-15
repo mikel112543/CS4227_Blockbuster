@@ -1,10 +1,9 @@
 package com.example.movierental.model;
 
+import com.example.movierental.service.UserRepoServiceImpl;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-
-import static jdk.nashorn.internal.objects.NativeMath.round;
 
 //Movie Class
 //
@@ -49,35 +48,6 @@ public class Movie {
         return price.getCharge();
     }
 
-    /**
-     * Calculates the charge based on the type of movie and discount given as int meaning percentage
-     * @param tier
-     * @return double charge for renting movie
-     */
-    public double getCharge(int tier){
-        return price.getCharge(tier);
-    }
-
-    public String getChargeString(int tier){
-
-        int t = tier;
-        if(t < 0){
-            t = 0;
-        }else if(t > 3){
-            t = 3;
-        }
-
-        String s = "Movie Price: €" +getCharge() + "\n"
-                    + "User Tier: " + t + ", No discount applied\n"
-                    + "Charge for Rental: €" + getCharge();
-
-        if(t > 1) {
-             s = "Movie Price: €" + getCharge() + "\n"
-                    + "User Tier: " + t + ", Discount applied\n"
-                    + "Charge for Rental: €" + getCharge(t);
-        }
-        return s;
-    }
 
     public String getMovieCoverUrl(){
         return movieCoverUrl;
@@ -104,19 +74,11 @@ public class Movie {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getLength() {
         return length;
     }
 
-    public void setLength(String length) {
-        this.length = length;
-    }
-
-    public Price getPrice() {
+    public Price getPriceObj() {
         return price;
     }
 
@@ -127,35 +89,42 @@ public class Movie {
         this.description = builder.description;
         this.length = builder.length;
         this.movieId = builder.movieId;
-        this.price = builder.price;
         this.movieCoverUrl = builder.movieCoverUrl;
+        this.price = builder.price;
     }
 
     public static class MovieBuilder {
+        @JsonProperty("Title")
         private String title;
+        @JsonProperty("Genre")
         private String genre;
+        @JsonProperty("Description")
         private String description;
+        @JsonProperty("Length")
         private String length;
+        @JsonProperty("MovieID")
         private int movieId;
+        @JsonIgnore
         private String movieCoverUrl;
 
         //optional parameters
         @JsonIgnore
         private Price price;
 
-        public MovieBuilder(String title, String genre, String description, String length, int movieId) { //required parameters in here only
+        public MovieBuilder(String title, String genre, String description, String length, int movieId, String movieCoverUrl) { //required parameters in here only
             this.title = title;
             this.genre = genre;
             this.description = description;
             this.length = length;
             this.movieId = movieId;
+            this.movieCoverUrl = movieCoverUrl;
         }
 
 
         @JsonIgnore
-        public MovieBuilder setPrice(int priceCode) {
+        public MovieBuilder setPrice(int priceCode, UserRepoServiceImpl userRepoService) {
             PriceFactory p = new PriceFactory();
-            this.price = p.getPrice(priceCode);
+            this.price = p.getPrice(priceCode, userRepoService);
             return this;
         }
 
@@ -163,11 +132,6 @@ public class Movie {
             return new Movie(this);
         }
     }
-
-    public void setMovieCoverUrl(String movieCoverUrl) {
-        this.movieCoverUrl = movieCoverUrl;
-    }
-
 
 
     @Override

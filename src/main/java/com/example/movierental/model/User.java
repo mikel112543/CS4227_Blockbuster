@@ -40,6 +40,9 @@ public class User implements UserDetails {
     @JsonProperty
     private boolean isAccountNonLocked;
 
+    @JsonProperty
+    private boolean discount;
+
     @JsonIgnore
     private Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
@@ -101,6 +104,14 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
+    }
+
+    public boolean isDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(boolean discount) {
+        this.discount = discount;
     }
 
     public int getLoyaltyPoints() {

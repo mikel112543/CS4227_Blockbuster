@@ -15,8 +15,6 @@ public class StateHandler {
             currentTier = new Tier2();
         } else if (tier == 3) {
             currentTier = new Tier3();
-        } else {
-
         }
     }
 
