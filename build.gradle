@@ -8,7 +8,7 @@ plugins {
 
 sonarqube {
     properties {
-        property "sonar.projectKey", "mikel112543_CS4125-Movie_Rental_Micro_Service"
+        property "sonar.projectKey", "mikel112543_CS4227_Blockbuster"
         property "sonar.organization", "mikel112543"
         property "sonar.host.url", "https://sonarcloud.io"
     }

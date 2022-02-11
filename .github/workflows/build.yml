@@ -3,10 +3,6 @@ on:
   push:
     branches:
       - master
-      - Rental_Use_Case
-      - controllers
-      - mike_master_test
-      - John_JUnit
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
