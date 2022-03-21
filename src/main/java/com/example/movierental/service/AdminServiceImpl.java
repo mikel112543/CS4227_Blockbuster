@@ -2,30 +2,26 @@ package com.example.movierental.service;
 
 import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
-import com.example.movierental.logger.Dispatcher;
-import com.example.movierental.logger.LoggerInterceptor;
+import com.example.movierental.logger.AbstractLogger;
+import com.example.movierental.logger.RequesterClient;
 import com.example.movierental.model.Movie;
 import com.example.movierental.model.ServiceError;
 import com.example.movierental.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class AdminServiceImpl implements AdminService {
-
-    private final UserRepoServiceImpl userService;
-    private final MovieServiceImpl movieService;
-    private final Dispatcher dispatcher;
-    private static final Logger log = LoggerFactory.getLogger(AdminServiceImpl.class);
+    private static AbstractLogger chainLogger = RequesterClient.getChaining();
 
     @Autowired
-    public AdminServiceImpl(UserRepoServiceImpl userService, MovieServiceImpl movieService, Dispatcher dispatcher) {
+    UserRepoServiceImpl userService;
+    MovieServiceImpl movieService;
+
+    public AdminServiceImpl(UserRepoServiceImpl userService, MovieServiceImpl movieService) {
         this.userService = userService;
         this.movieService = movieService;
-        this.dispatcher = dispatcher;
     }
 
     @Override
@@ -46,7 +42,7 @@ public class AdminServiceImpl implements AdminService {
                 listOfMovies.remove(movie);
             }
         }
-        dispatcher.logMessage(log, "Incorrect Movie ID", LoggerInterceptor.ERROR);
+        chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find movie");
         throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_ID));
     }
 
@@ -61,11 +57,13 @@ public class AdminServiceImpl implements AdminService {
         User user = userService.findByID(userID);
         for (int i = 0 ; i < listOfUsers.size() ; i++){
             if (userID == user.getUserID()){
-                user.setBanned(true);
+                userService.findByID(userID).setBanned(true);
+                break;
+            } else {
+                chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
+                throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
             }
         }
-        dispatcher.logMessage(log, "Could not find user", LoggerInterceptor.ERROR);
-        throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
     }
 
     @Override
@@ -74,11 +72,12 @@ public class AdminServiceImpl implements AdminService {
         User user = userService.findByID(userID);
         for (int i = 0 ; i < listOfUsers.size() ; i++){
             if (userID == user.getUserID()){
-                user.setBanned(false);
+                userService.findByID(userID).setBanned(false);
+                break;
+            } else {
+                chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
+                throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
             }
         }
-        dispatcher.logMessage(log, "Could not find user", LoggerInterceptor.ERROR);
-        throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
     }
-
 }
