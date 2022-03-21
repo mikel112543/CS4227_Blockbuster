@@ -15,10 +15,10 @@ import java.util.List;
 public class AdminServiceImpl implements AdminService {
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
 
-    private final UserRepoServiceImpl userService;
-    private final MovieServiceImpl movieService;
-
     @Autowired
+    UserRepoServiceImpl userService;
+    MovieServiceImpl movieService;
+
     public AdminServiceImpl(UserRepoServiceImpl userService, MovieServiceImpl movieService) {
         this.userService = userService;
         this.movieService = movieService;
@@ -57,11 +57,13 @@ public class AdminServiceImpl implements AdminService {
         User user = userService.findByID(userID);
         for (int i = 0 ; i < listOfUsers.size() ; i++){
             if (userID == user.getUserID()){
-                user.setBanned(true);
+                userService.findByID(userID).setBanned(true);
+                break;
+            } else {
+                chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
+                throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
             }
         }
-        chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
-        throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
     }
 
     @Override
@@ -70,11 +72,12 @@ public class AdminServiceImpl implements AdminService {
         User user = userService.findByID(userID);
         for (int i = 0 ; i < listOfUsers.size() ; i++){
             if (userID == user.getUserID()){
-                user.setBanned(false);
+                userService.findByID(userID).setBanned(false);
+                break;
+            } else {
+                chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
+                throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
             }
         }
-        chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
-        throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
     }
-
 }
