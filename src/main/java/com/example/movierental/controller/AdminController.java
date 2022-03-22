@@ -7,6 +7,7 @@ import com.example.movierental.service.UserRepoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -15,14 +16,17 @@ import java.util.List;
 @RestController //CRUD
 public class AdminController {
 
-    @Autowired
+    MovieServiceImpl movieService;
     UserRepoServiceImpl userService;
-
-    @Autowired
     AdminServiceImpl adminService;
 
+
     @Autowired
-    MovieServiceImpl movieService;
+    public AdminController(UserRepoServiceImpl userService, AdminServiceImpl adminService, MovieServiceImpl movieService) {
+        this.userService = userService;
+        this.adminService = adminService;
+        this.movieService = movieService;
+    }
 
     /**
      * @param customerId - Unique identifier attached to each of the users.

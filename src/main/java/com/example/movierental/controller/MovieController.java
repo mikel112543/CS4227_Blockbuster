@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import sun.rmi.runtime.Log;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -35,7 +38,9 @@ public class MovieController {
      */
     @GetMapping(value = "movies/{MOVIE_ID}")
     @ResponseBody
-    public Movie getMovie(@PathVariable("MOVIE_ID") final int movieId) {
+    public Movie getMovie(@PathVariable("MOVIE_ID") final int movieId, HttpServletRequest request, HttpServletResponse response) {
+        String test = request.getRequestURI();
+        int status = response.getStatus();
         return movieService.findByMovieID(movieId); // Send request to movie service handler
     }
 

@@ -2,10 +2,12 @@ package com.example.movierental.service;
 
 import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
-import com.example.movierental.logger.AbstractLogger;
-import com.example.movierental.logger.RequesterClient;
+import com.example.movierental.logger.Dispatcher;
+import com.example.movierental.logger.LoggerInterceptor;
 import com.example.movierental.model.ServiceError;
 import com.example.movierental.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -16,14 +18,15 @@ import java.util.*;
 @Repository("users")
 public class UserRepoServiceImpl implements UserRepoService {
 
-
-    private static AbstractLogger chainLogger = RequesterClient.getChaining();
+    Dispatcher dispatcher;
     List<User> users = new ArrayList<>();
     final PasswordEncoder passwordEncoder;
+    private static final Logger log = LoggerFactory.getLogger(UserRepoServiceImpl.class);
 
     @Autowired
-    public UserRepoServiceImpl(PasswordEncoder passwordEncoder) {
+    public UserRepoServiceImpl(PasswordEncoder passwordEncoder, Dispatcher dispatcher) {
         this.passwordEncoder = passwordEncoder;
+        this.dispatcher = dispatcher;
     }
 
     @Override
@@ -35,8 +38,8 @@ public class UserRepoServiceImpl implements UserRepoService {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 User user = new User(Integer.parseInt(values[0]),
-                                    values[1], passwordEncoder.encode(values[2]),
-                                    values[3], Boolean.parseBoolean(values[6]));
+                        values[1], passwordEncoder.encode(values[2]),
+                        values[3], Boolean.parseBoolean(values[6]));
                 user.setLoyaltyPoints(Integer.parseInt(values[4]));
                 user.setTier(Integer.parseInt(values[5]));
                 user.setDiscount(Boolean.parseBoolean(values[7]));
@@ -45,10 +48,10 @@ public class UserRepoServiceImpl implements UserRepoService {
             br.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "File not found");
+            dispatcher.logMessage(log, "File not found", LoggerInterceptor.ERROR);
             throw new ServiceException(new ServiceError(Error.FILE_NOT_FOUND));
         } catch (IOException e) {
-            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Initialization Error");
+            dispatcher.logMessage(log, "Initialization Error", LoggerInterceptor.ERROR);
             throw new ServiceException(new ServiceError(Error.INVALID_INITIALIZATION));
         }
     }
@@ -61,8 +64,8 @@ public class UserRepoServiceImpl implements UserRepoService {
     @Override
     public User findByID(int i) {
         User user = users.get(i - 1);
-        if(user == null) {
-            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
+        if (user == null) {
+            dispatcher.logMessage(log, "Could not find user", LoggerInterceptor.ERROR);
             throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
         } else {
             return user;
@@ -72,14 +75,14 @@ public class UserRepoServiceImpl implements UserRepoService {
     @Override
     public User findByUserName(String username) {
         User user = null;
-        for(int i = 0; i < users.size(); i++) {
-            if (users.get(i).getUsername().equals(username)) {
-                user = users.get(i);
+        for (User value : users) {
+            if (value.getUsername().equals(username)) {
+                user = value;
                 break;
             }
         }
         if (user == null) {
-            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Username not recognized");
+            dispatcher.logMessage(log, "Username not recognized", LoggerInterceptor.ERROR);
             throw new ServiceException(new ServiceError(Error.INVALID_USERNAME));
         }
         return user;
@@ -87,21 +90,21 @@ public class UserRepoServiceImpl implements UserRepoService {
 
     @Override
     public void registerUser(String userName, String password) {
-        int userId = users.size()+1;
-        for(User user : users) {
+        int userId = users.size() + 1;
+        for (User user : users) {
             if (Objects.equals(user.getUsername(), userName)) {
-                chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not register user as username already exists");
+                dispatcher.logMessage(log, "Could not register user as username already exists", LoggerInterceptor.ERROR);
                 throw new ServiceException(new ServiceError(Error.INVALID_USERNAME));
             }
         }
         try {
-            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "Registering user...");
+            dispatcher.logMessage(log, "Registering user...", LoggerInterceptor.INFO);
             User user = new User(userId, userName, passwordEncoder.encode(password), "ROLE_USER", false);
             users.add(user);
-        }catch (ServiceException e) {
+        } catch (ServiceException e) {
             throw new ServiceException(new ServiceError(Error.INVALID_REGISTER));
         }
-        chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "Registration successful");
+        dispatcher.logMessage(log, "Registration successful", LoggerInterceptor.INFO);
     }
 
     @Override

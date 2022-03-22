@@ -6,15 +6,18 @@ package com.example.movierental.model;
 
 import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
-import com.example.movierental.logger.AbstractLogger;
-import com.example.movierental.logger.RequesterClient;
+import com.example.movierental.logger.Dispatcher;
 
+import com.example.movierental.logger.LoggerInterceptor;
 import com.example.movierental.service.UserRepoServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class PriceFactory {
 
-    private static AbstractLogger chainLogger = RequesterClient.getChaining();
+    private static final Dispatcher dispatcher = new Dispatcher();
+    private static final Logger log = LoggerFactory.getLogger(PriceFactory.class);
 
     //getPrice returns the required Price object based on the priceCode
     //PRICE CODES: 0 = NewPrice, 1 = StandardPrice, 2 = ChildrensPrice
@@ -27,9 +30,8 @@ public class PriceFactory {
         }else if(priceCode == 2){
             return new ChildrensPrice(userRepoService);
         }else{
-            chainLogger.logMessage(AbstractLogger.ERROR_INFO,"Incorrect price code entered: Must be one of 0,1,2");
+            dispatcher.logMessage(log,"Incorrect price code entered: Must be one of 0,1,2", LoggerInterceptor.ERROR);
             throw new ServiceException(new ServiceError(Error.INVALID_PRICE_CODE));
         }
-        //return null;
     }
 }

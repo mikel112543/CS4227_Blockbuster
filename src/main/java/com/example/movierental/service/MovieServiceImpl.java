@@ -2,10 +2,12 @@ package com.example.movierental.service;
 
 import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
-import com.example.movierental.logger.AbstractLogger;
-import com.example.movierental.logger.RequesterClient;
+import com.example.movierental.logger.Dispatcher;
+import com.example.movierental.logger.LoggerInterceptor;
 import com.example.movierental.model.Movie;
 import com.example.movierental.model.ServiceError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +19,18 @@ import java.util.ArrayList;
 
 @Service
 public class MovieServiceImpl implements MovieService {
+
     ArrayList<Movie> listOfMovies = new ArrayList<>();
-    private static AbstractLogger chainLogger = RequesterClient.getChaining();
+    private static final Logger log = LoggerFactory.getLogger(MovieServiceImpl.class);
+
+    UserRepoServiceImpl userRepoService;
+    Dispatcher dispatcher;
 
     @Autowired
-    UserRepoServiceImpl userRepoService;
-
+    public MovieServiceImpl(UserRepoServiceImpl userRepoService, Dispatcher dispatcher) {
+        this.userRepoService = userRepoService;
+        this.dispatcher = dispatcher;
+    }
 
     public ArrayList<Movie> getMovies() {
         return listOfMovies;
@@ -39,7 +47,7 @@ public class MovieServiceImpl implements MovieService {
                 return movie;
             }
         }
-        chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find movie");
+        dispatcher.logMessage(log, "Could not find movie", LoggerInterceptor.ERROR);
         throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_ID));
     }
 
@@ -56,7 +64,7 @@ public class MovieServiceImpl implements MovieService {
             }
         }
         if (results.isEmpty()) {
-            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "No movies available");
+            dispatcher.logMessage(log, "No movies available", LoggerInterceptor.ERROR);
             throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_NAME));
         }
         return results;
@@ -76,7 +84,7 @@ public class MovieServiceImpl implements MovieService {
             }
         }
         if (results.isEmpty()) {
-            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "No movies available");
+            dispatcher.logMessage(log, "No movies available", LoggerInterceptor.ERROR);
             throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_NAME));
         }
         return results;
