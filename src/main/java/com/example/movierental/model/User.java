@@ -150,7 +150,7 @@ public class User implements UserDetails {
     }
 
     public boolean isBanned() {
-        return banned;
+        return !isAccountNonLocked;
     }
 
     public void setRentedMovies(List<Rental> rentedMovies) {

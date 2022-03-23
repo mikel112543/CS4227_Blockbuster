@@ -17,5 +17,8 @@ public interface AdminService {
 
     void unbanCustomer(int userID);
 
+    void addDiscount(int userID);
+
+    void removeDiscount(int userID);
 }
 

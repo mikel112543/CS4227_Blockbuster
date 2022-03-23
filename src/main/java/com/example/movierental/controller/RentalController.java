@@ -1,5 +1,6 @@
 package com.example.movierental.controller;
 
+import com.example.movierental.command.UserDiscount;
 import com.example.movierental.model.User;
 import com.example.movierental.service.RentalService;
 import com.example.movierental.service.UserRepoServiceImpl;
@@ -21,16 +22,18 @@ public class RentalController {
 
     RentalService rentalService;
     UserRepoServiceImpl userService;
+    UserDiscount userDiscount;
 
     @Autowired
-    public RentalController(RentalService rentalService, UserRepoServiceImpl userService) {
+    public RentalController(RentalService rentalService, UserRepoServiceImpl userService, UserDiscount userDiscount) {
         this.rentalService = rentalService;
         this.userService = userService;
+        this.userDiscount = userDiscount;
     }
 
     /**
      *
-     * @return - Returns list of logged in users rentals
+     * @return - Returns list of logged-in users rentals
      */
     @GetMapping(value = "/rentals")
     @ResponseBody
