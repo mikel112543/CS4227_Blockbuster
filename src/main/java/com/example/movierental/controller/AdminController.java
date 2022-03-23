@@ -1,9 +1,12 @@
 package com.example.movierental.controller;
 
+import com.example.movierental.command.UserAuthorization;
+import com.example.movierental.command.UserDiscount;
 import com.example.movierental.model.User;
 import com.example.movierental.service.AdminServiceImpl;
 import com.example.movierental.service.MovieServiceImpl;
 import com.example.movierental.service.UserRepoServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,15 +17,24 @@ import java.util.List;
 @RestController//CRUD
 public class AdminController {
 
-    final
     UserRepoServiceImpl userService;
     AdminServiceImpl adminService;
     MovieServiceImpl movieService;
+    UserAuthorization userAuthorization;
+    UserDiscount userDiscount;
 
-    public AdminController(UserRepoServiceImpl userService, AdminServiceImpl adminService, MovieServiceImpl movieService) {
+    @Autowired
+    public AdminController(UserRepoServiceImpl userService, AdminServiceImpl adminService, MovieServiceImpl movieService, UserAuthorization userAuthorization, UserDiscount userDiscount) {
         this.userService = userService;
         this.adminService = adminService;
         this.movieService = movieService;
+        this.userAuthorization = userAuthorization;
+        this.userDiscount = userDiscount;
+    }
+
+    @GetMapping (value = "/admin")
+    public String welcome() {
+        return "Welcome Admin";
     }
 
     /**
@@ -35,7 +47,6 @@ public class AdminController {
         adminService.banCustomer(customerId);
         return "User: " + user.getUsername() + " has been banned";
     }
-
 
     /**
      * @param customerId - Unique identifier attached to each of the users.
@@ -86,5 +97,36 @@ public class AdminController {
     @GetMapping(value = "/admin/users")
     public List<User> listAllUsers() {
         return adminService.listAllUsers();
+    }
+
+
+    @GetMapping(value = "/admin/userID/{user_ID}/toggleban")
+    public String toggleBan(@PathVariable("user_ID") final int userID)  {
+        String msg = "";
+        String username = userService.findByID(userID).getUsername();
+        User user = userService.findByID(userID);
+        if (!user.isBanned()) {
+            userAuthorization.banUser(userID);
+            msg = username + " has been banned";
+        } else {
+            userAuthorization.unbanUser(userID);
+            msg = username + " has been unbanned";
+        }
+        return msg;
+    }
+
+    @GetMapping(value = "/admin/userID/{user_ID}/toggleDiscount")
+    public String toggleDiscount(@PathVariable("user_ID") final int userID) {
+        String msg = "";
+        String username = userService.findByID(userID).getUsername();
+        User user = userService.findByID(userID);
+        if (user.isDiscount()) {
+            userDiscount.removeUserDiscount(userID);
+            msg = username + " has had their discount removed";
+        } else {
+            userDiscount.addDiscount(userID);
+            msg = username + " has been given a discount";
+        }
+        return msg;
     }
 }
