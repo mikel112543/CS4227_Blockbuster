@@ -22,7 +22,9 @@ public class StandardPrice extends Price {
             setPrice(8);
             setLoyaltyPoints(2);
         } else {
-            User user = userRepoService.findByUserName(authentication.getName());
+            calculateDiscount(userRepoService);
+        }
+           /* User user = userRepoService.findByUserName(authentication.getName());
             StateHandler stateHandler = new StateHandler(user);
             boolean discount = user.isDiscount();
             if (discount == false) {
@@ -35,6 +37,24 @@ public class StandardPrice extends Price {
                 setPrice(result);
                 setLoyaltyPoints(2);
             }
+        }*/
+    }
+
+    @Override
+    public void calculateDiscount(UserRepoServiceImpl userRepoService) {
+
+        User user = userRepoService.findByUserName(authentication.getName());
+        StateHandler stateHandler = new StateHandler(user);
+        boolean discount = user.isDiscount();
+        if (!discount) {
+            setPrice(8);
+            setLoyaltyPoints(2);
+        } else {
+            double x = stateHandler.getCurrentTier().getDiscount();
+            double result = 8 * x;
+            result = Math.round(result * 100.0) / 100.0;
+            setPrice(result);
+            setLoyaltyPoints(2);
         }
     }
 

@@ -14,6 +14,8 @@ public abstract class Price {
     private double price; //price of the movie per day
     @JsonIgnore
     private int loyaltyPoints; //loyalty points per day of rental of the movie
+    @JsonIgnore
+    private int discount;
 
     /**
      * Getter for price
@@ -22,6 +24,8 @@ public abstract class Price {
     public double getPrice() {
         return price;
     }
+
+    public abstract void calculateDiscount(UserRepoServiceImpl userRepoService);
 
     public double getDefaultPrice() {
         return 0.0;

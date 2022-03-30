@@ -123,8 +123,7 @@ public class Movie {
 
         @JsonIgnore
         public MovieBuilder setPrice(int priceCode, UserRepoServiceImpl userRepoService) {
-            PriceFactory p = new PriceFactory();
-            this.price = p.getPrice(priceCode, userRepoService);
+            this.price = PriceFactory.getPrice(priceCode, userRepoService);
             return this;
         }
 
