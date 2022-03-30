@@ -13,15 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+//Request Class
 @Service
 public class AdminServiceImpl implements AdminService {
 
-    private final UserRepoServiceImpl userService;
-    private final MovieServiceImpl movieService;
-    private final Dispatcher dispatcher;
-    private static final Logger log = LoggerFactory.getLogger(AdminServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(MovieServiceImpl.class);
 
     @Autowired
+    UserRepoServiceImpl userService;
+    MovieServiceImpl movieService;
+    Dispatcher dispatcher;
+
     public AdminServiceImpl(UserRepoServiceImpl userService, MovieServiceImpl movieService, Dispatcher dispatcher) {
         this.userService = userService;
         this.movieService = movieService;
@@ -46,7 +48,6 @@ public class AdminServiceImpl implements AdminService {
                 listOfMovies.remove(movie);
             }
         }
-        dispatcher.logMessage(log, "Incorrect Movie ID", LoggerInterceptor.ERROR);
         throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_ID));
     }
 
@@ -61,11 +62,13 @@ public class AdminServiceImpl implements AdminService {
         User user = userService.findByID(userID);
         for (int i = 0 ; i < listOfUsers.size() ; i++){
             if (userID == user.getUserID()){
-                user.setBanned(true);
+                userService.findByID(userID).setBanned(true);
+                break;
+            } else {
+                dispatcher.logMessage(log, "Could not find user", LoggerInterceptor.ERROR);
+                throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
             }
         }
-        dispatcher.logMessage(log, "Could not find user", LoggerInterceptor.ERROR);
-        throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
     }
 
     @Override
@@ -74,11 +77,42 @@ public class AdminServiceImpl implements AdminService {
         User user = userService.findByID(userID);
         for (int i = 0 ; i < listOfUsers.size() ; i++){
             if (userID == user.getUserID()){
-                user.setBanned(false);
+                userService.findByID(userID).setBanned(false);
+                break;
+            } else {
+                dispatcher.logMessage(log, "Could not find user", LoggerInterceptor.ERROR);
+                throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
             }
         }
-        dispatcher.logMessage(log, "Could not find user", LoggerInterceptor.ERROR);
-        throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
     }
 
+    @Override
+    public void addDiscount(int userID) {
+        List<User> users = userService.getUsers();
+        User user = userService.findByID(userID);
+        for (int i = 0; i < users.size(); i++) {
+            if (userID == user.getUserID()){
+                userService.findByID(userID).setDiscount(true);
+                break;
+            } else {
+                dispatcher.logMessage(log, "Could not find user", LoggerInterceptor.ERROR);
+                throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
+            }
+        }
+    }
+
+    @Override
+    public void removeDiscount(int userID) {
+        List<User> users = userService.getUsers();
+        User user = userService.findByID(userID);
+        for (int i = 0; i < users.size(); i++) {
+            if (userID == user.getUserID()){
+                userService.findByID(userID).setDiscount(false);
+                break;
+            } else {
+                dispatcher.logMessage(log, "Could not find user", LoggerInterceptor.ERROR);
+                throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
+            }
+        }
+    }
 }

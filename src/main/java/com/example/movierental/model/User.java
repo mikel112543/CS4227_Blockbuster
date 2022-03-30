@@ -1,7 +1,9 @@
 package com.example.movierental.model;
 
+import com.example.movierental.security.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -62,8 +64,9 @@ public class User implements UserDetails {
         tier = 1;
         if (authority.equals("ROLE_USER")) {
             authorities = USER.getGrantedAuthorities();
-        } else {
+        } else if (authority.equals("ROLE_ADMIN")) {
             authorities = ADMIN.getGrantedAuthorities();
+            isAdmin = true;
         }
     }
 
@@ -147,7 +150,7 @@ public class User implements UserDetails {
     }
 
     public boolean isBanned() {
-        return banned;
+        return !isAccountNonLocked;
     }
 
     public void setRentedMovies(List<Rental> rentedMovies) {
@@ -160,16 +163,22 @@ public class User implements UserDetails {
 
     public void stateCheck() {
         int lp = this.getLoyaltyPoints();
-        if(lp >= 500 && lp <= 1499) {
+        if (lp >= 500 && lp <= 1499) {
             this.setTier(2);
         } else if (lp >= 1500 && lp <= 2999) {
             this.setTier(3);
         } else if (lp > 3000) {
             this.setLoyaltyPoints(3000);
             this.setTier(3);
-        }else{
+        } else {
             this.setTier(1);
         }
+    }
+
+    public boolean hasRole(UserRole Role) {
+        if(this.authorities.equals(Role.getGrantedAuthorities())) {
+            return true;
+        } else return false;
     }
 
     @Override
