@@ -22,24 +22,13 @@ public class ChildrensPrice extends Price {
             setLoyaltyPoints(1);
         } else {
             calculateDiscount(userRepoService);
-           /* User user = userRepoService.findByUserName(authentication.getName());
-            StateHandler stateHandler = new StateHandler(user);
-            boolean discount = user.isDiscount();
-            if (!discount) {
-                setPrice(5);
-                setLoyaltyPoints(1);
-            } else {
-                double x = stateHandler.getCurrentTier().getDiscount();
-                double result = 5 * x;
-                result = Math.round(result * 100.0) / 100.0;
-                setPrice(result);
-                setLoyaltyPoints(1);*/
         }
     }
 
     @Override
     public void calculateDiscount(UserRepoServiceImpl userRepoService) {
-        if(authentication != null) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
             User user = userRepoService.findByUserName(authentication.getName());
             StateHandler stateHandler = new StateHandler(user);
             boolean discount = user.isDiscount();
