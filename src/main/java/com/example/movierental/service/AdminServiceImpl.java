@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+//Request Class
 @Service
 public class AdminServiceImpl implements AdminService {
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
@@ -73,6 +74,36 @@ public class AdminServiceImpl implements AdminService {
         for (int i = 0 ; i < listOfUsers.size() ; i++){
             if (userID == user.getUserID()){
                 userService.findByID(userID).setBanned(false);
+                break;
+            } else {
+                chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
+                throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
+            }
+        }
+    }
+
+    @Override
+    public void addDiscount(int userID) {
+        List<User> users = userService.getUsers();
+        User user = userService.findByID(userID);
+        for (int i = 0; i < users.size(); i++) {
+            if (userID == user.getUserID()){
+                userService.findByID(userID).setDiscount(true);
+                break;
+            } else {
+                chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
+                throw new ServiceException(new ServiceError(Error.INVALID_USER_ID));
+            }
+        }
+    }
+
+    @Override
+    public void removeDiscount(int userID) {
+        List<User> users = userService.getUsers();
+        User user = userService.findByID(userID);
+        for (int i = 0; i < users.size(); i++) {
+            if (userID == user.getUserID()){
+                userService.findByID(userID).setDiscount(false);
                 break;
             } else {
                 chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find user");
