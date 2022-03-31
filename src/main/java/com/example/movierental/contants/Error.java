@@ -19,8 +19,8 @@ public enum Error {
     USER_LOAD_FAILURE("2012", "Failed to load user, Username may be invalid"),
     FILE_NOT_FOUND("2013", "Could not find specified file"),
     INVALID_PRICE_CODE("2013","Incorrect price code entered: Must be one of 0,1,2"),
-    INVALID_INITIALIZATION("2014","Failure to Initialize list");
-
+    INVALID_INITIALIZATION("2014","Failure to Initialize list"),
+    INVALID_BILL_ID("2015", "Invalid bill ID");
 
     private String errorCode;
     private String errorMessage;

@@ -4,10 +4,7 @@ import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
 import com.example.movierental.logger.AbstractLogger;
 import com.example.movierental.logger.RequesterClient;
-import com.example.movierental.model.Movie;
-import com.example.movierental.model.ServiceError;
-import com.example.movierental.model.User;
-import com.example.movierental.model.Rental;
+import com.example.movierental.model.*;
 import com.example.movierental.states.StateHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -35,16 +32,16 @@ public class RentalServiceImpl implements RentalService {
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
 
     private final Timer timer = new Timer();
-
+    BillingServiceImpl billingService;
     UserRepoServiceImpl userService;
     MovieServiceImpl movieService;
     ObjectMapper mapper;
 
-
     @Autowired
-    public RentalServiceImpl(UserRepoServiceImpl userService, MovieServiceImpl movieService, ObjectMapper mapper) {
+    public RentalServiceImpl(UserRepoServiceImpl userService, MovieServiceImpl movieService, BillingServiceImpl billingService, ObjectMapper mapper) {
         this.userService = userService;
         this.movieService = movieService;
+        this.billingService = billingService;
         this.mapper = mapper;
     }
 
@@ -105,6 +102,8 @@ public class RentalServiceImpl implements RentalService {
         user.setLoyaltyPoints(user.getLoyaltyPoints() + lp);
         chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 3 days");
         userService.findByID(userId).stateCheck();
+        //create bill
+        billingService.createBill(userId, rental);
         return userRentals;
     }
 
@@ -237,4 +236,5 @@ public class RentalServiceImpl implements RentalService {
         }
         return movieNodes;
     }
+
 }

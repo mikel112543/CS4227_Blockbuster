@@ -5,9 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-//Movie Class
-//
-//@author Jack Murphy - 18254268
 
 @JsonRootName("Movie Details")
 public class Movie {

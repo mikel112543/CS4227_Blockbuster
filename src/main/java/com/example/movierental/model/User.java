@@ -19,6 +19,9 @@ public class User implements UserDetails {
     @JsonProperty("Username")
     private String username;
 
+    @JsonProperty("Email Address")
+    private String emailAddress;
+
     @JsonIgnore
     private String password;
 
@@ -48,10 +51,15 @@ public class User implements UserDetails {
 
     public User() {
     }
-
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public User(String username, String password, String emailAddress) {
+        this.username = username;
+        this.password = password;
+        this.emailAddress = emailAddress;
     }
 
     public User(int userID, String username, String password, String authority, boolean banned) {
@@ -74,6 +82,10 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
     @Override
