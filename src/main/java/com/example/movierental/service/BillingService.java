@@ -4,10 +4,11 @@ import com.example.movierental.model.Bill;
 import com.example.movierental.model.Rental;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface BillingService {
 
-    ArrayList<Bill> getBills();
+    List<Bill> getBills();
 
     Bill findByBillID(int billID);
 

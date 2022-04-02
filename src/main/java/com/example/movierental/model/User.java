@@ -74,6 +74,19 @@ public class User implements UserDetails {
             authorities = ADMIN.getGrantedAuthorities();
         }
     }
+    public User(int userID, String username, String password, String authority, boolean banned, String emailAddress){
+        this.userID = userID;
+        this.username = username;
+        this.password = password;
+        isAccountNonLocked = !banned;
+        tier = 1;
+        if (authority.equals("ROLE_USER")) {
+            authorities = USER.getGrantedAuthorities();
+        } else {
+            authorities = ADMIN.getGrantedAuthorities();
+        }
+        this.emailAddress = emailAddress;
+    }
 
     public int getUserID() {
         return userID;
@@ -168,6 +181,10 @@ public class User implements UserDetails {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public void setEmailAddress(String emailAddress){
+        this.emailAddress = emailAddress;
     }
 
     public void stateCheck() {
