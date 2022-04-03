@@ -192,7 +192,7 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     @PostConstruct
-    public void checkRentals() throws IOException {
+    public void checkRentals() throws IOException, ClassNotFoundException {
         userService.initializeUsers();
         movieService.initializeMovies();
         initializeRentals();

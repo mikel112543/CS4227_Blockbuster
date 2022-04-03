@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import java.util.HashMap;
+import java.util.Map;
+
 //Movie Class
 //
 //@author Jack Murphy - 18254268
@@ -31,7 +34,6 @@ public class Movie {
     private Price price;
     @JsonProperty("Price")
     private String priceStr;
-
 
     public Movie () {}
 

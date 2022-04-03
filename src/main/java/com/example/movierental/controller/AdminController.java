@@ -121,7 +121,7 @@ public class AdminController {
         String username = userService.findByID(userID).getUsername();
         User user = userService.findByID(userID);
         if (user.isDiscount()) {
-            userDiscount.removeUserDiscount(userID);
+            userDiscount.removeDiscount(userID);
             msg = username + " has had their discount removed";
         } else {
             userDiscount.addDiscount(userID);

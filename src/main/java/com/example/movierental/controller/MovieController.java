@@ -1,8 +1,16 @@
 package com.example.movierental.controller;
 
+import com.example.movierental.memento.LoyaltyPointsMemento;
+import com.example.movierental.memento.LoyaltyPointsTracker;
 import com.example.movierental.model.Movie;
+import com.example.movierental.model.User;
 import com.example.movierental.service.MovieService;
+import com.example.movierental.service.MovieServiceImpl;
+import com.example.movierental.service.UserRepoService;
+import com.example.movierental.service.UserRepoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +18,7 @@ import sun.rmi.runtime.Log;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -19,16 +28,19 @@ import java.util.List;
 public class MovieController {
 
     @Autowired
-    MovieService movieService;
+    MovieServiceImpl movieService;
+    UserRepoServiceImpl userRepoService;
 
     /**
-     * @param model - List of movies to be attached to model
+     * @param movieModel - List of movies to be attached to model
      * @return - movies.html
      */
     @GetMapping(value = "/movies")
-    public String showMovies(Model model) {
+    public String showMovies(Model movieModel, Model pointsModel) throws IOException,  ClassNotFoundException {
+        movieService.clearMovies();
         movieService.initializeMovies();
-        model.addAttribute("movies", movieService.getMovies());
+        movieModel.addAttribute("movies", movieService.getMovies());
+        pointsModel.addAttribute("points", movieService.getPossiblePoints());
         return "movies";
     }
 

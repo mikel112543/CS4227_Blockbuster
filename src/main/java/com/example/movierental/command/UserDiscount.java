@@ -18,7 +18,7 @@ public class UserDiscount {
         adminService.addDiscount(id);
     }
 
-    public void removeUserDiscount(int id) {
+    public void removeDiscount(int id) {
         adminService.removeDiscount(id);
     }
 }

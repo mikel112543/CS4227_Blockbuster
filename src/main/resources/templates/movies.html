@@ -15,6 +15,11 @@
 <nav class="navbar navbar-dark  bg-dark">
     <div class="container-fluid">
         <span class="navbar-brand mb-0 h1" id="nav_title" th:id="nav_title">Movies</span>
+        <div>
+            <h1>
+
+            </h1>
+        </div>
         <form class="form-signin" method="get" action="/logout">
             <button class="btn btn-lg btn-primary btn-block" th:bgcolor="red" type="submit">Logout</button>
         </form>
@@ -55,6 +60,11 @@
                                         <p class="card-text" th:text="'Your Discounted Price: €' + ${movie.getCharge()}"
                                            id="discount_price"
                                            th:id="discount_price"></p>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <p class="card-text" th:text="'Your Loyalty Points after purchase: ' + ${points.get(movie.getTitle())}"
+                                           id="possible_points"
+                                           th:id="possible_points"></p>
                                     </div>
                                     <div class="col-lg-12">
                                         <form action="#"

@@ -4,11 +4,15 @@ import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
 import com.example.movierental.logger.Dispatcher;
 import com.example.movierental.logger.LoggerInterceptor;
+import com.example.movierental.memento.LoyaltyPointsMemento;
+import com.example.movierental.memento.LoyaltyPointsTracker;
 import com.example.movierental.model.Movie;
 import com.example.movierental.model.ServiceError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -16,18 +20,21 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class MovieServiceImpl implements MovieService {
 
     ArrayList<Movie> listOfMovies = new ArrayList<>();
+    private Map<String, Integer> moviePoints = new HashMap<String, Integer>();
     private static final Logger log = LoggerFactory.getLogger(MovieServiceImpl.class);
 
     UserRepoServiceImpl userRepoService;
     Dispatcher dispatcher;
 
     @Autowired
-    public MovieServiceImpl(UserRepoServiceImpl userRepoService, Dispatcher dispatcher) {
+    public MovieServiceImpl(UserRepoServiceImpl userRepoService, Dispatcher dispatcher) throws IOException {
         this.userRepoService = userRepoService;
         this.dispatcher = dispatcher;
     }
@@ -95,7 +102,7 @@ public class MovieServiceImpl implements MovieService {
      * Initializes list of movies from movies csv
      */
     @Override
-    public void initializeMovies() {
+    public void initializeMovies() throws IOException, ClassNotFoundException {
         String path = "Movies.csv";
         String line;
         try {
@@ -112,6 +119,26 @@ public class MovieServiceImpl implements MovieService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            return;
+        }
+
+        LoyaltyPointsTracker pointsTracker = new LoyaltyPointsTracker(userRepoService);
+        LoyaltyPointsMemento pointsMemento = new LoyaltyPointsMemento(pointsTracker);
+
+        for (Movie movie : listOfMovies) {
+            pointsTracker.setLoyaltyPoints(movie.getLoyaltyPoints());
+            moviePoints.put(movie.getTitle(), pointsTracker.getLoyaltyPoints());
+            pointsTracker = pointsMemento.restoreState();
+        }
+    }
+
+    @Override
+    public Map<String, Integer> getPossiblePoints() {
+        return moviePoints;
     }
 
     /**
@@ -120,5 +147,6 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void clearMovies() {
         listOfMovies.clear();
+        moviePoints.clear();
     }
 }

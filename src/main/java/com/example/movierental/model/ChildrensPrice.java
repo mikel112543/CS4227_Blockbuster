@@ -19,20 +19,20 @@ public class ChildrensPrice extends Price {
     public ChildrensPrice(UserRepoServiceImpl userRepoService) {
         if (authentication == null) {
             setPrice(5);
-            setLoyaltyPoints(1);
+            setLoyaltyPoints(5);
         } else {
             User user = userRepoService.findByUserName(authentication.getName());
             StateHandler stateHandler = new StateHandler(user);
             boolean discount = user.isDiscount();
             if (!discount) {
                 setPrice(5);
-                setLoyaltyPoints(1);
+                setLoyaltyPoints(5);
             } else {
                 double x = stateHandler.getCurrentTier().getDiscount();
                 double result = 5 * x;
                 result = Math.round(result * 100.0) / 100.0;
                 setPrice(result);
-                setLoyaltyPoints(1);
+                setLoyaltyPoints(5);
             }
         }
 
