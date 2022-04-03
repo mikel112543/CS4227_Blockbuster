@@ -49,14 +49,12 @@ class BillingServiceTest {
         Movie testMovie = movieService.findByMovieID(1);
         List<Rental> testRentals = rentalService.rentMovie(5, 1);
         List<Bill> testBills = billingService.getBills();
-
         assertEquals(1, testRentals.size());
         assertEquals(1, testBills.size());
         assertEquals(1, testBills.get(0).getBillId());
-        Rental testRental = testBills.get(0).getRental();
-        assertEquals("Titanic", testRental.getMovie().getTitle());
+        assertEquals("Titanic", testBills.get(0).getRental().getMovie().getTitle());
         assertEquals("test123@gmail.com", testUser.getEmailAddress());
+        assertEquals(8.0, testBills.get(0).getRental().getMovie().getPriceObj().getCharge());
+        assertEquals(5, testBills.get(0).getRental().calculateRemainingDays());
     }
-
-
 }

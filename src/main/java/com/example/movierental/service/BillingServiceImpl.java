@@ -18,6 +18,7 @@ import java.util.List;
 @Service
 public class BillingServiceImpl implements BillingService {
     ArrayList<Bill> listOfBills = new ArrayList<>();
+
     private static AbstractLogger chainLogger = RequesterClient.getChaining();
 
     @Autowired
@@ -45,7 +46,7 @@ public class BillingServiceImpl implements BillingService {
         chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find bill");
         throw new ServiceException(new ServiceError(Error.INVALID_BILL_ID));
     }
-
+    @Override
     public List<Bill> getBills(){
         return listOfBills;
     }
