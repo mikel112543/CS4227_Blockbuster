@@ -1,7 +1,8 @@
-/*package com.example.movierental.controller;
-
-import com.example.movierental.model.Movie;
+/*
+package com.example.movierental.controller;
 import com.example.movierental.service.MovieServiceImpl;
+import com.example.movierental.model.Movie;
+import com.example.movierental.service.UserRepoServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,15 +29,16 @@ class MovieControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    MovieServiceImpl movieService;
+     com.example.movierental.service.MovieServiceImpl movieService;
+
+    @Autowired
+    UserRepoServiceImpl userRepoService;
 
 
     @BeforeEach
     void setUp() {
-        Movie movie1 = new Movie.MovieBuilder("The Dark Knight", "Action", "Batman and that", "2 hours", 99, "batmancoverphoto").setPrice(1).build();
-        Movie movie2 = new Movie.MovieBuilder("The return of the king", "Action", "Lord of the Rings", "2 hours", 100, "lordoftheringscoverphoto").setPrice(1).build();
-        movieService.addMovie(movie1);
-        movieService.addMovie(movie2);
+        Movie movie1 = new Movie.MovieBuilder("The Dark Knight", "Action", "Batman and that", "2 hours", 99, "batmancoverphoto").setPrice(1, userRepoService).build();
+        Movie movie2 = new Movie.MovieBuilder("The return of the king", "Action", "Lord of the Rings", "2 hours", 100, "lordoftheringscoverphoto").setPrice(1, userRepoService).build();
     }
 
     @AfterEach
@@ -79,4 +81,5 @@ class MovieControllerTest {
                 .andExpect(jsonPath("$[1].Title", is ("The return of the king")))
                 .andExpect(jsonPath("$[1].Description", is("Lord of the Rings")));
     }
-}*/
+}
+*/

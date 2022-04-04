@@ -22,10 +22,18 @@ public class StandardPrice extends Price {
             setPrice(8);
             setLoyaltyPoints(10);
         } else {
+            calculateDiscount(userRepoService);
+        }
+    }
+
+    @Override
+    public void calculateDiscount(UserRepoServiceImpl userRepoService) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
             User user = userRepoService.findByUserName(authentication.getName());
             StateHandler stateHandler = new StateHandler(user);
             boolean discount = user.isDiscount();
-            if (discount == false) {
+            if (!discount) {
                 setPrice(8);
                 setLoyaltyPoints(10);
             } else {

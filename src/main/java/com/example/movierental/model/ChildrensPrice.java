@@ -21,6 +21,14 @@ public class ChildrensPrice extends Price {
             setPrice(5);
             setLoyaltyPoints(5);
         } else {
+            calculateDiscount(userRepoService);
+        }
+    }
+
+    @Override
+    public void calculateDiscount(UserRepoServiceImpl userRepoService) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
             User user = userRepoService.findByUserName(authentication.getName());
             StateHandler stateHandler = new StateHandler(user);
             boolean discount = user.isDiscount();
@@ -35,7 +43,6 @@ public class ChildrensPrice extends Price {
                 setLoyaltyPoints(5);
             }
         }
-
     }
 
     @Override
