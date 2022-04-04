@@ -35,6 +35,7 @@ public class Movie {
     @JsonProperty("Price")
     private String priceStr;
 
+
     public Movie () {}
 
     public int getMovieId() {

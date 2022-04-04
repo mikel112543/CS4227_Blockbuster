@@ -19,7 +19,6 @@ public class Rental {
     private int daysRemaining;
 
 
-
     public Rental(Movie movie, LocalDateTime rentLength) {
         this.movie = movie;
         this.rentLength = rentLength;

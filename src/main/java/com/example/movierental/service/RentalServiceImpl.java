@@ -37,7 +37,7 @@ public class RentalServiceImpl implements RentalService {
     private static final Logger log = LoggerFactory.getLogger(RentalServiceImpl.class);
 
     private final Timer timer = new Timer();
-
+    BillingServiceImpl billingService;
     UserRepoServiceImpl userService;
     MovieServiceImpl movieService;
     ObjectMapper mapper;
@@ -47,6 +47,7 @@ public class RentalServiceImpl implements RentalService {
     public RentalServiceImpl(UserRepoServiceImpl userService, MovieServiceImpl movieService, ObjectMapper mapper, Dispatcher dispatcher) {
         this.userService = userService;
         this.movieService = movieService;
+        this.billingService = billingService;
         this.mapper = mapper;
         this.dispatcher = dispatcher;
     }
@@ -108,6 +109,8 @@ public class RentalServiceImpl implements RentalService {
         dispatcher.logMessage(log, "User has rented the movie for 3 days", LoggerInterceptor.INFO);
         dispatcher.logMessage(log, "User is getting " + lp + " Loyalty Points", LoggerInterceptor.INFO);
         userService.findByID(userId).stateCheck();
+        //create bill
+        billingService.createBill(userId, rental);
         return userRentals;
     }
 
@@ -220,6 +223,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     /**
+     *
      * @param userRentals - List of users Rentals
      * @return Cleaned up List for JSON use
      */
@@ -239,4 +243,5 @@ public class RentalServiceImpl implements RentalService {
         }
         return movieNodes;
     }
+
 }

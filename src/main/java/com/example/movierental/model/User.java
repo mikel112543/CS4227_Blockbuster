@@ -21,6 +21,9 @@ public class User implements UserDetails {
     @JsonProperty("Username")
     private String username;
 
+    @JsonProperty("Email Address")
+    private String emailAddress;
+
     @JsonIgnore
     private String password;
 
@@ -50,10 +53,15 @@ public class User implements UserDetails {
 
     public User() {
     }
-
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public User(String username, String password, String emailAddress) {
+        this.username = username;
+        this.password = password;
+        this.emailAddress = emailAddress;
     }
 
     public User(int userID, String username, String password, String authority, boolean banned) {
@@ -69,6 +77,19 @@ public class User implements UserDetails {
             isAdmin = true;
         }
     }
+    public User(int userID, String username, String password, String authority, boolean banned, String emailAddress){
+        this.userID = userID;
+        this.username = username;
+        this.password = password;
+        isAccountNonLocked = !banned;
+        tier = 1;
+        if (authority.equals("ROLE_USER")) {
+            authorities = USER.getGrantedAuthorities();
+        } else {
+            authorities = ADMIN.getGrantedAuthorities();
+        }
+        this.emailAddress = emailAddress;
+    }
 
     public int getUserID() {
         return userID;
@@ -77,6 +98,10 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
     @Override
@@ -159,6 +184,10 @@ public class User implements UserDetails {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public void setEmailAddress(String emailAddress){
+        this.emailAddress = emailAddress;
     }
 
     public void stateCheck() {
