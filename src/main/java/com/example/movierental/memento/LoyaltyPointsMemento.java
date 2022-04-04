@@ -3,7 +3,7 @@ package com.example.movierental.memento;
 import java.io.*;
 
 public class LoyaltyPointsMemento {
-    File lptFile = new File("LoyaltyPointsTracker.ser");
+    /*File lptFile = new File("LoyaltyPointsTracker.ser");
     ObjectOutputStream oos = null;
     ObjectInputStream ois = null;
 
@@ -21,5 +21,23 @@ public class LoyaltyPointsMemento {
         ois.close();
         lptFile.deleteOnExit();
         return loyaltyPointsTracker;
+    }*/
+
+
+    //simpler method
+    private LoyaltyPointsTracker pointsTracker;
+
+    private int copyOfPoints;
+    private int copyOfPrevPoints;
+
+    public LoyaltyPointsMemento(LoyaltyPointsTracker loyaltyPointsTracker) {
+        this.pointsTracker = loyaltyPointsTracker;
+        this.copyOfPoints = loyaltyPointsTracker.getLoyaltyPoints();
+        this.copyOfPrevPoints = loyaltyPointsTracker.getPreviousPoints();
+    }
+
+    public void restoreState() {
+        this.pointsTracker.overridePoints(this.copyOfPoints);
+        this.pointsTracker.previousPoints = copyOfPrevPoints;
     }
 }

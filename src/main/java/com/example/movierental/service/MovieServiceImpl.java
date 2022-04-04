@@ -132,7 +132,7 @@ public class MovieServiceImpl implements MovieService {
         for (Movie movie : listOfMovies) {
             pointsTracker.setLoyaltyPoints(movie.getLoyaltyPoints());
             moviePoints.put(movie.getTitle(), pointsTracker.getLoyaltyPoints());
-            pointsTracker = pointsMemento.restoreState();
+            pointsMemento.restoreState();
         }
     }
 

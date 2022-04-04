@@ -7,13 +7,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class LoyaltyPointsTracker implements java.io.Serializable {
-    private int loyaltyPoints;
-    private int previousPoints;
+    int loyaltyPoints;
+    int previousPoints;
 
     UserRepoServiceImpl userRepoService;
 
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    
+
     public LoyaltyPointsTracker(UserRepoServiceImpl userRepoService) {
         loyaltyPoints = userRepoService.findByUserName(authentication.getName()).getLoyaltyPoints();
         previousPoints = userRepoService.findByUserName(authentication.getName()).getLoyaltyPoints();
@@ -23,6 +23,10 @@ public class LoyaltyPointsTracker implements java.io.Serializable {
     public void setLoyaltyPoints(int points) {
         previousPoints = loyaltyPoints;
         loyaltyPoints += points;
+    }
+
+    public void overridePoints(int points) {
+        loyaltyPoints = points;
     }
 
     public int getLoyaltyPoints() {
