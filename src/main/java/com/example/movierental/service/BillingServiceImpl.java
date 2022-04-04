@@ -2,9 +2,12 @@ package com.example.movierental.service;
 
 import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
-import com.example.movierental.logger.AbstractLogger;
-import com.example.movierental.logger.RequesterClient;
+
+import com.example.movierental.logger.Dispatcher;
+import com.example.movierental.logger.LoggerInterceptor;
 import com.example.movierental.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +21,13 @@ import java.util.List;
 @Service
 public class BillingServiceImpl implements BillingService {
     ArrayList<Bill> listOfBills = new ArrayList<>();
-
-    private static AbstractLogger chainLogger = RequesterClient.getChaining();
+    private static final Logger log = LoggerFactory.getLogger(BillingServiceImpl.class);
 
     @Autowired
     UserRepoServiceImpl userRepoService;
+
+    @Autowired
+    Dispatcher dispatcher;
 
     @Override
     public void createBill(int userId, Rental rental){
@@ -43,7 +48,7 @@ public class BillingServiceImpl implements BillingService {
                 return bill;
             }
         }
-        chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find bill");
+        dispatcher.logMessage(log, "Could not find bill", LoggerInterceptor.ERROR);
         throw new ServiceException(new ServiceError(Error.INVALID_BILL_ID));
     }
     @Override
