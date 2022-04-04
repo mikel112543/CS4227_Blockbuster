@@ -1,6 +1,5 @@
 package com.example.movierental.service;
 
-import com.example.movierental.exception.ServiceException;
 import com.example.movierental.model.Bill;
 import com.example.movierental.model.Movie;
 import com.example.movierental.model.Rental;
@@ -47,7 +46,7 @@ class BillingServiceTest {
     void createBill(){
         User testUser = userService.findByID(9);
         Movie testMovie = movieService.findByMovieID(1);
-        List<Rental> testRentals = rentalService.rentMovie(5, 1);
+        List<Rental> testRentals = rentalService.rentMovie(9, 1);
         List<Bill> testBills = billingService.getBills();
         assertEquals(1, testRentals.size());
         assertEquals(1, testBills.size());
@@ -55,6 +54,6 @@ class BillingServiceTest {
         assertEquals("Titanic", testBills.get(0).getRental().getMovie().getTitle());
         assertEquals("test123@gmail.com", testUser.getEmailAddress());
         assertEquals(8.0, testBills.get(0).getRental().getMovie().getPriceObj().getCharge());
-        assertEquals(5, testBills.get(0).getRental().calculateRemainingDays());
+        assertEquals(3, testBills.get(0).getRental().calculateRemainingDays());
     }
 }
