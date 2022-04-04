@@ -54,7 +54,7 @@ public class StandardPrice extends Price {
     @Override
     public String toString() {
         return "StandardPrice{" +
-                "price=" + getPrice() +
+                "price=" + getPriceStr() +
                 ", loyaltyPoints=" + getLoyaltyPoints() +
                 '}';
     }

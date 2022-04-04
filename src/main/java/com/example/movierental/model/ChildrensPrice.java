@@ -53,7 +53,7 @@ public class ChildrensPrice extends Price {
     @Override
     public String toString() {
         return "ChildrensPrice{" +
-                "price=" + getPrice() +
+                "price=" + getPriceStr() +
                 ", loyaltyPoints=" + getLoyaltyPoints() +
                 '}';
     }

@@ -57,7 +57,7 @@
                                            th:id="price"></p>
                                     </div>
                                     <div class="col-lg-12">
-                                        <p class="card-text" th:text="'Your Discounted Price: €' + ${movie.getCharge()}"
+                                        <p class="card-text" th:text="'Your Discounted Price: ' + ${movie.getPriceStr()}"
                                            id="discount_price"
                                            th:id="discount_price"></p>
                                     </div>
@@ -71,7 +71,7 @@
                                               th:action="@{'/customerId/'+ ${#authentication.getPrincipal.getUserID} +'/movieId/' + ${movie.movieId}}"
                                               method="post">
                                             <input th:id="rent_btn" id="rent_btn" type="submit"
-                                                   th:value="'€' + ${movie.getCharge()} + ' | Rent'"
+                                                   th:value="${movie.getPriceStr()} + ' | Rent'"
                                                    class="btn btn-success"/>
                                         </form>
                                     </div>
