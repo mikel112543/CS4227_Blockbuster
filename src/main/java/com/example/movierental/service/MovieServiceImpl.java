@@ -155,9 +155,11 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public String getMoviePath() throws IOException, GeoIp2Exception {
-        String path = null;
+        String path;
         assert false;
-        String userLocation = userRepoService.getCountry();
+        //String userLocation = userRepoService.getCountry();
+        String userLocation = "United States";
+
         AbstractMovieRegionFactory factory;
         if (userLocation.equals("United States")) {
             factory = new moviesAvailableInAmericaFactory();

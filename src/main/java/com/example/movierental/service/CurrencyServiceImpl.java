@@ -7,12 +7,18 @@ public class CurrencyServiceImpl implements CurrencyService {
     CurrencyConverter converter;
 
     public CurrencyServiceImpl(){
+
+        final String CURRENCY_CONVERTER_API_API_KEY = "83941bcb5a8bceb8ba8d";
+        final String OPEN_EXCHANGE_RATES = "3747c0ac02e2431ebb6d72dfa3b88ff1";
+
         //Get API Key from CurrencyLayer.Com
         final String CURRENCY_LAYER = "c1dcd939f3f95761da99d9e97c7a90d0";
         // Init converter with your API key
         this.converter = new CurrencyConverter(
                 new ConfigBuilder()
-                        .currencyLayerApiKey(CURRENCY_LAYER)
+                        .openExchangeRatesApiKey(OPEN_EXCHANGE_RATES)
+                        //.currencyConverterApiApiKey(CURRENCY_CONVERTER_API_API_KEY)
+                        //.currencyLayerApiKey(CURRENCY_LAYER)
                         .build()
         );
     }

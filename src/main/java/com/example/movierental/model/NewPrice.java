@@ -52,7 +52,7 @@ public class NewPrice extends Price {
     @Override
     public String toString() {
         return "NewPrice{" +
-                "price=" + getPrice() +
+                "price=" + getPriceStr() +
                 ", loyaltyPoints=" + getLoyaltyPoints() +
                 '}';
     }
