@@ -22,6 +22,12 @@ public abstract class Price {
      * @return int price
      */
     public double getPrice() {
+        String location= "American";
+        if(location.equals("American")) {
+            Currency american = new AmericanCurrency(price);
+            CurrencyAdapter americanCurrencyAdapter = new AmericanCurrencyAdapter(american);
+            price = Double.parseDouble(americanCurrencyAdapter.getPrice());
+        }
         return price;
     }
 

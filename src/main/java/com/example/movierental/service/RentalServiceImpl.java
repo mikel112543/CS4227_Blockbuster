@@ -12,6 +12,7 @@ import com.example.movierental.states.StateHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -195,7 +196,7 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     @PostConstruct
-    public void checkRentals() throws IOException, ClassNotFoundException {
+    public void checkRentals() throws IOException, ClassNotFoundException, GeoIp2Exception {
         userService.initializeUsers();
         movieService.initializeMovies();
         initializeRentals();

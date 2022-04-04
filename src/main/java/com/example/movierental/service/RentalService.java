@@ -2,6 +2,7 @@ package com.example.movierental.service;
 
 import com.example.movierental.model.Rental;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -24,7 +25,7 @@ public interface RentalService {
 
     String removeRental(int customerId, int movieId);
 
-    void checkRentals() throws IOException, ClassNotFoundException;
+    void checkRentals() throws IOException, ClassNotFoundException, GeoIp2Exception;
 
     List<ObjectNode> parseRentals(List<Rental> userRentals);
 }
