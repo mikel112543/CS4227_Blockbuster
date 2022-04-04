@@ -44,7 +44,7 @@ public class RentalServiceImpl implements RentalService {
     Dispatcher dispatcher;
 
     @Autowired
-    public RentalServiceImpl(UserRepoServiceImpl userService, MovieServiceImpl movieService, ObjectMapper mapper, Dispatcher dispatcher) {
+    public RentalServiceImpl(UserRepoServiceImpl userService, MovieServiceImpl movieService, ObjectMapper mapper, Dispatcher dispatcher, BillingServiceImpl billingService) {
         this.userService = userService;
         this.movieService = movieService;
         this.billingService = billingService;
