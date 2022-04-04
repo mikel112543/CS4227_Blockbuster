@@ -2,6 +2,7 @@ package com.example.movierental.service;
 
 import com.example.movierental.exception.ServiceException;
 import com.example.movierental.model.Movie;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.event.annotation.AfterTestExecution;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +34,7 @@ class MovieServiceImplTest {
     }
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException, ClassNotFoundException, GeoIp2Exception {
         movieService.initializeMovies();
     }
 
