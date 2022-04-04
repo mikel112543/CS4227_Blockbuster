@@ -6,30 +6,49 @@ package com.example.movierental.model;
 
 import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
-import com.example.movierental.logger.AbstractLogger;
-import com.example.movierental.logger.RequesterClient;
+import com.example.movierental.logger.Dispatcher;
 
+import com.example.movierental.logger.LoggerInterceptor;
 import com.example.movierental.service.UserRepoServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class PriceFactory {
 
-    private static AbstractLogger chainLogger = RequesterClient.getChaining();
+    private static final int NEW_PRICE = 0;
+    private static final int STANDARD_PRICE = 1;
+    private static final int CHILDREN_PRICE = 2;
 
-    //getPrice returns the required Price object based on the priceCode
-    //PRICE CODES: 0 = NewPrice, 1 = StandardPrice, 2 = ChildrensPrice
-    public Price getPrice(int priceCode, UserRepoServiceImpl userRepoService){
+    private static final Dispatcher dispatcher = new Dispatcher();
+    private static final Logger log = LoggerFactory.getLogger(PriceFactory.class);
+    private static final Map<Integer, Price> prices = new HashMap<>();
 
-        if(priceCode == 0){
-            return new NewPrice(userRepoService);
-        } else if(priceCode == 1){
-            return new StandardPrice(userRepoService);
-        }else if(priceCode == 2){
-            return new ChildrensPrice(userRepoService);
-        }else{
-            chainLogger.logMessage(AbstractLogger.ERROR_INFO,"Incorrect price code entered: Must be one of 0,1,2");
-            throw new ServiceException(new ServiceError(Error.INVALID_PRICE_CODE));
+    //Flyweight Pattern
+    public static Price getPrice(int priceCode, UserRepoServiceImpl userRepoService) {
+        Price price;
+        if (prices.containsKey(priceCode)) {
+            prices.get(priceCode).calculateDiscount(userRepoService);
+            return prices.get(priceCode);
         }
-        //return null;
+        switch (priceCode) {
+            case (NEW_PRICE):
+                price = new NewPrice(userRepoService);
+                break;
+            case (STANDARD_PRICE):
+                price = new StandardPrice(userRepoService);
+                break;
+            case (CHILDREN_PRICE):
+                price = new ChildrensPrice(userRepoService);
+                break;
+            default:
+                dispatcher.logMessage(log, "Incorrect price code entered: Must be one of 0,1,2", LoggerInterceptor.ERROR);
+                throw new ServiceException(new ServiceError(Error.INVALID_PRICE_CODE));
+        }
+        prices.put(priceCode, price);
+        return price;
     }
 }

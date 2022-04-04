@@ -26,9 +26,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public WebSecurityConfig(PasswordEncoder passwordEncoder, UserDetailsServiceImpl userDetailsService) {
+    LoginSuccessHandler loginSuccessHandler;
+
+    @Autowired
+    public WebSecurityConfig(PasswordEncoder passwordEncoder, UserDetailsServiceImpl userDetailsService, LoginSuccessHandler loginSuccessHandler) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
+        this.loginSuccessHandler = loginSuccessHandler;
     }
 
     @Override
@@ -39,12 +43,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/**")
                 .permitAll()
-                .antMatchers("/customerId/**").hasRole(USER.name())
-                .antMatchers("/movies").hasAnyRole(USER.name(), ADMIN.name())
+                .antMatchers("/movies/**").hasRole(USER.name())
+                .antMatchers("/admin/**").hasRole(ADMIN.name())
                 .and()
                 .formLogin()
                 .loginPage("/")
-                .defaultSuccessUrl("/movies", true)
+                .successHandler(loginSuccessHandler)
                 .failureUrl("/?error=true")
                 .and()
                 .rememberMe()
@@ -57,6 +61,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .deleteCookies("JSESSIONID", "remember-me")
                 .logoutSuccessUrl("/");
     }
+
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth)  {

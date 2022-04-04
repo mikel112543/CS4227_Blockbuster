@@ -2,11 +2,17 @@ package com.example.movierental.service;
 
 import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
-import com.example.movierental.logger.AbstractLogger;
-import com.example.movierental.logger.RequesterClient;
+import com.example.movierental.logger.Dispatcher;
+import com.example.movierental.logger.LoggerInterceptor;
+import com.example.movierental.memento.LoyaltyPointsMemento;
+import com.example.movierental.memento.LoyaltyPointsTracker;
 import com.example.movierental.model.Movie;
 import com.example.movierental.model.ServiceError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -14,15 +20,24 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class MovieServiceImpl implements MovieService {
+
     ArrayList<Movie> listOfMovies = new ArrayList<>();
-    private static AbstractLogger chainLogger = RequesterClient.getChaining();
+    private Map<String, Integer> moviePoints = new HashMap<String, Integer>();
+    private static final Logger log = LoggerFactory.getLogger(MovieServiceImpl.class);
+
+    UserRepoServiceImpl userRepoService;
+    Dispatcher dispatcher;
 
     @Autowired
-    UserRepoServiceImpl userRepoService;
-
+    public MovieServiceImpl(UserRepoServiceImpl userRepoService, Dispatcher dispatcher) throws IOException {
+        this.userRepoService = userRepoService;
+        this.dispatcher = dispatcher;
+    }
 
     public ArrayList<Movie> getMovies() {
         return listOfMovies;
@@ -39,7 +54,7 @@ public class MovieServiceImpl implements MovieService {
                 return movie;
             }
         }
-        chainLogger.logMessage(AbstractLogger.ERROR_INFO, "Could not find movie");
+        dispatcher.logMessage(log, "Could not find movie", LoggerInterceptor.ERROR);
         throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_ID));
     }
 
@@ -56,7 +71,7 @@ public class MovieServiceImpl implements MovieService {
             }
         }
         if (results.isEmpty()) {
-            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "No movies available");
+            dispatcher.logMessage(log, "No movies available", LoggerInterceptor.ERROR);
             throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_NAME));
         }
         return results;
@@ -76,7 +91,7 @@ public class MovieServiceImpl implements MovieService {
             }
         }
         if (results.isEmpty()) {
-            chainLogger.logMessage(AbstractLogger.ERROR_INFO, "No movies available");
+            dispatcher.logMessage(log, "No movies available", LoggerInterceptor.ERROR);
             throw new ServiceException(new ServiceError(Error.INVALID_MOVIE_NAME));
         }
         return results;
@@ -87,7 +102,7 @@ public class MovieServiceImpl implements MovieService {
      * Initializes list of movies from movies csv
      */
     @Override
-    public void initializeMovies() {
+    public void initializeMovies() throws IOException, ClassNotFoundException {
         String path = "Movies.csv";
         String line;
         try {
@@ -104,6 +119,26 @@ public class MovieServiceImpl implements MovieService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            return;
+        }
+
+        LoyaltyPointsTracker pointsTracker = new LoyaltyPointsTracker(userRepoService);
+        LoyaltyPointsMemento pointsMemento = new LoyaltyPointsMemento(pointsTracker);
+
+        for (Movie movie : listOfMovies) {
+            pointsTracker.setLoyaltyPoints(movie.getLoyaltyPoints());
+            moviePoints.put(movie.getTitle(), pointsTracker.getLoyaltyPoints());
+            pointsMemento.restoreState();
+        }
+    }
+
+    @Override
+    public Map<String, Integer> getPossiblePoints() {
+        return moviePoints;
     }
 
     /**
@@ -112,5 +147,6 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void clearMovies() {
         listOfMovies.clear();
+        moviePoints.clear();
     }
 }

@@ -24,7 +24,7 @@ public interface RentalService {
 
     String removeRental(int customerId, int movieId);
 
-    void checkRentals() throws IOException;
+    void checkRentals() throws IOException, ClassNotFoundException;
 
     List<ObjectNode> parseRentals(List<Rental> userRentals);
 }
