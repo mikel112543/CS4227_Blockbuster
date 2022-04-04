@@ -21,6 +21,13 @@ password: business
 
 You can always register ;)
 
+Steps to use Docker:
+
+Install and run Docker Desktop
+Run "./gradlew clean build" in the root directory of the project to create the .jar file.
+Run "docker build -t 'INSERT_TAG_NAME':'INSERT_TAG_VERSION' ."
+Run "docker run 7070:7070 'INSERT_TAG_NAME':'INSERT_TAG_VERSION'"
+
      (___________________________()6 `-, WOOF!
      (   ______________________   /''"`
      //\\                      //\\
