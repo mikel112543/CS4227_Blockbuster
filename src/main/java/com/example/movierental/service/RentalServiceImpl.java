@@ -85,7 +85,6 @@ public class RentalServiceImpl implements RentalService {
         List<Rental> userRentals = user.getRentedMovies();
 
         //Check if user has already rented movie
-        chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User is getting " + lp + "Loyalty Points");
         if (!userRentals.isEmpty()) {
             for (Rental userRental : userRentals) {
                 if (userRental.getMovie().getMovieId() == movieId) {
