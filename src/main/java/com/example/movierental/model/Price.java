@@ -22,7 +22,25 @@ public abstract class Price {
      * @return int price
      */
     public double getPrice() {
+        Currency american = new AmericanCurrency(price);
+        CurrencyAdapter americanAdapter = new AmericanCurrencyAdapter(american);
+        americanAdapter.getPrice();
         return price;
+    }
+
+    public String getPriceStr(){
+        String userLocation = "Britain";
+        if(userLocation.equals("United States")) {
+            Currency american = new AmericanCurrency(price);
+            CurrencyAdapter americanAdapter = new AmericanCurrencyAdapter(american);
+            return americanAdapter.getPrice();
+        } else if (userLocation.equals("Britain")){
+            Currency Britain = new BritainCurrency(price);
+            CurrencyAdapter britainAdapter = new BritainCurrencyAdapter(Britain);
+            return britainAdapter.getPrice();
+        }
+
+        return "Location Error";
     }
 
     public abstract void calculateDiscount(UserRepoServiceImpl userRepoService);
@@ -62,6 +80,7 @@ public abstract class Price {
     public double getCharge(){
         return getPrice();
     }
+
     /**
      * Calculates the loyalty points earned based on the type of movie the number of days and
      * @param numberOfDays

@@ -8,6 +8,7 @@ import com.example.movierental.service.MovieService;
 import com.example.movierental.service.MovieServiceImpl;
 import com.example.movierental.service.UserRepoService;
 import com.example.movierental.service.UserRepoServiceImpl;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,7 +37,7 @@ public class MovieController {
      * @return - movies.html
      */
     @GetMapping(value = "/movies")
-    public String showMovies(Model movieModel, Model pointsModel) throws IOException,  ClassNotFoundException {
+    public String showMovies(Model movieModel, Model pointsModel) throws IOException, ClassNotFoundException, GeoIp2Exception {
         movieService.clearMovies();
         movieService.initializeMovies();
         movieModel.addAttribute("movies", movieService.getMovies());
@@ -75,4 +76,6 @@ public class MovieController {
     public List<Movie> genreSearchMovie(@PathVariable("GENRE_NAME") String genreName){
         return movieService.findByGenre(genreName);
     }
+
+
 }

@@ -56,8 +56,18 @@ public class Movie {
         return movieCoverUrl;
     }
 
+
+    /**
+     * Calls the Converter API and converts the price depending on user location.
+     * @return Price and currency symbol
+     */
     public String getPriceStr() {
-        priceStr = "€"+ price.getPrice();
+        priceStr = price.getPriceStr();
+        return priceStr;
+    }
+
+    public String getChargeStr() {
+        priceStr = "€"+ price.getCharge();
         return priceStr;
     }
 

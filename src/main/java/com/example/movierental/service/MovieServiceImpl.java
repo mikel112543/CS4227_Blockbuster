@@ -1,13 +1,16 @@
 package com.example.movierental.service;
 
+import com.example.movierental.abstractFactory.*;
 import com.example.movierental.contants.Error;
 import com.example.movierental.exception.ServiceException;
 import com.example.movierental.logger.Dispatcher;
 import com.example.movierental.logger.LoggerInterceptor;
 import com.example.movierental.memento.LoyaltyPointsMemento;
 import com.example.movierental.memento.LoyaltyPointsTracker;
-import com.example.movierental.model.Movie;
-import com.example.movierental.model.ServiceError;
+import com.example.movierental.service.CurrencyService;
+
+import com.example.movierental.model.*;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,8 +105,8 @@ public class MovieServiceImpl implements MovieService {
      * Initializes list of movies from movies csv
      */
     @Override
-    public void initializeMovies() throws IOException, ClassNotFoundException {
-        String path = "Movies.csv";
+    public void initializeMovies() throws IOException, GeoIp2Exception {
+        String path = getMoviePath();
         String line;
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
@@ -148,5 +151,27 @@ public class MovieServiceImpl implements MovieService {
     public void clearMovies() {
         listOfMovies.clear();
         moviePoints.clear();
+    }
+
+    @Override
+    public String getMoviePath() throws IOException, GeoIp2Exception {
+        String path;
+        assert false;
+        //String userLocation = userRepoService.getCountry();
+        String userLocation = "United States";
+
+        AbstractMovieRegionFactory factory;
+        if (userLocation.equals("United States")) {
+            factory = new moviesAvailableInAmericaFactory();
+            //--Currency change
+        } else if (userLocation.equals("Britain")) {
+            //--List of available Movies
+            factory = new moviesAvailableInBritainFactory();
+        } else {
+            factory = new moviesAvailableInIrelandFactory();
+        }
+        moviesAvailable movies = factory.createMovie();
+        path = movies.getMovieLists();
+        return path;
     }
 }

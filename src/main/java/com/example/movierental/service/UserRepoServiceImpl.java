@@ -6,6 +6,10 @@ import com.example.movierental.logger.Dispatcher;
 import com.example.movierental.logger.LoggerInterceptor;
 import com.example.movierental.model.ServiceError;
 import com.example.movierental.model.User;
+import com.maxmind.geoip2.WebServiceClient;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CountryResponse;
+import com.maxmind.geoip2.record.Country;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 
 @Repository("users")
@@ -117,4 +123,41 @@ public class UserRepoServiceImpl implements UserRepoService {
     public void removeUser(User user) {
         users.remove(user);
     }
+
+
+    /**
+     * Method uses Java imports to get the IP address of the local host system.
+     * Using this to get the Region of the User and show Movies Available to them.
+     * @return userAddress : IP Address
+     * @author Bandile -18246923
+     */
+    @Override
+    public String getUserIPAddress() {
+        String userAddress;
+        try {
+            //Local System IP Address
+            InetAddress ia = InetAddress.getLocalHost();
+            userAddress = ia.getHostAddress();
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        userAddress = "109.79.29.175";
+
+        return userAddress;
+    }
+
+    @Override
+    public String getCountry() throws IOException, GeoIp2Exception {
+        String ia = getUserIPAddress();
+
+        WebServiceClient client = new WebServiceClient.Builder(700850, "2aTLMY4H1sQGjT44").host("geolite.info")
+                .build();
+        InetAddress ipAddress = InetAddress.getByName(ia);
+        // Do the lookup
+        CountryResponse response = client.country(ipAddress);
+        Country country = response.getCountry();
+        return country.toString();
+    }
+
 }

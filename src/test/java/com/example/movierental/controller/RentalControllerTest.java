@@ -6,6 +6,7 @@ import com.example.movierental.service.MovieServiceImpl;
 import com.example.movierental.service.RentalServiceImpl;
 import com.example.movierental.service.UserRepoServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ class RentalControllerTest {
     MovieServiceImpl movieService;
 
     @BeforeEach
-    void setUp() throws IOException, ClassNotFoundException {
+    void setUp() throws IOException, ClassNotFoundException, GeoIp2Exception {
         movieService.initializeMovies();
     }
 
