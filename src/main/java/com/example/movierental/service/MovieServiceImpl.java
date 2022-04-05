@@ -157,7 +157,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public String getMoviePath() {
         String path;
-        assert false;
+        //assert false;
         String userLocation = userLocationService.getLocation();
 
         AbstractMovieRegionFactory factory = null;

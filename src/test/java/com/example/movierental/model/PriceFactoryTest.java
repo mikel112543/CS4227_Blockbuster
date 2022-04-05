@@ -2,12 +2,15 @@ package com.example.movierental.model;
 
 import com.example.movierental.exception.ServiceException;
 import com.example.movierental.service.UserRepoServiceImpl;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,11 +32,10 @@ class PriceFactoryTest {
      * 2 = Childrens Release
      */
     @BeforeEach
-    void setUp() {
-        p = new PriceFactory();
-        p1 = p.getPrice(0, userRepoService);
-        p2 = p.getPrice(1, userRepoService);
-        p3 = p.getPrice(2, userRepoService);
+    void setUp() throws IOException, GeoIp2Exception {
+        p1 = PriceFactory.getPrice(0, userRepoService);
+        p2 = PriceFactory.getPrice(1, userRepoService);
+        p3 = PriceFactory.getPrice(2, userRepoService);
     }
 
     @AfterEach

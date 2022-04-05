@@ -7,5 +7,5 @@
 7,sean,cork,ROLE_USER,2000,3,TRUE,FALSE,sean@gmail.com
 8,aimee,mayo,ROLE_USER,2500,3,FALSE,FALSE,aimee@gmail.com
 9,test,test,ROLE_USER,1,1,FALSE,FALSE,test123@gmail.com
-10,test2,test,ROLE_USER,1,2,FALSE,FALSE,testemail
-11,test3,test,ROLE_USER,1,3,FALSE,FALSE,testmail
+10,test2,test,ROLE_USER,1,2,FALSE,FALSE,testemail@gmail.com
+11,test3,test,ROLE_USER,1,3,FALSE,FALSE,testmail@gmail.com
