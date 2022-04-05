@@ -29,6 +29,10 @@ public class BillingServiceImpl implements BillingService {
     @Autowired
     Dispatcher dispatcher;
 
+
+    @Autowired
+    MailServiceImpl mailingService;
+
     @Override
     public void createBill(int userId, Rental rental){
         int billID = listOfBills.size()+1;
@@ -39,6 +43,9 @@ public class BillingServiceImpl implements BillingService {
         Movie movie = rental.getMovie();
         int numberOfDays = rental.calculateRemainingDays();
         double charge = movie.getCharge();
+        mailingService.sendEmail(user.getEmailAddress(),
+                "Bill number " + bill.getBillId(),
+                "Here is your Bill information!"  + movie.getTitle() + "Rented for " + numberOfDays + "Cost: " + charge);
     }
 
     @Override
