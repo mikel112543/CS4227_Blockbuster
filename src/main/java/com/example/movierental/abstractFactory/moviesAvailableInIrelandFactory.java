@@ -8,7 +8,7 @@ public class moviesAvailableInIrelandFactory extends AbstractMovieRegionFactory 
     }
 
     @Override
-    public regionPrices createPrice() {
+    public currencySymbol createCurrencySymbol() {
         return new Ireland_Prices();
     }
 }

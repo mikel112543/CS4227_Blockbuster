@@ -95,4 +95,11 @@ class MovieServiceImplTest {
         assertEquals("Can't find movie with search, search for another movie instead", exception.getServiceError().getErrorMessage());
     }
 
+    @Test
+    @DisplayName("Should return 'Spiderman' for British Users")
+    void getFirstBritishMovie() {
+        String userLocation = "United Kingdom";
+        movieService.getMoviePath();
+    }
+
 }

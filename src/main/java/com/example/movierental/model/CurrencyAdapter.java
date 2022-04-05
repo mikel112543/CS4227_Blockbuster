@@ -1,9 +1,13 @@
 package com.example.movierental.model;
 
+import com.example.movierental.abstractFactory.AbstractMovieRegionFactory;
+import com.example.movierental.abstractFactory.currencySymbol;
+import com.example.movierental.abstractFactory.moviesAvailableInIrelandFactory;
 import com.example.movierental.service.CurrencyService;
 import com.example.movierental.service.CurrencyServiceImpl;
 
 import java.text.DecimalFormat;
+
 
 interface Currency {
     double convertCurrency();
@@ -35,7 +39,7 @@ class IrelandCurrency  implements Currency{
 
     @Override
     public String getPrice() {
-        return convertSymbol()+this.convertCurrency();
+        return convertSymbol() + this.convertCurrency();
     }
 }
 

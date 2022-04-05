@@ -7,10 +7,13 @@ import com.example.movierental.logger.LoggerInterceptor;
 import com.example.movierental.model.Movie;
 import com.example.movierental.model.ServiceError;
 import com.example.movierental.model.User;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 import java.util.List;
 
 //Request Class
@@ -31,7 +34,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void addMovie(String title, String genre, String description, String length, int priceCode, String movieCoverUrl){
+    public void addMovie(String title, String genre, String description, String length, int priceCode, String movieCoverUrl) throws IOException, GeoIp2Exception {
         List<Movie> listOfMovies = movieService.getMovies();
         int movieId = listOfMovies.get(listOfMovies.size()-1).getMovieId()+1;
 

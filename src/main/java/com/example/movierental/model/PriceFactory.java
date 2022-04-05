@@ -10,9 +10,11 @@ import com.example.movierental.logger.Dispatcher;
 
 import com.example.movierental.logger.LoggerInterceptor;
 import com.example.movierental.service.UserRepoServiceImpl;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +30,7 @@ public class PriceFactory {
     private static final Map<Integer, Price> prices = new HashMap<>();
 
     //Flyweight Pattern
-    public static Price getPrice(int priceCode, UserRepoServiceImpl userRepoService) {
+    public static Price getPrice(int priceCode, UserRepoServiceImpl userRepoService) throws IOException, GeoIp2Exception {
         Price price;
         if (prices.containsKey(priceCode)) {
             prices.get(priceCode).calculateDiscount(userRepoService);

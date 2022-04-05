@@ -1,14 +1,19 @@
 package com.example.movierental.model;
 
+import com.example.movierental.service.UserLocationServiceImpl;
 import com.example.movierental.service.UserRepoServiceImpl;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.IOException;
 
 /**
  * Price Class - Pricing Structure for the Movies
  * Author - Jack Murphy - 18254268
  */
 public abstract class Price {
+    UserLocationServiceImpl userLocationService = new UserLocationServiceImpl();
 
     @JsonIgnore
     private double price; //price of the movie per day
@@ -17,30 +22,34 @@ public abstract class Price {
     @JsonIgnore
     private int discount;
 
+    protected Price() throws IOException, GeoIp2Exception {
+    }
+
     /**
      * Getter for price
      * @return int price
      */
     public double getPrice() {
-        Currency american = new AmericanCurrency(price);
-        CurrencyAdapter americanAdapter = new AmericanCurrencyAdapter(american);
-        americanAdapter.getPrice();
         return price;
     }
 
     public String getPriceStr(){
-        String userLocation = "Britain";
-        if(userLocation.equals("United States")) {
-            Currency american = new AmericanCurrency(price);
-            CurrencyAdapter americanAdapter = new AmericanCurrencyAdapter(american);
-            return americanAdapter.getPrice();
-        } else if (userLocation.equals("Britain")){
-            Currency Britain = new BritainCurrency(price);
-            CurrencyAdapter britainAdapter = new BritainCurrencyAdapter(Britain);
-            return britainAdapter.getPrice();
+        String userLocation = userLocationService.getLocation();;
+        switch (userLocation) {
+            case "United States":
+                Currency american = new AmericanCurrency(price);
+                CurrencyAdapter americanAdapter = new AmericanCurrencyAdapter(american);
+                return americanAdapter.getPrice();
+            case "United Kingdom":
+                Currency Britain = new BritainCurrency(price);
+                CurrencyAdapter britainAdapter = new BritainCurrencyAdapter(Britain);
+                return britainAdapter.getPrice();
+            case "Ireland":
+                Currency Ireland = new IrelandCurrency(price);
+                CurrencyAdapter irelandAdapter = new BritainCurrencyAdapter(Ireland);
+                return irelandAdapter.getPrice();
         }
-
-        return "Location Error";
+        return null;
     }
 
     public abstract void calculateDiscount(UserRepoServiceImpl userRepoService);

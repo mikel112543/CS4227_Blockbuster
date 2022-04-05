@@ -38,7 +38,7 @@ class RentalServiceImplTest {
     }
 
     @BeforeEach
-    void setUp() throws IOException, ClassNotFoundException, GeoIp2Exception {
+    void setUp() throws IOException, GeoIp2Exception {
         movieService.initializeMovies();
     }
 

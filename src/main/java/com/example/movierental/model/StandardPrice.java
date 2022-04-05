@@ -6,9 +6,12 @@ package com.example.movierental.model;
 
 import com.example.movierental.service.UserRepoServiceImpl;
 import com.example.movierental.states.StateHandler;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.io.IOException;
 
 public class StandardPrice extends Price {
 
@@ -17,7 +20,8 @@ public class StandardPrice extends Price {
     //customer earns 2 loyalty points per rental per day of a movie
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    public StandardPrice(UserRepoServiceImpl userRepoService) {
+    public StandardPrice(UserRepoServiceImpl userRepoService) throws IOException, GeoIp2Exception {
+        super();
         if (authentication == null) {
             setPrice(8);
             setLoyaltyPoints(10);

@@ -2,7 +2,8 @@ package com.example.movierental.abstractFactory;
 
 public abstract class AbstractMovieRegionFactory {
     public abstract moviesAvailable createMovie();
-    public abstract regionPrices createPrice();
+    public abstract currencySymbol createCurrencySymbol();
+
 }
 
 class Ireland_Movies implements moviesAvailable {
@@ -25,37 +26,31 @@ class British_Movies implements moviesAvailable {
 
     @Override
     public String getMovieLists() {
-        return "UK_Movies.csv";
+        return "British_Movies.csv";
     }
 }
 
-//------------
-interface regionPrices {
-    String getPrice();
-
-}
-
-class Ireland_Prices implements regionPrices {
+class Ireland_Prices implements currencySymbol {
 
     @Override
-    public String getPrice() {
+    public String getSymbol() {
         return "€";
     }
 }
 
-class American_Prices implements regionPrices {
+class American_Prices implements currencySymbol {
 
     @Override
-    public String getPrice() {
+    public String getSymbol() {
         return "$";
     }
 }
 
-class Britain_Prices implements regionPrices {
+class Britain_Prices implements currencySymbol {
 
     @Override
-    public String getPrice() {
-        return "$";
+    public String getSymbol() {
+        return "£";
     }
 }
 

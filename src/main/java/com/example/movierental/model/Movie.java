@@ -4,7 +4,9 @@ import com.example.movierental.service.UserRepoServiceImpl;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,13 +63,8 @@ public class Movie {
      * Calls the Converter API and converts the price depending on user location.
      * @return Price and currency symbol
      */
-    public String getPriceStr() {
+    public String getPriceStr() throws IOException, GeoIp2Exception {
         priceStr = price.getPriceStr();
-        return priceStr;
-    }
-
-    public String getChargeStr() {
-        priceStr = "€"+ price.getCharge();
         return priceStr;
     }
 
@@ -135,7 +132,7 @@ public class Movie {
 
 
         @JsonIgnore
-        public MovieBuilder setPrice(int priceCode, UserRepoServiceImpl userRepoService) {
+        public MovieBuilder setPrice(int priceCode, UserRepoServiceImpl userRepoService) throws IOException, GeoIp2Exception {
             this.price = PriceFactory.getPrice(priceCode, userRepoService);
             return this;
         }

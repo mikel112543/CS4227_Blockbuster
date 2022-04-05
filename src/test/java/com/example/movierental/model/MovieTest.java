@@ -4,6 +4,7 @@ import com.example.movierental.model.Movie.MovieBuilder;
 import com.example.movierental.service.MovieServiceImpl;
 import com.example.movierental.service.RentalServiceImpl;
 import com.example.movierental.service.UserRepoServiceImpl;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Repository;
+
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 /**
@@ -31,7 +34,7 @@ class MovieTest {
 
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException, GeoIp2Exception {
         testMovieBuilder = new MovieBuilder("Test Movie One", "Genre NewPrice", "Described as \"Good for Testing\"", "1.1", 11111, "Test1.jpg");
         testMovieBuilder.setPrice(0, userService);
         testMovie1 = testMovieBuilder.build();

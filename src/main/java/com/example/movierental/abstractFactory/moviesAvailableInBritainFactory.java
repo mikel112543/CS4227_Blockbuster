@@ -8,7 +8,7 @@ public class moviesAvailableInBritainFactory extends AbstractMovieRegionFactory{
     }
 
     @Override
-    public regionPrices createPrice() {
+    public currencySymbol createCurrencySymbol() {
         return new Britain_Prices();
     }
 

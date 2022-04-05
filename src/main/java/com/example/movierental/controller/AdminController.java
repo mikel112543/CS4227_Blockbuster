@@ -6,9 +6,11 @@ import com.example.movierental.model.User;
 import com.example.movierental.service.AdminServiceImpl;
 import com.example.movierental.service.MovieServiceImpl;
 import com.example.movierental.service.UserRepoServiceImpl;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -73,7 +75,7 @@ public class AdminController {
                          @PathVariable("MOVIE_DESCRIPTION") String movieDescription,
                          @PathVariable("MOVIE_LENGTH") final String movieLength,
                          @PathVariable("MOVIE_PRICE") int moviePriceCode,
-                         @PathVariable("MOVIE_COVER_URL") String movieCoverUrl) {
+                         @PathVariable("MOVIE_COVER_URL") String movieCoverUrl) throws IOException, GeoIp2Exception {
 
         adminService.addMovie(movieTitle, movieGenre, movieDescription,
                 movieLength, moviePriceCode, movieCoverUrl);

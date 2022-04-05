@@ -7,7 +7,6 @@ import com.example.movierental.logger.Dispatcher;
 import com.example.movierental.logger.LoggerInterceptor;
 import com.example.movierental.memento.LoyaltyPointsMemento;
 import com.example.movierental.memento.LoyaltyPointsTracker;
-import com.example.movierental.service.CurrencyService;
 
 import com.example.movierental.model.*;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
@@ -34,10 +33,11 @@ public class MovieServiceImpl implements MovieService {
     private static final Logger log = LoggerFactory.getLogger(MovieServiceImpl.class);
 
     UserRepoServiceImpl userRepoService;
+    UserLocationServiceImpl userLocationService = new UserLocationServiceImpl();
     Dispatcher dispatcher;
 
     @Autowired
-    public MovieServiceImpl(UserRepoServiceImpl userRepoService, Dispatcher dispatcher) throws IOException {
+    public MovieServiceImpl(UserRepoServiceImpl userRepoService, Dispatcher dispatcher) throws IOException, GeoIp2Exception {
         this.userRepoService = userRepoService;
         this.dispatcher = dispatcher;
     }
@@ -154,21 +154,22 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public String getMoviePath() throws IOException, GeoIp2Exception {
+    public String getMoviePath() {
         String path;
         assert false;
-        //String userLocation = userRepoService.getCountry();
-        String userLocation = "United States";
+        String userLocation = userLocationService.getLocation();;
 
-        AbstractMovieRegionFactory factory;
-        if (userLocation.equals("United States")) {
-            factory = new moviesAvailableInAmericaFactory();
-            //--Currency change
-        } else if (userLocation.equals("Britain")) {
-            //--List of available Movies
-            factory = new moviesAvailableInBritainFactory();
-        } else {
-            factory = new moviesAvailableInIrelandFactory();
+        AbstractMovieRegionFactory factory = null;
+        switch (userLocation) {
+            case "United States":
+                factory = new moviesAvailableInAmericaFactory();
+                break;
+            case "United Kingdom":
+                factory = new moviesAvailableInBritainFactory();
+                break;
+            case "Ireland":
+                factory = new moviesAvailableInIrelandFactory();
+                break;
         }
         moviesAvailable movies = factory.createMovie();
         path = movies.getMovieLists();

@@ -6,8 +6,11 @@ package com.example.movierental.model;
 
 import com.example.movierental.service.UserRepoServiceImpl;
 import com.example.movierental.states.StateHandler;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.io.IOException;
 
 public class NewPrice extends Price {
     //movie cost 10 per day
@@ -15,7 +18,8 @@ public class NewPrice extends Price {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     private static final double DEFAULT_PRICE = 10.0;
 
-    public NewPrice(UserRepoServiceImpl userRepoService) {
+    public NewPrice(UserRepoServiceImpl userRepoService) throws IOException, GeoIp2Exception {
+        super();
         if (authentication == null) {
             setPrice(10);
             setLoyaltyPoints(17);

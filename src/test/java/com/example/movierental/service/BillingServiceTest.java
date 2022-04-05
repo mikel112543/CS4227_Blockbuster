@@ -4,6 +4,7 @@ import com.example.movierental.model.Bill;
 import com.example.movierental.model.Movie;
 import com.example.movierental.model.Rental;
 import com.example.movierental.model.User;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ class BillingServiceTest {
     BillingServiceImpl billingService;
 
     @BeforeEach
-    void setUp() throws IOException, ClassNotFoundException {
+    void setUp() throws IOException, ClassNotFoundException, GeoIp2Exception {
         movieService.initializeMovies();
     }
 
