@@ -18,20 +18,15 @@ public class Bill {
     @JsonIgnore
     private int phoneNumber;
 
-
     public int getBillId() {
         return billId;
     }
-
     public Rental getRental(){
         return rental;
     }
-
     public String getEmailAddress(){
         return emailAddress;
     }
-
-
 
     private Bill(BillBuilder builder) {
         this.billId = builder.billId;
