@@ -10,7 +10,6 @@ public abstract class AbstractMovieRegionFactory {
      * @return Currency symbol in users location
      */
     public abstract currencySymbol createCurrencySymbol();
-
 }
 
 class Ireland_Movies implements moviesAvailable {

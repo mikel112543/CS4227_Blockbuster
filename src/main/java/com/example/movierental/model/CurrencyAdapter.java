@@ -15,8 +15,7 @@ import java.text.DecimalFormat;
  * Original interface that returns the price in Euros
  */
 interface Currency {
-    double convertCurrency();
-    String convertSymbol();
+
     /**
      * @return gets the relevant symbol and the currency rate
      * for the user
@@ -34,7 +33,6 @@ class IrelandCurrency  implements Currency{
     /**
      * @return Price in Euros
      */
-    @Override
     public double convertCurrency() {
         return this.price;
     }
@@ -42,7 +40,6 @@ class IrelandCurrency  implements Currency{
     /**
      * @return Symbol in Euro - €
      */
-    @Override
     public String convertSymbol() {
         AbstractMovieRegionFactory factory = new moviesAvailableInIrelandFactory();
         currencySymbol currencySymbol = factory.createCurrencySymbol();
@@ -69,7 +66,6 @@ class AmericanCurrency  implements Currency {
     /**
      * @return The converted currency from Euros to US Dollars
      */
-    @Override
     public double convertCurrency() {
         DecimalFormat df = new DecimalFormat("#.##");
         double price = this.price * service.EuroToUsd();
@@ -79,7 +75,6 @@ class AmericanCurrency  implements Currency {
     /**
      * @return The converted currency symbol to $
      */
-    @Override
     public String convertSymbol() {
         AbstractMovieRegionFactory factory = new moviesAvailableInAmericaFactory();
         currencySymbol currencySymbol = factory.createCurrencySymbol();
@@ -89,7 +84,6 @@ class AmericanCurrency  implements Currency {
     /**
      * @return Price for users in America ($7.64)
      */
-    @Override
     public String getPrice() {
         return convertSymbol() + this.convertCurrency();
     }
@@ -106,7 +100,6 @@ class BritainCurrency  implements Currency {
     /**
      * @return The converted currency from Euros to British Pounds
      */
-    @Override
     public double convertCurrency() {
         DecimalFormat df = new DecimalFormat("#.##");
         double price = this.price * service.EuroToBritishPound();
@@ -116,7 +109,6 @@ class BritainCurrency  implements Currency {
     /**
      * @return The converted currency symbol to £
      */
-    @Override
     public String convertSymbol() {
         AbstractMovieRegionFactory factory = new moviesAvailableInBritainFactory();
         currencySymbol currencySymbol = factory.createCurrencySymbol();
