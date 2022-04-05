@@ -1,4 +1,4 @@
-FROM openjdk:8
+FROM openjdk:17.0.2-jdk-slim
 ARG JAR_FILE=build/libs/*jar
 WORKDIR /app
 COPY users.csv .
