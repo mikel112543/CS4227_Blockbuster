@@ -22,7 +22,7 @@ public class CurrencyServiceImpl implements CurrencyService {
         //Get API KET from CurrencyConverterApi.Com
         final String CURRENCY_CONVERTER_API_API_KEY = "83941bcb5a8bceb8ba8d";
         //Get API Key from OpenExchangeRates.Com
-        final String OPEN_EXCHANGE_RATES = "3747c0ac02e2431ebb6d72dfa3b88ff1";
+        final String OPEN_EXCHANGE_RATES = "ebbf618e59684eafa9589d1086efa559";
 
         // Init converter with your API key
         this.converter = new CurrencyConverter(
