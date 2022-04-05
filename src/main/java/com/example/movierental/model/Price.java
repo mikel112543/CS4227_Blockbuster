@@ -32,8 +32,11 @@ public abstract class Price {
         return price;
     }
 
+    /**
+     * @return the final price based on users ipaddress to output their prices
+     */
     public String getPriceStr(){
-        String userLocation = userLocationService.getLocation();;
+        String userLocation = userLocationService.getLocation();
         switch (userLocation) {
             case "United States":
                 Currency american = new AmericanCurrency(price);
@@ -45,8 +48,7 @@ public abstract class Price {
                 return britainAdapter.getPrice();
             case "Ireland":
                 Currency Ireland = new IrelandCurrency(price);
-                CurrencyAdapter irelandAdapter = new BritainCurrencyAdapter(Ireland);
-                return irelandAdapter.getPrice();
+                return Ireland.getPrice();
         }
         return null;
     }
@@ -59,7 +61,7 @@ public abstract class Price {
 
     /**
      * Setter for price
-     * @param price
+     * @param price - takes in price value
      */
     public void setPrice(double price) {
         this.price = price;
@@ -75,7 +77,7 @@ public abstract class Price {
 
     /**
      * Setter for Loyalty Points
-     * @param loyaltyPoints
+     * @param loyaltyPoints - takes in loyaltypoints value
      */
     public void setLoyaltyPoints(int loyaltyPoints) {
         this.loyaltyPoints = loyaltyPoints;

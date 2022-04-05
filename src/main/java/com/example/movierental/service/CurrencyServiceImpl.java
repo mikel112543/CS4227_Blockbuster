@@ -3,14 +3,18 @@ import com.posadskiy.currencyconverter.CurrencyConverter;
 import com.posadskiy.currencyconverter.config.ConfigBuilder;
 
 
+/**
+ *
+ * Author - Bandile Tshabalala
+ */
 public class CurrencyServiceImpl implements CurrencyService {
     CurrencyConverter converter;
 
     /**
      * Connects to an API Currency Converter online and seeks,
-     * the current exchange rate value. Some Currency converters
+     * the current exchange rate values in  real time. Some Currency converters
      * are functional at times.
-     * Author - Bandile
+     * Author - Bandile Tshabalala
      */
     public CurrencyServiceImpl(){
         //Get API Key from CurrencyLayer.Com

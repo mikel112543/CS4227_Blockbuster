@@ -105,7 +105,7 @@ public class MovieServiceImpl implements MovieService {
      * Initializes list of movies from movies csv
      */
     @Override
-    public void initializeMovies() throws IOException, GeoIp2Exception {
+    public void initializeMovies() throws GeoIp2Exception {
         String path = getMoviePath();
         String line;
         try {
@@ -117,8 +117,6 @@ public class MovieServiceImpl implements MovieService {
                 listOfMovies.add(movie);
             }
             br.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -153,11 +151,14 @@ public class MovieServiceImpl implements MovieService {
         moviePoints.clear();
     }
 
+    /**
+     * @return The movie cvs relevant to the users ipaddress location.
+     */
     @Override
     public String getMoviePath() {
         String path;
         assert false;
-        String userLocation = userLocationService.getLocation();;
+        String userLocation = userLocationService.getLocation();
 
         AbstractMovieRegionFactory factory = null;
         switch (userLocation) {
