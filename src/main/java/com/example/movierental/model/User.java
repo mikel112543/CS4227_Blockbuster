@@ -26,9 +26,6 @@ public class User implements UserDetails {
     @JsonIgnore
     private String password;
 
-    @JsonProperty("Banned")
-    private boolean banned;
-
     @JsonProperty("Loyalty Points")
     private int loyaltyPoints;
 
@@ -52,6 +49,7 @@ public class User implements UserDetails {
 
     public User() {
     }
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
