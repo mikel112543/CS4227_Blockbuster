@@ -10,7 +10,6 @@ import java.io.IOException;
 
 /**
  * Price Class - Pricing Structure for the Movies
- * Author - Jack Murphy - 18254268
  */
 public abstract class Price {
     UserLocationServiceImpl userLocationService = new UserLocationServiceImpl();
